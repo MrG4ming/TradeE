@@ -1,0 +1,26 @@
+name: TradeE
+version: 0.2
+api-version: 1.17
+main: de.mrg4ming.Main
+author: MrG4ming
+description: A plugin for money management and a connected trade system.
+
+commands:
+  trade:
+    description: Description coming soon.
+  bank:
+    description: Manage your bank account.
+    usage: §8[§bTradeE§8]§6 /bank <create|close|transfer|info> <accountName> [amount] [targetAccountName]
+    permission: tradee.bank.*
+    permission-message: §8[§bTradeE§8]§6 §4You don's have the permission to use this command!
+
+permissions:
+  tradee.bank.manager:
+    description: TradeE bank create or close permission.
+    default: op
+  tradee.bank.user:
+    description: TradeE bank user permissions.
+    default: true
+  tradee.bank.*:
+    description: TradeE bank command permissions.
+    default: true
