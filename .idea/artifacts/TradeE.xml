@@ -1,9 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="TradeE">
-    <output-path>$USER_HOME$/Desktop/Minecraft Server/Spigot 1.17.1 Test server/plugins</output-path>
-    <root id="archive" name="TradeE.jar">
-      <element id="module-output" name="TradeE" />
-      <element id="file-copy" path="$PROJECT_DIR$/plugin.yml" />
-    </root>
-  </artifact>
-</component>
