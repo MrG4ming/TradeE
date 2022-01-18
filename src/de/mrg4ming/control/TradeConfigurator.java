@@ -36,6 +36,10 @@ public class TradeConfigurator {
         inv.setItem(8+7, add10Value);
     }
 
+    public Inventory open() {
+        return inv;
+    }
+
     public void setCurrentSelectedValue(Value _value) {
         List<String> lore = new ArrayList<>();
         switch (_value) {

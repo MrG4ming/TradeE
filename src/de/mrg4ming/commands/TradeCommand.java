@@ -48,6 +48,7 @@ public class TradeCommand implements CommandExecutor {
                                     Trade.Mode.SELL, 0,
                                     Bank.instance.accounts.get(Bank.instance.getIdByName(_bankAccountName))
                             );
+                            p.openInventory(_trade.configurator().open());
                         } else {
                             p.sendMessage(Main.PREFiX + "§cBank account does not exist!");
                         }
