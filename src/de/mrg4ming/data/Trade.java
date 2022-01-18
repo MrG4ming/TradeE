@@ -1,5 +1,6 @@
 package de.mrg4ming.data;
 
+import de.mrg4ming.control.TradeConfigurator;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
@@ -8,7 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
-public record Trade(String name, int value, ItemStack product, Mode mode, Inventory tradeOptions, int storage, BankAccount owner) {
+public record Trade(String name, int value, ItemStack product, Mode mode, Inventory tradeOptions, int storage, BankAccount owner, TradeConfigurator configurator) {
 
     public enum Mode {
         BUY(0),
@@ -23,7 +24,7 @@ public record Trade(String name, int value, ItemStack product, Mode mode, Invent
     }
 
     public Trade(String name, int value, ItemStack product, Mode mode, int storage, BankAccount owner) {
-        this(name, value, product, mode, createTradeOptionsWindow(name, product, value, mode, storage), storage, owner);
+        this(name, value, product, mode, createTradeOptionsWindow(name, product, value, mode, storage), storage, owner, new TradeConfigurator(name));
     }
 
     private static Inventory createTradeOptionsWindow(String name, ItemStack product, int value, Mode mode, int storage) {

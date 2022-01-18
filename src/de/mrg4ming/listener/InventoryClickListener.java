@@ -2,6 +2,7 @@ package de.mrg4ming.listener;
 
 import de.mrg4ming.control.Shop;
 import de.mrg4ming.data.ShopInventory;
+import de.mrg4ming.data.Trade;
 import de.mrg4ming.data.WindowTitle;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -44,8 +45,34 @@ public class InventoryClickListener implements Listener {
                         }
                     }
                 }
+            } else if(e.getView().getTitle().startsWith(WindowTitle.TRADE_EDITOR_PREFIX.title)) {
+                e.setCancelled(true);
+                String _tradeName = e.getView().getTitle().substring(WindowTitle.TRADE_EDITOR_PREFIX.title.length());
+                Trade _trade = Shop.instance.getTrade(_tradeName);
+                switch (e.getRawSlot()) {
+                    case 2 -> {
+
+                    }
+                    case 6 -> {
+
+                    }
+                    case 8+3 -> {
+
+                    }
+                    case 8+4 -> {
+
+                    }
+                    case 8+5 -> {
+
+                    }
+                    case 8+6 -> {
+
+                    }
+                    case 8+7 -> {
+
+                    }
+                }
             }
         }
     }
-
 }

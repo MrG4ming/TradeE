@@ -63,7 +63,7 @@ public class Bank implements ConfigItem {
     }
 
     public int getIdByName(String _name) {
-        for(int id: usedIDs) {
+        for(int id : usedIDs) {
             if(accounts.get(id).name.equals(_name)) {
                 return id;
             }

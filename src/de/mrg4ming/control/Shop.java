@@ -56,6 +56,21 @@ public class Shop implements ConfigItem {
         return true;
     }
 
+    public Trade getTrade(int _id) {
+        if(!trades.containsKey(_id)) return trades.get(_id);
+        return null;
+    }
+    public Trade getTrade(String _name) {
+        if(checkIfTradeExists(_name)) {
+            for(Trade t : trades.values()) {
+                if(t.name().equalsIgnoreCase(_name)) {
+                    return t;
+                }
+            }
+        }
+        return null;
+    }
+
     public boolean checkIfTradeExists(String _name) {
         for(Trade t : trades.values()) {
             if(t.name().equalsIgnoreCase(_name)) {
