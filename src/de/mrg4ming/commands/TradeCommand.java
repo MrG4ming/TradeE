@@ -1,6 +1,7 @@
 package de.mrg4ming.commands;
 
 import de.mrg4ming.Main;
+import de.mrg4ming.control.Shop;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,18 +19,30 @@ public class TradeCommand implements CommandExecutor {
             Player p = (Player) sender;
 
             if(args.length < 1) {
+                if(p.isOp()) {
+                    //Spawn Villager
+                    Villager v = (Villager) p.getWorld().spawnEntity(p.getLocation(), EntityType.VILLAGER);
+                    v.setRemoveWhenFarAway(false);
+                    v.setCustomName(shopVillagerName);
+                    v.setProfession(Villager.Profession.NITWIT);
+                    v.setCanPickupItems(false);
+                    v.setInvulnerable(true);
+                    v.setAI(false);
 
-                //Spawn Villager
-                Villager v = (Villager) p.getWorld().spawnEntity(p.getLocation(), EntityType.VILLAGER);
-                v.setRemoveWhenFarAway(false);
-                v.setCustomName(shopVillagerName);
-                v.setProfession(Villager.Profession.NITWIT);
-                v.setCanPickupItems(false);
-                v.setInvulnerable(true);
-                v.setAI(false);
+                    p.sendMessage(Main.PREFiX + "§aTrader spawned.");
+                }
+            } else if(args.length <= 2){
+                if(args[0].equalsIgnoreCase("create")) {
+                    String _name = args[1];
 
-                p.sendMessage(Main.PREFiX + "§aTrader spawned.");
+                    if(!Shop.instance.checkIfTradeExists(_name)) {
 
+                    } else {
+
+                    }
+                } else if(args[0].equalsIgnoreCase("remove")) {
+
+                }
             }
         }
         return true;

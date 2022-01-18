@@ -39,13 +39,30 @@ public class Shop implements ConfigItem {
     }
 
     //Create Trade and remove Trade functions
+    public boolean addTrade(Trade _trade, SyncMode _mode) {
+        if(Shop.instance.getShopInvData().getTrades().size() + 1 > (ShopInventory.MAX_TRADES_PER_PAGE * ShopInventory.MAX_PAGES)) return false;
+
+        Shop.instance.getShopInvData().getTrades().add(_trade);
+        syncShopDataWithInv(_mode);
+
+        return true;
+    }
     public boolean addTrade(Trade _trade) {
         if(Shop.instance.getShopInvData().getTrades().size() + 1 > (ShopInventory.MAX_TRADES_PER_PAGE * ShopInventory.MAX_PAGES)) return false;
 
         Shop.instance.getShopInvData().getTrades().add(_trade);
-
+        syncShopDataWithInv(SyncMode.OVERWRITE_SHOP_DATA);
 
         return true;
+    }
+
+    public boolean checkIfTradeExists(String _name) {
+        for(Trade t : trades.values()) {
+            if(t.name().equalsIgnoreCase(_name)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     ///region sync shop data
