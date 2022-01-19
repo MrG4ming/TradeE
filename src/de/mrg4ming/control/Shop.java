@@ -23,6 +23,7 @@ public class Shop implements ConfigItem {
 
     private List<Integer> usedIDs;
     public HashMap<Integer, Trade> trades = new HashMap<>();
+    public static HashMap<Integer, Trade> tempTrades = new HashMap<>();
 
     private Config cfg;
     private ShopInventory inv;

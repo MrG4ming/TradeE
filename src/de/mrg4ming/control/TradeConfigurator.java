@@ -34,6 +34,9 @@ public class TradeConfigurator {
         inv.setItem(8+5, resetValue);
         inv.setItem(8+6, add1Value);
         inv.setItem(8+7, add10Value);
+
+        OptionItem confirmItem = new OptionItem("§aConfirm", Material.LIME_DYE);
+        inv.setItem(8+9, confirmItem);
     }
 
     public Inventory open() {

@@ -4,6 +4,7 @@ import de.mrg4ming.Main;
 import de.mrg4ming.control.Bank;
 import de.mrg4ming.control.Shop;
 import de.mrg4ming.data.OptionItem;
+import de.mrg4ming.data.ShopInventory;
 import de.mrg4ming.data.Trade;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -48,6 +49,11 @@ public class TradeCommand implements CommandExecutor {
                                     Trade.Mode.SELL, 0,
                                     Bank.instance.accounts.get(Bank.instance.getIdByName(_bankAccountName))
                             );
+                            for(int i = 0; i < (ShopInventory.MAX_TRADES_PER_PAGE * ShopInventory.MAX_PAGES); i++) {
+                                if(Shop.tempTrades.containsKey(i)) continue;
+                                Shop.tempTrades.put(i, _trade);
+                                break;
+                            }
                             p.openInventory(_trade.configurator().open());
                         } else {
                             p.sendMessage(Main.PREFiX + "§cBank account does not exist!");

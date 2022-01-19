@@ -71,6 +71,9 @@ public class InventoryClickListener implements Listener {
                     case 8+7 -> {
 
                     }
+                    case 8+9 -> {
+
+                    }
                 }
             }
         }
