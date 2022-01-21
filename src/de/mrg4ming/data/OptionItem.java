@@ -22,4 +22,14 @@ public class OptionItem extends ItemStack {
         _meta.setLore(_lore);
         this.setItemMeta(_meta);
     }
+
+    public boolean setLore(List<String> _lore) {
+        if(_lore.size() > 0) {
+            ItemMeta _meta = this.getItemMeta();
+            _meta.setLore(_lore);
+            this.setItemMeta(_meta);
+            return true;
+        }
+        return false;
+    }
 }
