@@ -22,6 +22,8 @@ public class TradeConfigurator {
         this.inv = Bukkit.createInventory(null, 9*2, WindowTitle.TRADE_EDITOR_PREFIX.title + name);
 
         setCurrentSelectedValue(Value.NOTHING);
+        updateValue(0);
+        updateProduct(Material.DIRT, 1);
 
         OptionItem remove10Value = new OptionItem("-10", Material.FEATHER);
         OptionItem remove1Value = new OptionItem("-1", Material.FEATHER);
@@ -47,17 +49,30 @@ public class TradeConfigurator {
         List<String> lore = new ArrayList<>();
         switch (_value) {
             case NOTHING -> {
-                lore.add("Nothing");
+                lore.add("§6Nothing");
             }
             case PRICE -> {
-                lore.add("Price");
+                lore.add("§6Price");
             }
             case PRODUCT -> {
-                lore.add("Product");
+                lore.add("§6Product");
             }
         }
 
-        OptionItem selectedValue = new OptionItem("Current selected:", lore, Material.PAPER);
+        OptionItem selectedValue = new OptionItem("§dCurrent selected:", lore, Material.PAPER);
         inv.setItem(4, selectedValue);
+    }
+
+    public void updateValue(int _value) {
+        OptionItem _selectValue = new OptionItem("§aSelect §dValue", Material.PAPER);
+        List<String> _selectedValueLore = new ArrayList<>();
+        _selectedValueLore.add("§6" + 0);
+        _selectValue.setLore(_selectedValueLore);
+        inv.setItem(3, _selectValue);
+    }
+
+    public void updateProduct(Material _material, int _amount) {
+        OptionItem _product = new OptionItem("§dProduct: ", _material, _amount);
+        _product.setLore("§6" + _amount + " §bx §6" + _material.toString());
     }
 }

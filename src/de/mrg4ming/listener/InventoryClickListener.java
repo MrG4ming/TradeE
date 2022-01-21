@@ -56,22 +56,22 @@ public class InventoryClickListener implements Listener {
                     case 6 -> {
 
                     }
-                    case 8+3 -> {
+                    case 8+3 -> { //remove 10
 
                     }
-                    case 8+4 -> {
+                    case 8+4 -> { //remove 1
 
                     }
-                    case 8+5 -> {
+                    case 8+5 -> { //reset value
 
                     }
-                    case 8+6 -> {
+                    case 8+6 -> { //add 1
 
                     }
-                    case 8+7 -> {
+                    case 8+7 -> { //add 10
 
                     }
-                    case 8+9 -> {
+                    case 8+9 -> { //confirm
 
                     }
                 }

@@ -10,11 +10,7 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BankTabCompleter implements TabCompleter {
-
-    //String[] command = {"create", "withdraw", "deposit", "transfer", "close", "info"};
-    String[] command = {"create", "transfer", "close", "info"};
-
+public class TradeTabeCompleter implements TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
         if(sender instanceof Player) {
@@ -35,26 +31,9 @@ public class BankTabCompleter implements TabCompleter {
 
             List<String> result = new ArrayList<>();
 
-            //command: create, transfer, close, info
-            if(args.length == 1) {
-                for(String s : command) {
-                    if(p.hasPermission("tradee.bank.manager")) {
-                        if(s.toLowerCase().startsWith(args[0].toLowerCase())) {
-                            result.add(s);
-                        }
-                    } else {
-                        if(s.toLowerCase().startsWith(args[0].toLowerCase())) {
-                            if(!(s.equalsIgnoreCase("create") || s.equalsIgnoreCase("close"))){
-                                result.add(s);
-                            }
-                        }
-                    }
-                }
-            }
-
             //list accounts owned by player
             if(args.length == 2) {
-                if(!args[0].equalsIgnoreCase("create")) {
+                if(args[0].equalsIgnoreCase("create")) {
                     for(String s : accounts) {
                         if(s.toLowerCase().startsWith(args[1].toLowerCase())) {
                             result.add(s);
@@ -63,19 +42,9 @@ public class BankTabCompleter implements TabCompleter {
                 }
             }
 
-            //list all accounts loaded
-            if(args.length == 4) {
-                for(String s : allAccounts) {
-                    if(s.toLowerCase().startsWith(args[3].toLowerCase())) {
-                        result.add(s);
-                    }
-                }
-            }
-
-
-
             return result;
         }
+
         return null;
     }
 }
