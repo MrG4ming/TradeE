@@ -49,11 +49,9 @@ public class TradeCommand implements CommandExecutor {
                                     Trade.Mode.SELL, 0,
                                     Bank.instance.accounts.get(Bank.instance.getIdByName(_bankAccountName))
                             );
-                            for(int i = 0; i < (ShopInventory.MAX_TRADES_PER_PAGE * ShopInventory.MAX_PAGES); i++) {
-                                if(Shop.tempTrades.containsKey(i)) continue;
-                                Shop.tempTrades.put(i, _trade);
-                                break;
-                            }
+
+                            Shop.tempTrades.put(p.getUniqueId().toString(), _trade);
+
                             p.openInventory(_trade.configurator().open());
                         } else {
                             p.sendMessage(Main.PREFiX + "§cBank account does not exist!");

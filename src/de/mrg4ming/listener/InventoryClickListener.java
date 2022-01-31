@@ -1,10 +1,12 @@
 package de.mrg4ming.listener;
 
+import de.mrg4ming.Main;
 import de.mrg4ming.control.Shop;
 import de.mrg4ming.data.ShopInventory;
 import de.mrg4ming.data.Trade;
 import de.mrg4ming.data.WindowTitle;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -48,33 +50,54 @@ public class InventoryClickListener implements Listener {
             } else if(e.getView().getTitle().startsWith(WindowTitle.TRADE_EDITOR_PREFIX.title)) {
                 e.setCancelled(true);
                 String _tradeName = e.getView().getTitle().substring(WindowTitle.TRADE_EDITOR_PREFIX.title.length());
-                Trade _trade = Shop.instance.getTrade(_tradeName);
-                switch (e.getRawSlot()) {
-                    case 2 -> {
 
-                    }
-                    case 6 -> {
-
-                    }
-                    case 8+3 -> { //remove 10
-
-                    }
-                    case 8+4 -> { //remove 1
-
-                    }
-                    case 8+5 -> { //reset value
-
-                    }
-                    case 8+6 -> { //add 1
-
-                    }
-                    case 8+7 -> { //add 10
-
-                    }
-                    case 8+9 -> { //confirm
-
-                    }
+                ///region get trade to modify
+                if(Shop.tempTrades.containsKey(p.getUniqueId().toString())) {
+                    performAction(p, e.getRawSlot(), Shop.tempTrades.get(p.getUniqueId().toString()), true);
+                } else if(Shop.instance.checkIfTradeExists(_tradeName)) {
+                    performAction(p, e.getRawSlot(), Shop.instance.getTrade(_tradeName), true);
+                } else {
+                    p.sendMessage(Main.PREFiX + "§cThe trade to be modified does not exist!");
                 }
+                ///endregion
+
+
+
+            }
+        }
+    }
+
+    private void performAction(Player p, int rawSlot, Trade _trade, boolean _isNewTrade) {
+        switch (rawSlot) {
+            case 2 -> { //select Value
+
+            }
+            case 6 -> { //select Product
+
+            }
+            case 8+3 -> { //remove 10
+
+            }
+            case 8+4 -> { //remove 1
+
+            }
+            case 8+5 -> { //reset value
+
+            }
+            case 8+6 -> { //add 1
+
+            }
+            case 8+7 -> { //add 10
+
+            }
+            case 8+9 -> { //confirm
+                if(Shop.instance.isFull() && _isNewTrade) {
+                    p.sendMessage(Main.PREFiX + "§cMax number of Trades reached!");
+                    return;
+                }
+
+                Shop.instance.addTrade(_trade);
+                Shop.tempTrades.remove(p.getUniqueId().toString());
             }
         }
     }

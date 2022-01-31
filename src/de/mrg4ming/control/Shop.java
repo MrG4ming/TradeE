@@ -23,7 +23,7 @@ public class Shop implements ConfigItem {
 
     private List<Integer> usedIDs;
     public HashMap<Integer, Trade> trades = new HashMap<>();
-    public static HashMap<Integer, Trade> tempTrades = new HashMap<>();
+    public static HashMap<String, Trade> tempTrades = new HashMap<>();
 
     private Config cfg;
     private ShopInventory inv;
@@ -77,6 +77,13 @@ public class Shop implements ConfigItem {
             if(t.name().equalsIgnoreCase(_name)) {
                 return true;
             }
+        }
+        return false;
+    }
+
+    public boolean isFull() {
+        if(trades.size() >= (ShopInventory.MAX_TRADES_PER_PAGE * ShopInventory.MAX_PAGES)) {
+            return true;
         }
         return false;
     }
