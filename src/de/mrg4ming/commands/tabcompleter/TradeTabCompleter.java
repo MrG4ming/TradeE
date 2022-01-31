@@ -44,10 +44,10 @@ public class TradeTabCompleter implements TabCompleter {
             }
 
             //list accounts owned by player
-            if(args.length == 2) {
+            if(args.length == 3) {
                 if(args[0].equalsIgnoreCase("create")) {
                     for(String s : accounts) {
-                        if(s.toLowerCase().startsWith(args[1].toLowerCase())) {
+                        if(s.toLowerCase().startsWith(args[2].toLowerCase())) {
                             result.add(s);
                         }
                     }
