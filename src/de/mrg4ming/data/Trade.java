@@ -28,7 +28,7 @@ public record Trade(String name, int value, ItemStack product, Mode mode, Invent
     }
 
     private static Inventory createTradeOptionsWindow(String name, ItemStack product, int value, Mode mode, int storage) {
-        Inventory inv = Bukkit.createInventory(null, 5, WindowTitle.TRADE_OPTIONS_PREFIX.title + name);
+        Inventory inv = Bukkit.createInventory(null, 9, WindowTitle.TRADE_OPTIONS_PREFIX.title + name);
 
         List<String> _infoLore = new ArrayList<>();
         _infoLore.add("§9Name: §d" + name);
