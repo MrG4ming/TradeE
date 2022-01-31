@@ -70,11 +70,11 @@ public class InventoryClickListener implements Listener {
 
     private void performAction(Player p, int rawSlot, Trade _trade, boolean _isNewTrade) {
         switch (rawSlot) {
-            case 2 -> { //select Value
+            case 3 -> { //select Value
                 _trade.configurator().setCurrentSelectedValue(TradeConfigurator.Value.PRICE);
             }
-            case 6 -> { //select Product
-
+            case 5 -> { //select Product
+                _trade.configurator().setCurrentSelectedValue(TradeConfigurator.Value.PRODUCT);
             }
             case 8+3 -> { //remove 10
                 switch (_trade.configurator().getCurrentSelected()) {
