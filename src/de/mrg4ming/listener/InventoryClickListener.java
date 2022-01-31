@@ -7,7 +7,6 @@ import de.mrg4ming.data.ShopInventory;
 import de.mrg4ming.data.Trade;
 import de.mrg4ming.data.WindowTitle;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -83,9 +82,8 @@ public class InventoryClickListener implements Listener {
                     }
                     case PRICE -> {
                         if(_trade.value() > 10) {
+                            _trade.configurator().updateValue(_trade.value() - 10);
                             _trade = _trade.copy(_trade.value() - 10);
-                        } else {
-                            _trade = _trade.copy(1);
                         }
                     }
                     case PRODUCT -> {
@@ -99,10 +97,11 @@ public class InventoryClickListener implements Listener {
                         p.sendMessage(Main.PREFiX + "§cPlease select a value you want to change first!");
                     }
                     case PRICE -> {
-                        if(_trade.value() > 1) {
-                            _trade = _trade.copy(_trade.value() - 10);
+                        if(_trade.value() >= 1) {
+                            _trade.configurator().updateValue(_trade.value() - 1);
+                            _trade = _trade.copy(_trade.value() - 1);
                         } else {
-                            _trade = _trade.copy(1);
+                            _trade = _trade.copy(0);
                         }
                     }
                     case PRODUCT -> {
@@ -120,6 +119,7 @@ public class InventoryClickListener implements Listener {
                         p.sendMessage(Main.PREFiX + "§cPlease select a value you want to change first!");
                     }
                     case PRICE -> {
+                        _trade.configurator().updateValue(_trade.value() + 1);
                         _trade = _trade.copy(_trade.value() + 1);
                     }
                     case PRODUCT -> {
@@ -133,6 +133,7 @@ public class InventoryClickListener implements Listener {
                         p.sendMessage(Main.PREFiX + "§cPlease select a value you want to change first!");
                     }
                     case PRICE -> {
+                        _trade.configurator().updateValue(_trade.value() + 10);
                         _trade = _trade.copy(_trade.value() + 10);
                     }
                     case PRODUCT -> {

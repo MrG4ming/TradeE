@@ -65,6 +65,6 @@ public record Trade(String name, int value, ItemStack product, Mode mode, Invent
 
     public void setProductAmount(int _amount) {
         this.product.setAmount(_amount);
-        this.configurator.updateProduct(this.product.getType(), _amount);
+        this.configurator.updateProduct(this.product.getData().getItemType(), _amount);
     }
 }
