@@ -2,6 +2,7 @@ package de.mrg4ming.listener;
 
 import de.mrg4ming.Main;
 import de.mrg4ming.control.Shop;
+import de.mrg4ming.control.TradeConfigurator;
 import de.mrg4ming.data.ShopInventory;
 import de.mrg4ming.data.Trade;
 import de.mrg4ming.data.WindowTitle;
@@ -70,25 +71,74 @@ public class InventoryClickListener implements Listener {
     private void performAction(Player p, int rawSlot, Trade _trade, boolean _isNewTrade) {
         switch (rawSlot) {
             case 2 -> { //select Value
-
+                _trade.configurator().setCurrentSelectedValue(TradeConfigurator.Value.PRICE);
             }
             case 6 -> { //select Product
 
             }
             case 8+3 -> { //remove 10
-
+                switch (_trade.configurator().getCurrentSelected()) {
+                    case NOTHING -> {
+                        p.sendMessage(Main.PREFiX + "§cPlease select a value you want to change first!");
+                    }
+                    case PRICE -> {
+                        if(_trade.value() > 10) {
+                            _trade = _trade.copy(_trade.value() - 10);
+                        } else {
+                            _trade = _trade.copy(1);
+                        }
+                    }
+                    case PRODUCT -> {
+                        _trade.setProductAmount(_trade.product().getAmount() - 10);
+                    }
+                }
             }
             case 8+4 -> { //remove 1
-
+                switch (_trade.configurator().getCurrentSelected()) {
+                    case NOTHING -> {
+                        p.sendMessage(Main.PREFiX + "§cPlease select a value you want to change first!");
+                    }
+                    case PRICE -> {
+                        if(_trade.value() > 1) {
+                            _trade = _trade.copy(_trade.value() - 10);
+                        } else {
+                            _trade = _trade.copy(1);
+                        }
+                    }
+                    case PRODUCT -> {
+                        _trade.setProductAmount(_trade.product().getAmount() - 1);
+                    }
+                }
             }
             case 8+5 -> { //reset value
-
+                _trade = _trade.copy(1);
+                _trade = _trade.copy(1);
             }
             case 8+6 -> { //add 1
-
+                switch (_trade.configurator().getCurrentSelected()) {
+                    case NOTHING -> {
+                        p.sendMessage(Main.PREFiX + "§cPlease select a value you want to change first!");
+                    }
+                    case PRICE -> {
+                        _trade = _trade.copy(_trade.value() + 1);
+                    }
+                    case PRODUCT -> {
+                        _trade.setProductAmount(_trade.product().getAmount() + 1);
+                    }
+                }
             }
             case 8+7 -> { //add 10
-
+                switch (_trade.configurator().getCurrentSelected()) {
+                    case NOTHING -> {
+                        p.sendMessage(Main.PREFiX + "§cPlease select a value you want to change first!");
+                    }
+                    case PRICE -> {
+                        _trade = _trade.copy(_trade.value() + 10);
+                    }
+                    case PRODUCT -> {
+                        _trade.setProductAmount(_trade.product().getAmount() + 10);
+                    }
+                }
             }
             case 8+9 -> { //confirm
                 if(Shop.instance.isFull() && _isNewTrade) {

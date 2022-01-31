@@ -1,6 +1,7 @@
 package de.mrg4ming.data;
 
 import de.mrg4ming.control.TradeConfigurator;
+import net.minecraft.world.entity.ai.behavior.PrepareRamNearestTarget;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
@@ -56,5 +57,14 @@ public record Trade(String name, int value, ItemStack product, Mode mode, Invent
         }
 
         return inv;
+    }
+
+    public Trade copy(int _newValue) {
+        return new Trade(name, _newValue, product, mode, tradeOptions, storage, owner, configurator);
+    }
+
+    public void setProductAmount(int _amount) {
+        this.product.setAmount(_amount);
+        this.configurator.updateProduct(this.product.getType(), _amount);
     }
 }

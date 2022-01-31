@@ -63,10 +63,19 @@ public class TradeConfigurator {
         inv.setItem(4, selectedValue);
     }
 
+    public Value getCurrentSelected() {
+        if(inv.getItem(4).getItemMeta().getLore().contains("§6Product")) {
+            return Value.PRODUCT;
+        } else if(inv.getItem(4).getItemMeta().getLore().contains("§6Price")) {
+            return Value.PRICE;
+        }
+        return Value.NOTHING;
+    }
+
     public void updateValue(int _value) {
         OptionItem _selectValue = new OptionItem("§aSelect §dValue", Material.PAPER);
         List<String> _selectedValueLore = new ArrayList<>();
-        _selectedValueLore.add("§6" + 0);
+        _selectedValueLore.add("§6" + _value);
         _selectValue.setLore(_selectedValueLore);
         inv.setItem(3, _selectValue);
     }
