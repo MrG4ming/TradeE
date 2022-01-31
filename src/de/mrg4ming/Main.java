@@ -3,9 +3,9 @@ package de.mrg4ming;
 import de.mrg4ming.commands.BankCommand;
 import de.mrg4ming.commands.TradeCommand;
 import de.mrg4ming.commands.tabcompleter.BankTabCompleter;
+import de.mrg4ming.commands.tabcompleter.TradeTabCompleter;
 import de.mrg4ming.control.Bank;
 import de.mrg4ming.control.Shop;
-import de.mrg4ming.data.ShopInventory;
 import de.mrg4ming.listener.InventoryClickListener;
 import de.mrg4ming.listener.PlayerInteractListener;
 import org.bukkit.Bukkit;
@@ -36,7 +36,7 @@ public class Main extends JavaPlugin {
         getCommand("bank").setTabCompleter(new BankTabCompleter());
 
         getCommand("trade").setExecutor(new TradeCommand());
-        //getCommand("trade").setTabCompleter(new TradeTabCompleter());
+        getCommand("trade").setTabCompleter(new TradeTabCompleter());
 
         PluginManager pm = Bukkit.getPluginManager();
 

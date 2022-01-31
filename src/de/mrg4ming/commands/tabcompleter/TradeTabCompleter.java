@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TradeTabCompleter implements TabCompleter {
+
+    String[] command = {"create"};
+
     @Override
     public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
         if(sender instanceof Player) {
@@ -30,6 +33,15 @@ public class TradeTabCompleter implements TabCompleter {
             }
 
             List<String> result = new ArrayList<>();
+
+            //list commands
+            if(args.length == 1) {
+                for(String s : command) {
+                    if(s.toLowerCase().startsWith(args[0].toLowerCase())) {
+                        result.add(s);
+                    }
+                }
+            }
 
             //list accounts owned by player
             if(args.length == 2) {
