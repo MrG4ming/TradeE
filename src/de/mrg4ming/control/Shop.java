@@ -57,6 +57,10 @@ public class Shop implements ConfigItem {
         return true;
     }
 
+    public void modifyTrade() {
+
+    }
+
     public Trade getTrade(int _id) {
         if(!trades.containsKey(_id)) return trades.get(_id);
         return null;
@@ -64,7 +68,7 @@ public class Shop implements ConfigItem {
     public Trade getTrade(String _name) {
         if(checkIfTradeExists(_name)) {
             for(Trade t : trades.values()) {
-                if(t.name().equalsIgnoreCase(_name)) {
+                if(t.getName().equalsIgnoreCase(_name)) {
                     return t;
                 }
             }
@@ -74,7 +78,7 @@ public class Shop implements ConfigItem {
 
     public boolean checkIfTradeExists(String _name) {
         for(Trade t : trades.values()) {
-            if(t.name().equalsIgnoreCase(_name)) {
+            if(t.getName().equalsIgnoreCase(_name)) {
                 return true;
             }
         }
@@ -146,12 +150,12 @@ public class Shop implements ConfigItem {
             cfg.set("usedIDs", usedIDs);
             cfg.set("accounts", null);
             for(int id : usedIDs) {
-                cfg.set("trades." + id + ".name", trades.get(id).name());
-                cfg.set("trades." + id + ".value", trades.get(id).value());
-                cfg.set("trades." + id + ".product", trades.get(id).product());
-                cfg.set("trades." + id + ".mode", trades.get(id).mode().id);
-                cfg.set("trades." + id + ".storage", trades.get(id).storage());
-                cfg.set("trades." + id + ".bankOwnerId", Bank.instance.getIdByName(trades.get(id).owner().name));
+                cfg.set("trades." + id + ".name", trades.get(id).getName());
+                cfg.set("trades." + id + ".value", trades.get(id).getValue());
+                cfg.set("trades." + id + ".product", trades.get(id).getProduct());
+                cfg.set("trades." + id + ".mode", trades.get(id).getMode().id);
+                cfg.set("trades." + id + ".storage", trades.get(id).getStorage());
+                cfg.set("trades." + id + ".bankOwnerId", Bank.instance.getIdByName(trades.get(id).getOwner().name));
             }
         } catch (IOException e) {
             e.printStackTrace();

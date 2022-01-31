@@ -52,7 +52,7 @@ public class TradeCommand implements CommandExecutor {
 
                             Shop.tempTrades.put(p.getUniqueId().toString(), _trade);
 
-                            p.openInventory(_trade.configurator().open());
+                            p.openInventory(_trade.getConfigurator().open());
                         } else {
                             p.sendMessage(Main.PREFiX + "§cBank account does not exist!");
                         }

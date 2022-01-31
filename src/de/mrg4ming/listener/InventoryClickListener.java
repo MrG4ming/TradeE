@@ -70,53 +70,53 @@ public class InventoryClickListener implements Listener {
     private void performAction(Player p, int rawSlot, Trade _trade, boolean _isNewTrade) {
         switch (rawSlot) {
             case 3 -> { //select Value
-                _trade.configurator().setCurrentSelectedValue(TradeConfigurator.Value.PRICE);
+                _trade.getConfigurator().setCurrentSelectedValue(TradeConfigurator.Value.PRICE);
             }
             case 5 -> { //select Product
-                _trade.configurator().setCurrentSelectedValue(TradeConfigurator.Value.PRODUCT);
+                _trade.getConfigurator().setCurrentSelectedValue(TradeConfigurator.Value.PRODUCT);
             }
             case 8+3 -> { //remove 10
-                switch (_trade.configurator().getCurrentSelected()) {
+                switch (_trade.getConfigurator().getCurrentSelected()) {
                     case NOTHING -> {
                         p.sendMessage(Main.PREFiX + "§cPlease select a value you want to change first!");
                     }
                     case PRICE -> {
-                        if(_trade.value() > 10) {
-                            _trade.configurator().updateValue(_trade.value() - 10);
-                            _trade = _trade.setNewValue(_trade.value() - 10);
+                        if(_trade.getValue() > 10) {
+                            _trade.getConfigurator().updateValue(_trade.getValue() - 10);
+                            _trade.setValue(_trade.getValue() - 10);
                         }
                     }
                     case PRODUCT -> {
-                        _trade.setProductAmount(_trade.product().getAmount() - 10);
+                        _trade.setProductAmount(_trade.getProduct().getAmount() - 10);
                     }
                 }
             }
             case 8+4 -> { //remove 1
-                switch (_trade.configurator().getCurrentSelected()) {
+                switch (_trade.getConfigurator().getCurrentSelected()) {
                     case NOTHING -> {
                         p.sendMessage(Main.PREFiX + "§cPlease select a value you want to change first!");
                     }
                     case PRICE -> {
-                        if(_trade.value() >= 1) {
-                            _trade.configurator().updateValue(_trade.value() - 1);
-                            _trade = _trade.setNewValue(_trade.value() - 1);
+                        if(_trade.getValue() >= 1) {
+                            _trade.getConfigurator().updateValue(_trade.getValue() - 1);
+                            _trade.setValue(_trade.getValue() - 1);
                         } else {
-                            _trade = _trade.setNewValue(0);
+                            _trade.setValue(0);
                         }
                     }
                     case PRODUCT -> {
-                        _trade.setProductAmount(_trade.product().getAmount() - 1);
+                        _trade.setProductAmount(_trade.getProduct().getAmount() - 1);
                     }
                 }
             }
             case 8+5 -> { //reset value
-                switch (_trade.configurator().getCurrentSelected()) {
+                switch (_trade.getConfigurator().getCurrentSelected()) {
                     case NOTHING -> {
                         p.sendMessage(Main.PREFiX + "§cPlease select a value you want to change first!");
                     }
                     case PRICE -> {
-                        _trade.configurator().updateValue(0);
-                        _trade = _trade.setNewValue(0);
+                        _trade.getConfigurator().updateValue(0);
+                        _trade.setValue(0);
                     }
                     case PRODUCT -> {
                         _trade.setProductAmount(1);
@@ -125,30 +125,30 @@ public class InventoryClickListener implements Listener {
 
             }
             case 8+6 -> { //add 1
-                switch (_trade.configurator().getCurrentSelected()) {
+                switch (_trade.getConfigurator().getCurrentSelected()) {
                     case NOTHING -> {
                         p.sendMessage(Main.PREFiX + "§cPlease select a value you want to change first!");
                     }
                     case PRICE -> {
-                        _trade.configurator().updateValue(_trade.value() + 1);
-                        _trade = _trade.setNewValue(_trade.value() + 1);
+                        _trade.getConfigurator().updateValue(_trade.getValue() + 1);
+                        _trade.setValue(_trade.getValue() + 1);
                     }
                     case PRODUCT -> {
-                        _trade.setProductAmount(_trade.product().getAmount() + 1);
+                        _trade.setProductAmount(_trade.getProduct().getAmount() + 1);
                     }
                 }
             }
             case 8+7 -> { //add 10
-                switch (_trade.configurator().getCurrentSelected()) {
+                switch (_trade.getConfigurator().getCurrentSelected()) {
                     case NOTHING -> {
                         p.sendMessage(Main.PREFiX + "§cPlease select a value you want to change first!");
                     }
                     case PRICE -> {
-                        _trade.configurator().updateValue(_trade.value() + 10);
-                        _trade = _trade.setNewValue(_trade.value() + 10);
+                        _trade.getConfigurator().updateValue(_trade.getValue() + 10);
+                        _trade.setValue(_trade.getValue() + 10);
                     }
                     case PRODUCT -> {
-                        _trade.setProductAmount(_trade.product().getAmount() + 10);
+                        _trade.setProductAmount(_trade.getProduct().getAmount() + 10);
                     }
                 }
             }

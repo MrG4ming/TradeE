@@ -58,11 +58,11 @@ public class ShopInventory {
                     Trade _t = trades.get(tradeNumber);
                     ItemStack _tradeItem = new ItemStack(Material.PAPER);
                     ItemMeta _tradeMeta = _tradeItem.getItemMeta();
-                    _tradeMeta.setDisplayName("§b" + _t.name());
+                    _tradeMeta.setDisplayName("§b" + _t.getName());
 
                     List<String> _lore = new ArrayList<>();
-                    _lore.add("§9Value: §d" + _t.value());
-                    _lore.add("§9Product: §d" + _t.product().getAmount() + "x" + _t.product().getData().getItemType().toString());
+                    _lore.add("§9Value: §d" + _t.getValue());
+                    _lore.add("§9Product: §d" + _t.getProduct().getAmount() + "x" + _t.getProduct().getData().getItemType().toString());
                     _tradeMeta.setLore(_lore);
 
                     _tradeItem.setItemMeta(_tradeMeta);
