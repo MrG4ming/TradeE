@@ -59,7 +59,7 @@ public record Trade(String name, int value, ItemStack product, Mode mode, Invent
         return inv;
     }
 
-    public Trade copy(int _newValue) {
+    public Trade setNewValue(int _newValue) {
         return new Trade(name, _newValue, product, mode, tradeOptions, storage, owner, configurator);
     }
 
