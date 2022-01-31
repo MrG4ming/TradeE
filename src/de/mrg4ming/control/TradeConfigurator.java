@@ -27,7 +27,7 @@ public class TradeConfigurator {
 
         OptionItem remove10Value = new OptionItem("-10", Material.FEATHER);
         OptionItem remove1Value = new OptionItem("-1", Material.FEATHER);
-        OptionItem resetValue = new OptionItem("0", Material.ANVIL);
+        OptionItem resetValue = new OptionItem("Reset", Material.ANVIL);
         OptionItem add1Value = new OptionItem("+1", Material.FEATHER);
         OptionItem add10Value = new OptionItem("+10", Material.FEATHER);
 
