@@ -113,6 +113,7 @@ public class Trade {
 
     public void setProduct(ItemStack product) {
         this.product.setType(product.getType());
+        this.configurator.updateProduct(product.getType(), this.productAmount);
     }
 
     public int getProductAmount() {
