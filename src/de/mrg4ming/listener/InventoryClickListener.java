@@ -67,9 +67,9 @@ public class InventoryClickListener implements Listener {
 
                     ///region get trade to modify
                     if(Shop.tempTrades.containsKey(p.getUniqueId().toString())) {
-                        performAction(p, e, Shop.tempTrades.get(p.getUniqueId().toString()), true, _tradeName);
+                        performTradeEditorAction(p, e, Shop.tempTrades.get(p.getUniqueId().toString()), true, _tradeName);
                     } else if(Shop.instance.checkIfTradeExists(_tradeName)) {
-                        performAction(p, e, Shop.instance.getTrade(_tradeName), false, _tradeName);
+                        performTradeEditorAction(p, e, Shop.instance.getTrade(_tradeName), false, _tradeName);
                     } else {
                         p.sendMessage(Main.PREFiX + "§cThe trade to be modified does not exist!");
                     }
@@ -80,13 +80,13 @@ public class InventoryClickListener implements Listener {
                     e.setCancelled(true);
                     String _tradeName = e.getView().getTitle().substring(WindowTitle.TRADE_EDITOR_PREFIX.title.length());
 
-
+                    performTradeOptionsAction(p, e, _tradeName);
                 }
             }
         }
     }
 
-    private void performAction(Player p, InventoryClickEvent e, Trade _trade, boolean _isNewTrade, String _tradeName) {
+    private void performTradeEditorAction(Player p, InventoryClickEvent e, Trade _trade, boolean _isNewTrade, String _tradeName) {
         switch (e.getRawSlot()) {
             case 3 -> { //select Value
                 _trade.getConfigurator().setCurrentSelectedValue(TradeConfigurator.Value.PRICE);
@@ -190,6 +190,17 @@ public class InventoryClickListener implements Listener {
                     Shop.instance.trades.replace(Shop.getKeyByValue(Shop.instance.trades, Shop.instance.getTrade(_tradeName)), _trade);
                 }
                 p.closeInventory();
+            }
+        }
+    }
+
+    private void performTradeOptionsAction(Player p, InventoryClickEvent e, String _tradeName) {
+        if(!Shop.instance.checkIfTradeExists(_tradeName)) return;
+        Trade _trade = Shop.instance.getTrade(_tradeName);
+
+        switch (e.getRawSlot()) {
+            case 1 -> {
+                p.openInventory(Shop.instance.openInv(ShopInventory.currentPageOpenedByPlayer.get(p.getUniqueId().toString())));
             }
         }
     }

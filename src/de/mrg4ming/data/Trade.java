@@ -63,19 +63,19 @@ public class Trade {
         inv.setItem(0, new OptionItem("§4Back", Material.BARRIER));
         switch (mode) {
             case BUY -> {
-                inv.setItem(1, new OptionItem("§bBuy", Material.PAPER));
-                inv.setItem(2, new OptionItem("§6Info", _infoLore, Material.ANVIL));
-                inv.setItem(3, new OptionItem("§8Not active", Material.STRUCTURE_VOID));
+                inv.setItem(3, new OptionItem("§bBuy", Material.PAPER));
+                inv.setItem(4, new OptionItem("§6Info", _infoLore, Material.ANVIL));
+                inv.setItem(5, new OptionItem("§8Not active", Material.STRUCTURE_VOID));
             }
             case SELL -> {
-                inv.setItem(1, new OptionItem("§8Not active", Material.STRUCTURE_VOID));
-                inv.setItem(2, new OptionItem("§6Info", _infoLore, Material.ANVIL));
-                inv.setItem(3, new OptionItem("§dSell", Material.PAPER));
+                inv.setItem(3, new OptionItem("§8Not active", Material.STRUCTURE_VOID));
+                inv.setItem(4, new OptionItem("§6Info", _infoLore, Material.ANVIL));
+                inv.setItem(5, new OptionItem("§dSell", Material.PAPER));
             }
             case BUY_AND_SELL -> {
-                inv.setItem(1, new OptionItem("§bBuy", Material.PAPER));
-                inv.setItem(2, new OptionItem("§6Info", _infoLore, Material.ANVIL));
-                inv.setItem(3, new OptionItem("§dSell", Material.PAPER));
+                inv.setItem(3, new OptionItem("§bBuy", Material.PAPER));
+                inv.setItem(4, new OptionItem("§6Info", _infoLore, Material.ANVIL));
+                inv.setItem(5, new OptionItem("§dSell", Material.PAPER));
             }
         }
 
