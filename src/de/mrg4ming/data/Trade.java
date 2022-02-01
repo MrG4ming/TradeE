@@ -84,7 +84,7 @@ public class Trade {
 
     public void setProductAmount(int _amount) {
         this.productAmount = _amount;
-        System.out.println("Material: " + this.product.getType().toString());
+        //System.out.println("Material: " + this.product.getType().toString());
         this.configurator.updateProduct(this.product.getType(), _amount);
     }
 
