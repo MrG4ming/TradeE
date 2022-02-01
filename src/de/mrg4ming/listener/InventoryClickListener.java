@@ -79,8 +79,9 @@ public class InventoryClickListener implements Listener {
                 } else if(e.getView().getTitle().startsWith(WindowTitle.TRADE_OPTIONS_PREFIX.title)) {
                     if(e.getClickedInventory().equals(e.getView().getTopInventory())) {
                         e.setCancelled(true);
-                        String _tradeName = e.getView().getTitle().substring(WindowTitle.TRADE_EDITOR_PREFIX.title.length());
+                        String _tradeName = e.getView().getTitle().substring(WindowTitle.TRADE_OPTIONS_PREFIX.title.length());
 
+                        System.out.println(e.getRawSlot());
                         performTradeOptionsAction(p, e, _tradeName);
                     }
                 }
@@ -202,7 +203,6 @@ public class InventoryClickListener implements Listener {
 
         switch (e.getRawSlot()) {
             case 0 -> {
-                p.closeInventory();
                 p.openInventory(Shop.instance.openInv(ShopInventory.currentPageOpenedByPlayer.get(p.getUniqueId().toString())));
             }
         }
