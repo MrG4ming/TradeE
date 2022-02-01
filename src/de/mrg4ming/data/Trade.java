@@ -48,15 +48,15 @@ public class Trade {
     }
 
     public Trade(String name, int value, ItemStack product, Mode mode, int storage, BankAccount owner) {
-        this(name, value, product, 1, mode, createTradeOptionsWindow(name, product, value, mode, storage), storage, owner, new TradeConfigurator(name, product));
+        this(name, value, product, 1, mode, createTradeOptionsWindow(name, product, 1, value, mode, storage), storage, owner, new TradeConfigurator(name, product));
     }
 
-    private static Inventory createTradeOptionsWindow(String name, ItemStack product, int value, Mode mode, int storage) {
+    private static Inventory createTradeOptionsWindow(String name, ItemStack product, int productAmount, int value, Mode mode, int storage) {
         Inventory inv = Bukkit.createInventory(null, 9, WindowTitle.TRADE_OPTIONS_PREFIX.title + name);
 
         List<String> _infoLore = new ArrayList<>();
         _infoLore.add("§9Name: §d" + name);
-        _infoLore.add("§9Product: §d" + product.getAmount() + "x" + product.getData().getItemType().toString());
+        _infoLore.add("§9Product: §d" + productAmount + "x" + product.getType().toString());
         _infoLore.add("§9Value: §d" + value);
 
         //insert option item buttons
@@ -80,6 +80,33 @@ public class Trade {
         }
 
         return inv;
+    }
+
+    public void updateTradeOptions() {
+        List<String> _infoLore = new ArrayList<>();
+        _infoLore.add("§9Name: §d" + name);
+        _infoLore.add("§9Product: §d" + productAmount + "x" + product.getType().toString());
+        _infoLore.add("§9Value: §d" + value);
+
+        //insert option item buttons
+        this.tradeOptions.setItem(0, new OptionItem("§4Back", Material.BARRIER));
+        switch (mode) {
+            case BUY -> {
+                this.tradeOptions.setItem(1, new OptionItem("§bBuy", Material.PAPER));
+                this.tradeOptions.setItem(2, new OptionItem("§6Info", _infoLore, Material.ANVIL));
+                this.tradeOptions.setItem(3, new OptionItem("§8Not active", Material.STRUCTURE_VOID));
+            }
+            case SELL -> {
+                this.tradeOptions.setItem(1, new OptionItem("§8Not active", Material.STRUCTURE_VOID));
+                this.tradeOptions.setItem(2, new OptionItem("§6Info", _infoLore, Material.ANVIL));
+                this.tradeOptions.setItem(3, new OptionItem("§dSell", Material.PAPER));
+            }
+            case BUY_AND_SELL -> {
+                this.tradeOptions.setItem(1, new OptionItem("§bBuy", Material.PAPER));
+                this.tradeOptions.setItem(2, new OptionItem("§6Info", _infoLore, Material.ANVIL));
+                this.tradeOptions.setItem(3, new OptionItem("§dSell", Material.PAPER));
+            }
+        }
     }
 
     public void setProductAmount(int _amount) {

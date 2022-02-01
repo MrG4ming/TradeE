@@ -75,6 +75,13 @@ public class InventoryClickListener implements Listener {
                     }
                     ///endregion
                 }
+            } else if(e.getView().getTitle().startsWith(WindowTitle.TRADE_OPTIONS_PREFIX.title)) {
+                if(e.getClickedInventory().equals(e.getView().getTopInventory())) {
+                    e.setCancelled(true);
+                    String _tradeName = e.getView().getTitle().substring(WindowTitle.TRADE_EDITOR_PREFIX.title.length());
+
+
+                }
             }
         }
     }
