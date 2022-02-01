@@ -56,9 +56,9 @@ public class InventoryClickListener implements Listener {
 
                     ///region get trade to modify
                     if(Shop.tempTrades.containsKey(p.getUniqueId().toString())) {
-                        performAction(p, e.getRawSlot(), Shop.tempTrades.get(p.getUniqueId().toString()), true, _tradeName);
+                        performAction(p, e, Shop.tempTrades.get(p.getUniqueId().toString()), true, _tradeName);
                     } else if(Shop.instance.checkIfTradeExists(_tradeName)) {
-                        performAction(p, e.getRawSlot(), Shop.instance.getTrade(_tradeName), false, _tradeName);
+                        performAction(p, e, Shop.instance.getTrade(_tradeName), false, _tradeName);
                     } else {
                         p.sendMessage(Main.PREFiX + "§cThe trade to be modified does not exist!");
                     }
@@ -68,12 +68,16 @@ public class InventoryClickListener implements Listener {
         }
     }
 
-    private void performAction(Player p, int rawSlot, Trade _trade, boolean _isNewTrade, String _tradeName) {
-        switch (rawSlot) {
+    private void performAction(Player p, InventoryClickEvent e, Trade _trade, boolean _isNewTrade, String _tradeName) {
+        switch (e.getRawSlot()) {
             case 3 -> { //select Value
                 _trade.getConfigurator().setCurrentSelectedValue(TradeConfigurator.Value.PRICE);
             }
-            case 5 -> { //select Product
+            case 5 -> { //select/set Product
+                if(e.getCurrentItem() != null) {
+                    _trade.setProduct(e.getCurrentItem());
+                    return;
+                }
                 _trade.getConfigurator().setCurrentSelectedValue(TradeConfigurator.Value.PRODUCT);
             }
             case 8+3 -> { //remove 10
