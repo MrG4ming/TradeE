@@ -81,7 +81,6 @@ public class InventoryClickListener implements Listener {
                         e.setCancelled(true);
                         String _tradeName = e.getView().getTitle().substring(WindowTitle.TRADE_OPTIONS_PREFIX.title.length());
 
-                        System.out.println(e.getRawSlot());
                         performTradeOptionsAction(p, e, _tradeName);
                     }
                 }
