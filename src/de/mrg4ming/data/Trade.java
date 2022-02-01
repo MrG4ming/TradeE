@@ -92,19 +92,19 @@ public class Trade {
         this.tradeOptions.setItem(0, new OptionItem("§4Back", Material.BARRIER));
         switch (mode) {
             case BUY -> {
-                this.tradeOptions.setItem(1, new OptionItem("§bBuy", Material.PAPER));
-                this.tradeOptions.setItem(2, new OptionItem("§6Info", _infoLore, Material.ANVIL));
-                this.tradeOptions.setItem(3, new OptionItem("§8Not active", Material.STRUCTURE_VOID));
+                this.tradeOptions.setItem(3, new OptionItem("§bBuy", Material.PAPER));
+                this.tradeOptions.setItem(4, new OptionItem("§6Info", _infoLore, Material.ANVIL));
+                this.tradeOptions.setItem(5, new OptionItem("§8Not active", Material.STRUCTURE_VOID));
             }
             case SELL -> {
-                this.tradeOptions.setItem(1, new OptionItem("§8Not active", Material.STRUCTURE_VOID));
-                this.tradeOptions.setItem(2, new OptionItem("§6Info", _infoLore, Material.ANVIL));
-                this.tradeOptions.setItem(3, new OptionItem("§dSell", Material.PAPER));
+                this.tradeOptions.setItem(3, new OptionItem("§8Not active", Material.STRUCTURE_VOID));
+                this.tradeOptions.setItem(4, new OptionItem("§6Info", _infoLore, Material.ANVIL));
+                this.tradeOptions.setItem(5, new OptionItem("§dSell", Material.PAPER));
             }
             case BUY_AND_SELL -> {
-                this.tradeOptions.setItem(1, new OptionItem("§bBuy", Material.PAPER));
-                this.tradeOptions.setItem(2, new OptionItem("§6Info", _infoLore, Material.ANVIL));
-                this.tradeOptions.setItem(3, new OptionItem("§dSell", Material.PAPER));
+                this.tradeOptions.setItem(3, new OptionItem("§bBuy", Material.PAPER));
+                this.tradeOptions.setItem(4, new OptionItem("§6Info", _infoLore, Material.ANVIL));
+                this.tradeOptions.setItem(5, new OptionItem("§dSell", Material.PAPER));
             }
         }
     }

@@ -46,7 +46,7 @@ public class TradeCommand implements CommandExecutor {
                             Trade _trade = new Trade(_name,
                                     0, new OptionItem("§8Placeholder: Product",
                                     Material.DIRT),
-                                    Trade.Mode.SELL, 0,
+                                    Trade.Mode.BUY_AND_SELL, 0,
                                     Bank.instance.accounts.get(Bank.instance.getIdByName(_bankAccountName))
                             );
 
