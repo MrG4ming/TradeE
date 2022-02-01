@@ -181,13 +181,14 @@ public class InventoryClickListener implements Listener {
                     return;
                 }
 
+                _trade.updateTradeOptions();
+
                 if(_isNewTrade) {
                     Shop.instance.addTrade(_trade);
                     Shop.tempTrades.remove(p.getUniqueId().toString());
                 } else {
                     Shop.instance.trades.replace(Shop.getKeyByValue(Shop.instance.trades, Shop.instance.getTrade(_tradeName)), _trade);
                 }
-
                 p.closeInventory();
             }
         }
