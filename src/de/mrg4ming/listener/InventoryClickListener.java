@@ -1,15 +1,22 @@
 package de.mrg4ming.listener;
 
 import de.mrg4ming.Main;
+import de.mrg4ming.control.Bank;
 import de.mrg4ming.control.Shop;
 import de.mrg4ming.control.TradeConfigurator;
 import de.mrg4ming.data.ShopInventory;
 import de.mrg4ming.data.Trade;
 import de.mrg4ming.data.WindowTitle;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.List;
 
 public class InventoryClickListener implements Listener {
 
@@ -207,6 +214,24 @@ public class InventoryClickListener implements Listener {
                     return;
                 }
                 p.openInventory(Shop.instance.openInv());
+            }
+            case 3 -> { //Buy
+                ItemStack _item = new ItemStack(_trade.getProduct().getType(), _trade.getProductAmount());
+                if(_trade.getStorage() > 0) {
+                    if(p.getInventory().firstEmpty() == -1) {
+                        p.getWorld().dropItem(p.getLocation(), _item);
+                    } else {
+                        p.getInventory().addItem(_item);
+                    }
+                    if(Bank.instance.getBankAccountsOfPlayer(p).size() < 1) {
+                        p.sendMessage(Main.PREFiX + "§cYou don't own a bank account!");
+                        return;
+                    }
+                    Bank.instance.getBankAccountsOfPlayer(p).get(0).transfer(_trade.getOwner(), _trade.getValue());
+                }
+            }
+            case 5 -> { //Sell
+
             }
         }
     }

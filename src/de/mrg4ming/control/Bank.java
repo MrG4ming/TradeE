@@ -3,6 +3,7 @@ package de.mrg4ming.control;
 import de.mrg4ming.config.Config;
 import de.mrg4ming.config.ConfigItem;
 import de.mrg4ming.data.BankAccount;
+import org.bukkit.entity.Player;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -69,6 +70,16 @@ public class Bank implements ConfigItem {
             }
         }
         return 0;
+    }
+
+    public List<BankAccount> getBankAccountsOfPlayer(Player p) {
+        List<BankAccount> _accounts = new ArrayList<>();
+        for(BankAccount _account : accounts.values()) {
+            if(_account.getOwners().contains(p.getUniqueId().toString())) {
+                _accounts.add(_account);
+            }
+        }
+        return _accounts;
     }
 
     public void saveToConfig() {
