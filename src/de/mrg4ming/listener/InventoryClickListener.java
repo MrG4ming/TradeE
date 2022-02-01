@@ -199,7 +199,7 @@ public class InventoryClickListener implements Listener {
         Trade _trade = Shop.instance.getTrade(_tradeName);
 
         switch (e.getRawSlot()) {
-            case 1 -> {
+            case 0 -> {
                 p.openInventory(Shop.instance.openInv(ShopInventory.currentPageOpenedByPlayer.get(p.getUniqueId().toString())));
             }
         }
