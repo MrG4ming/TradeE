@@ -203,7 +203,11 @@ public class InventoryClickListener implements Listener {
 
         switch (e.getRawSlot()) {
             case 0 -> {
-                p.openInventory(Shop.instance.openInv(ShopInventory.currentPageOpenedByPlayer.get(p.getUniqueId().toString())));
+                if(ShopInventory.currentPageOpenedByPlayer.containsKey(p.getUniqueId().toString())) {
+                    p.openInventory(Shop.instance.openInv(ShopInventory.currentPageOpenedByPlayer.get(p.getUniqueId().toString())));
+                    return;
+                }
+                p.openInventory(Shop.instance.openInv());
             }
         }
     }
