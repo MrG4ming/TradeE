@@ -74,7 +74,7 @@ public class InventoryClickListener implements Listener {
                 _trade.getConfigurator().setCurrentSelectedValue(TradeConfigurator.Value.PRICE);
             }
             case 5 -> { //select/set Product
-                if(p.getItemOnCursor() != null) {
+                if(p.getItemOnCursor() != null && p.getItemOnCursor().getItemMeta() != null) {
                     _trade.setProduct(p.getItemOnCursor());
                     return;
                 }
