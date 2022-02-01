@@ -17,71 +17,72 @@ public class InventoryClickListener implements Listener {
     public void onInventoryClick(InventoryClickEvent e) {
         if(e.getWhoClicked() instanceof Player) {
             Player p = (Player) e.getWhoClicked();
-            if(e.getCurrentItem() == null && e.getCurrentItem().getItemMeta() == null) return;
-            if(e.getView().getTitle().startsWith(WindowTitle.PAGE.title)) {
-                if(e.getClickedInventory().equals(e.getView().getTopInventory())) {
-                    e.setCancelled(true);
-                    //trade selection
-                    if(e.getRawSlot() < 45) {
-                        String _tradeName = e.getCurrentItem().getItemMeta().getDisplayName().substring(2);
-                        if(Shop.instance.checkIfTradeExists(_tradeName)) {
-                            p.openInventory(Shop.instance.getTrade(_tradeName).getTradeOptions());
+            if(e.getCurrentItem() != null && e.getCurrentItem().getItemMeta() != null) {
+                if(e.getView().getTitle().startsWith(WindowTitle.PAGE.title)) {
+                    if(e.getClickedInventory().equals(e.getView().getTopInventory())) {
+                        e.setCancelled(true);
+                        //trade selection
+                        if(e.getRawSlot() < 45) {
+                            String _tradeName = e.getCurrentItem().getItemMeta().getDisplayName().substring(2);
+                            if(Shop.instance.checkIfTradeExists(_tradeName)) {
+                                p.openInventory(Shop.instance.getTrade(_tradeName).getTradeOptions());
+                            } else {
+                                p.sendMessage(Main.PREFiX + "§cTrade does not exist!");
+                            }
+                        }
+
+                        ///region manage Shop inventory navigation
+                        if(Shop.instance.getShopInvData().pages.size() > 1) {
+                            if(e.getRawSlot() == 5*9+0) {
+                                if(!ShopInventory.currentPageOpenedByPlayer.containsKey(p.getUniqueId().toString())) {
+                                    ShopInventory.currentPageOpenedByPlayer.put(p.getUniqueId().toString(), 0);
+                                    p.openInventory(Shop.instance.openInv());
+                                } else if(ShopInventory.currentPageOpenedByPlayer.get(p.getUniqueId().toString()) <=0 ) {
+                                    p.openInventory(Shop.instance.openInv());
+                                } else {
+                                    int _page = ShopInventory.currentPageOpenedByPlayer.get(p.getUniqueId().toString());
+                                    p.openInventory(Shop.instance.openInv(_page-1));
+                                    ShopInventory.currentPageOpenedByPlayer.put(p.getUniqueId().toString(), _page - 1);
+                                }
+
+                            } else if(e.getRawSlot() == 5*9+8) {
+                                if(!ShopInventory.currentPageOpenedByPlayer.containsKey(p.getUniqueId().toString())) {
+                                    ShopInventory.currentPageOpenedByPlayer.put(p.getUniqueId().toString(), 0);
+                                    p.openInventory(Shop.instance.openInv());
+                                } else if(ShopInventory.currentPageOpenedByPlayer.get(p.getUniqueId().toString()) >= Shop.instance.getShopInvData().pages.size() ) {
+                                    ShopInventory.currentPageOpenedByPlayer.put(p.getUniqueId().toString(), Shop.instance.getShopInvData().pages.size());
+                                    p.openInventory(Shop.instance.openInv(Shop.instance.getShopInvData().pages.size()));
+                                } else {
+                                    int _page = ShopInventory.currentPageOpenedByPlayer.get(p.getUniqueId().toString());
+                                    p.openInventory(Shop.instance.openInv(_page + 1));
+                                    ShopInventory.currentPageOpenedByPlayer.put(p.getUniqueId().toString(), _page + 1);
+                                }
+                            }
+                        }
+                        ///endregion
+                    }
+                } else if(e.getView().getTitle().startsWith(WindowTitle.TRADE_EDITOR_PREFIX.title)) {
+                    if(e.getClickedInventory().equals(e.getView().getTopInventory())) {
+                        e.setCancelled(true);
+                        String _tradeName = e.getView().getTitle().substring(WindowTitle.TRADE_EDITOR_PREFIX.title.length());
+
+                        ///region get trade to modify
+                        if(Shop.tempTrades.containsKey(p.getUniqueId().toString())) {
+                            performTradeEditorAction(p, e, Shop.tempTrades.get(p.getUniqueId().toString()), true, _tradeName);
+                        } else if(Shop.instance.checkIfTradeExists(_tradeName)) {
+                            performTradeEditorAction(p, e, Shop.instance.getTrade(_tradeName), false, _tradeName);
                         } else {
-                            p.sendMessage(Main.PREFiX + "§cTrade does not exist!");
+                            p.sendMessage(Main.PREFiX + "§cThe trade to be modified does not exist!");
                         }
+                        ///endregion
                     }
+                } else if(e.getView().getTitle().startsWith(WindowTitle.TRADE_OPTIONS_PREFIX.title)) {
+                    if(e.getClickedInventory().equals(e.getView().getTopInventory())) {
+                        e.setCancelled(true);
+                        String _tradeName = e.getView().getTitle().substring(WindowTitle.TRADE_EDITOR_PREFIX.title.length());
 
-                    ///region manage Shop inventory navigation
-                    if(Shop.instance.getShopInvData().pages.size() > 1) {
-                        if(e.getRawSlot() == 5*9+0) {
-                            if(!ShopInventory.currentPageOpenedByPlayer.containsKey(p.getUniqueId().toString())) {
-                                ShopInventory.currentPageOpenedByPlayer.put(p.getUniqueId().toString(), 0);
-                                p.openInventory(Shop.instance.openInv());
-                            } else if(ShopInventory.currentPageOpenedByPlayer.get(p.getUniqueId().toString()) <=0 ) {
-                                p.openInventory(Shop.instance.openInv());
-                            } else {
-                                int _page = ShopInventory.currentPageOpenedByPlayer.get(p.getUniqueId().toString());
-                                p.openInventory(Shop.instance.openInv(_page-1));
-                                ShopInventory.currentPageOpenedByPlayer.put(p.getUniqueId().toString(), _page - 1);
-                            }
-
-                        } else if(e.getRawSlot() == 5*9+8) {
-                            if(!ShopInventory.currentPageOpenedByPlayer.containsKey(p.getUniqueId().toString())) {
-                                ShopInventory.currentPageOpenedByPlayer.put(p.getUniqueId().toString(), 0);
-                                p.openInventory(Shop.instance.openInv());
-                            } else if(ShopInventory.currentPageOpenedByPlayer.get(p.getUniqueId().toString()) >= Shop.instance.getShopInvData().pages.size() ) {
-                                ShopInventory.currentPageOpenedByPlayer.put(p.getUniqueId().toString(), Shop.instance.getShopInvData().pages.size());
-                                p.openInventory(Shop.instance.openInv(Shop.instance.getShopInvData().pages.size()));
-                            } else {
-                                int _page = ShopInventory.currentPageOpenedByPlayer.get(p.getUniqueId().toString());
-                                p.openInventory(Shop.instance.openInv(_page + 1));
-                                ShopInventory.currentPageOpenedByPlayer.put(p.getUniqueId().toString(), _page + 1);
-                            }
-                        }
+                        performTradeOptionsAction(p, e, _tradeName);
                     }
-                    ///endregion
-                }
-            } else if(e.getView().getTitle().startsWith(WindowTitle.TRADE_EDITOR_PREFIX.title)) {
-                if(e.getClickedInventory().equals(e.getView().getTopInventory())) {
-                    e.setCancelled(true);
-                    String _tradeName = e.getView().getTitle().substring(WindowTitle.TRADE_EDITOR_PREFIX.title.length());
-
-                    ///region get trade to modify
-                    if(Shop.tempTrades.containsKey(p.getUniqueId().toString())) {
-                        performTradeEditorAction(p, e, Shop.tempTrades.get(p.getUniqueId().toString()), true, _tradeName);
-                    } else if(Shop.instance.checkIfTradeExists(_tradeName)) {
-                        performTradeEditorAction(p, e, Shop.instance.getTrade(_tradeName), false, _tradeName);
-                    } else {
-                        p.sendMessage(Main.PREFiX + "§cThe trade to be modified does not exist!");
-                    }
-                    ///endregion
-                }
-            } else if(e.getView().getTitle().startsWith(WindowTitle.TRADE_OPTIONS_PREFIX.title)) {
-                if(e.getClickedInventory().equals(e.getView().getTopInventory())) {
-                    e.setCancelled(true);
-                    String _tradeName = e.getView().getTitle().substring(WindowTitle.TRADE_EDITOR_PREFIX.title.length());
-
-                    performTradeOptionsAction(p, e, _tradeName);
                 }
             }
         }
@@ -201,6 +202,7 @@ public class InventoryClickListener implements Listener {
 
         switch (e.getRawSlot()) {
             case 0 -> {
+                p.closeInventory();
                 p.openInventory(Shop.instance.openInv(ShopInventory.currentPageOpenedByPlayer.get(p.getUniqueId().toString())));
             }
         }
