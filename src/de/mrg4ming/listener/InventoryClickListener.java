@@ -20,7 +20,17 @@ public class InventoryClickListener implements Listener {
             if(e.getView().getTitle().startsWith(WindowTitle.PAGE.title)) {
                 if(e.getClickedInventory().equals(e.getView().getTopInventory())) {
                     e.setCancelled(true);
-                    //manage Shop inventory navigation
+                    //trade selection
+                    if(e.getRawSlot() < 45) {
+                        String _tradeName = e.getCurrentItem().getItemMeta().getDisplayName().substring(2);
+                        if(Shop.instance.checkIfTradeExists(_tradeName)) {
+                            p.openInventory(Shop.instance.getTrade(_tradeName).getTradeOptions());
+                        } else {
+                            p.sendMessage(Main.PREFiX + "§cTrade does not exist!");
+                        }
+                    }
+
+                    ///region manage Shop inventory navigation
                     if(Shop.instance.getShopInvData().pages.size() > 1) {
                         if(e.getRawSlot() == 5*9+0) {
                             if(!ShopInventory.currentPageOpenedByPlayer.containsKey(p.getUniqueId().toString())) {
@@ -48,6 +58,7 @@ public class InventoryClickListener implements Listener {
                             }
                         }
                     }
+                    ///endregion
                 }
             } else if(e.getView().getTitle().startsWith(WindowTitle.TRADE_EDITOR_PREFIX.title)) {
                 if(e.getClickedInventory().equals(e.getView().getTopInventory())) {
