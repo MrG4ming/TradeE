@@ -112,7 +112,7 @@ public class Trade {
     }
 
     public void setProduct(ItemStack product) {
-        this.product = product;
+        this.product.setType(product.getType());
     }
 
     public int getProductAmount() {
