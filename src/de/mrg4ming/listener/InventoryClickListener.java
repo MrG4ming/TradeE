@@ -87,7 +87,7 @@ public class InventoryClickListener implements Listener {
                         }
                     }
                     case PRODUCT -> {
-                        _trade.setProductAmount(_trade.getProduct().getAmount() - 10);
+                        _trade.setProductAmount(_trade.getProductAmount() - 10);
                     }
                 }
             }
@@ -105,7 +105,7 @@ public class InventoryClickListener implements Listener {
                         }
                     }
                     case PRODUCT -> {
-                        _trade.setProductAmount(_trade.getProduct().getAmount() - 1);
+                        _trade.setProductAmount(_trade.getProductAmount() - 1);
                     }
                 }
             }
@@ -134,7 +134,7 @@ public class InventoryClickListener implements Listener {
                         _trade.setValue(_trade.getValue() + 1);
                     }
                     case PRODUCT -> {
-                        _trade.setProductAmount(_trade.getProduct().getAmount() + 1);
+                        _trade.setProductAmount(_trade.getProductAmount() + 1);
                     }
                 }
             }
@@ -148,7 +148,7 @@ public class InventoryClickListener implements Listener {
                         _trade.setValue(_trade.getValue() + 10);
                     }
                     case PRODUCT -> {
-                        _trade.setProductAmount(_trade.getProduct().getAmount() + 10);
+                        _trade.setProductAmount(_trade.getProductAmount() + 10);
                     }
                 }
             }
