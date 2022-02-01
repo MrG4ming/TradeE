@@ -5,6 +5,7 @@ import de.mrg4ming.data.WindowTitle;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,12 +19,12 @@ public class TradeConfigurator {
 
     private Inventory inv;
 
-    public TradeConfigurator(String name) {
+    public TradeConfigurator(String name, ItemStack product) {
         this.inv = Bukkit.createInventory(null, 9*2, WindowTitle.TRADE_EDITOR_PREFIX.title + name);
 
         setCurrentSelectedValue(Value.NOTHING);
         updateValue(0);
-        updateProduct(Material.DIRT, 1);
+        this.inv.setItem(5, product);
 
         OptionItem remove10Value = new OptionItem("-10", Material.FEATHER);
         OptionItem remove1Value = new OptionItem("-1", Material.FEATHER);

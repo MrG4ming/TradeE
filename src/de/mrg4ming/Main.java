@@ -47,6 +47,7 @@ public class Main extends JavaPlugin {
     @Override
     public void onDisable() {
         Bank.instance.saveToConfig();
+        //Shop.instance.saveToConfig();
     }
 
     public static Main getPlugin() {

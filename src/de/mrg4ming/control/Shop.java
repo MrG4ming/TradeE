@@ -52,6 +52,8 @@ public class Shop implements ConfigItem {
         Shop.instance.getShopInvData().getTrades().add(_trade);
         syncShopDataWithInv(SyncMode.OVERWRITE_SHOP_DATA);
 
+
+        inv.updatePages();
         return true;
     }
 

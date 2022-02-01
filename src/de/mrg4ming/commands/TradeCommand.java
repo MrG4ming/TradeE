@@ -45,7 +45,7 @@ public class TradeCommand implements CommandExecutor {
                         if(Bank.instance.getIdByName(_bankAccountName) > 0) {
                             Trade _trade = new Trade(_name,
                                     0, new OptionItem("§8Placeholder: Product",
-                                    Material.COBBLESTONE),
+                                    Material.DIRT),
                                     Trade.Mode.SELL, 0,
                                     Bank.instance.accounts.get(Bank.instance.getIdByName(_bankAccountName))
                             );

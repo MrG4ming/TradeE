@@ -48,7 +48,7 @@ public class Trade {
     }
 
     public Trade(String name, int value, ItemStack product, Mode mode, int storage, BankAccount owner) {
-        this(name, value, product, 1, mode, createTradeOptionsWindow(name, product, value, mode, storage), storage, owner, new TradeConfigurator(name));
+        this(name, value, product, 1, mode, createTradeOptionsWindow(name, product, value, mode, storage), storage, owner, new TradeConfigurator(name, product));
     }
 
     private static Inventory createTradeOptionsWindow(String name, ItemStack product, int value, Mode mode, int storage) {

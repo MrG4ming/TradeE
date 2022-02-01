@@ -30,7 +30,7 @@ public class ShopInventory {
         updatePages();
     }
 
-    private void updatePages() {
+    public void updatePages() {
         pageCount = (int) Math.floor(trades.size() / MAX_TRADES_PER_PAGE) + 1;
         pages = new ArrayList<>();
 

@@ -164,6 +164,8 @@ public class InventoryClickListener implements Listener {
                 } else {
                     Shop.instance.trades.replace(Shop.getKeyByValue(Shop.instance.trades, Shop.instance.getTrade(_tradeName)), _trade);
                 }
+
+                p.closeInventory();
             }
         }
     }
