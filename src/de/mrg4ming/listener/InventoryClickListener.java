@@ -53,9 +53,9 @@ public class InventoryClickListener implements Listener {
 
                 ///region get trade to modify
                 if(Shop.tempTrades.containsKey(p.getUniqueId().toString())) {
-                    performAction(p, e.getRawSlot(), Shop.tempTrades.get(p.getUniqueId().toString()), true);
+                    performAction(p, e.getRawSlot(), Shop.tempTrades.get(p.getUniqueId().toString()), true, _tradeName);
                 } else if(Shop.instance.checkIfTradeExists(_tradeName)) {
-                    performAction(p, e.getRawSlot(), Shop.instance.getTrade(_tradeName), true);
+                    performAction(p, e.getRawSlot(), Shop.instance.getTrade(_tradeName), false, _tradeName);
                 } else {
                     p.sendMessage(Main.PREFiX + "§cThe trade to be modified does not exist!");
                 }
@@ -67,7 +67,7 @@ public class InventoryClickListener implements Listener {
         }
     }
 
-    private void performAction(Player p, int rawSlot, Trade _trade, boolean _isNewTrade) {
+    private void performAction(Player p, int rawSlot, Trade _trade, boolean _isNewTrade, String _tradeName) {
         switch (rawSlot) {
             case 3 -> { //select Value
                 _trade.getConfigurator().setCurrentSelectedValue(TradeConfigurator.Value.PRICE);
@@ -153,13 +153,17 @@ public class InventoryClickListener implements Listener {
                 }
             }
             case 8+9 -> { //confirm
-                if(Shop.instance.isFull() && _isNewTrade) {
+                if((Shop.instance.isFull() && _isNewTrade)) {
                     p.sendMessage(Main.PREFiX + "§cMax number of Trades reached!");
                     return;
                 }
 
-                Shop.instance.addTrade(_trade);
-                Shop.tempTrades.remove(p.getUniqueId().toString());
+                if(_isNewTrade) {
+                    Shop.instance.addTrade(_trade);
+                    Shop.tempTrades.remove(p.getUniqueId().toString());
+                } else {
+                    Shop.instance.trades.replace(Shop.getKeyByValue(Shop.instance.trades, Shop.instance.getTrade(_tradeName)), _trade);
+                }
             }
         }
     }

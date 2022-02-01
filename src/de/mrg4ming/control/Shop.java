@@ -8,9 +8,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class Shop implements ConfigItem {
 
@@ -57,10 +55,6 @@ public class Shop implements ConfigItem {
         return true;
     }
 
-    public void modifyTrade() {
-
-    }
-
     public Trade getTrade(int _id) {
         if(!trades.containsKey(_id)) return trades.get(_id);
         return null;
@@ -71,6 +65,15 @@ public class Shop implements ConfigItem {
                 if(t.getName().equalsIgnoreCase(_name)) {
                     return t;
                 }
+            }
+        }
+        return null;
+    }
+
+    public static <T, E> T getKeyByValue(Map<T, E> map, E value) {
+        for (Map.Entry<T, E> entry : map.entrySet()) {
+            if (Objects.equals(value, entry.getValue())) {
+                return entry.getKey();
             }
         }
         return null;
