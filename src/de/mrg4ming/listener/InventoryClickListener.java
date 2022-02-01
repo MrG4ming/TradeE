@@ -17,6 +17,7 @@ public class InventoryClickListener implements Listener {
     public void onInventoryClick(InventoryClickEvent e) {
         if(e.getWhoClicked() instanceof Player) {
             Player p = (Player) e.getWhoClicked();
+            if(e.getCurrentItem() == null && e.getCurrentItem().getItemMeta() == null) return;
             if(e.getView().getTitle().startsWith(WindowTitle.PAGE.title)) {
                 if(e.getClickedInventory().equals(e.getView().getTopInventory())) {
                     e.setCancelled(true);
