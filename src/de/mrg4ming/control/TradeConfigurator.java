@@ -81,7 +81,7 @@ public class TradeConfigurator {
     }
 
     public OptionItem updateProduct(Material _material, int _amount) {
-        OptionItem _product = new OptionItem("§dProduct: ", _material, _amount);
+        OptionItem _product = new OptionItem("§dProduct: ", _material, 1);
         _product.setLore("§6" + _amount + " §bx §6" + _material.toString());
         this.inv.setItem(5, _product);
         return _product;

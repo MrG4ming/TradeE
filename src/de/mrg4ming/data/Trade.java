@@ -26,6 +26,7 @@ public class Trade {
     private String name;
     private int value;
     private ItemStack product;
+    private int productAmount;
     private Mode mode;
     private Inventory tradeOptions;
     private int storage;
@@ -34,10 +35,11 @@ public class Trade {
 
 
 
-    public Trade(String name, int value, ItemStack product, Mode mode, Inventory tradeOptions, int storage, BankAccount owner, TradeConfigurator configurator) {
+    public Trade(String name, int value, ItemStack product, int productAmount, Mode mode, Inventory tradeOptions, int storage, BankAccount owner, TradeConfigurator configurator) {
         this.name = name;
         this.value = value;
         this.product = product;
+        this.productAmount = productAmount;
         this.mode = mode;
         this.tradeOptions = tradeOptions;
         this.storage = storage;
@@ -46,7 +48,7 @@ public class Trade {
     }
 
     public Trade(String name, int value, ItemStack product, Mode mode, int storage, BankAccount owner) {
-        this(name, value, product, mode, createTradeOptionsWindow(name, product, value, mode, storage), storage, owner, new TradeConfigurator(name));
+        this(name, value, product, 1, mode, createTradeOptionsWindow(name, product, value, mode, storage), storage, owner, new TradeConfigurator(name));
     }
 
     private static Inventory createTradeOptionsWindow(String name, ItemStack product, int value, Mode mode, int storage) {
@@ -81,8 +83,9 @@ public class Trade {
     }
 
     public void setProductAmount(int _amount) {
-        this.product.setAmount(_amount);
-        this.configurator.updateProduct(this.product.getData().getItemType(), _amount);
+        this.productAmount = _amount;
+        System.out.println("Material: " + this.product.getType().toString());
+        this.configurator.updateProduct(this.product.getType(), _amount);
     }
 
     ///region Getter/Setter
@@ -101,6 +104,7 @@ public class Trade {
 
     public void setValue(int value) {
         this.value = value;
+        this.configurator.updateValue(value);
     }
 
     public ItemStack getProduct() {
@@ -109,6 +113,10 @@ public class Trade {
 
     public void setProduct(ItemStack product) {
         this.product = product;
+    }
+
+    public int getProductAmount() {
+        return productAmount;
     }
 
     public Mode getMode() {
