@@ -228,7 +228,7 @@ public class InventoryClickListener implements Listener {
             }
             case 3 -> { //Buy
                 ItemStack _item = new ItemStack(_trade.getProduct().getType(), _trade.getProductAmount());
-                if(_trade.storage > 0) {
+                if(_trade.storage > 0) { //check if storage is not empty
                     HashMap<Integer, ItemStack> _droppedItems = p.getInventory().addItem(_item);
 
                     if(_droppedItems.size() > 0) {
@@ -245,7 +245,11 @@ public class InventoryClickListener implements Listener {
                 } else p.sendMessage(Main.PREFiX + "§cTrade storage is empty!");
             }
             case 5 -> { //Sell
+                if(p.getItemOnCursor() != null && p.getItemOnCursor().getItemMeta() != null) {
+                    if(p.getItemOnCursor().getType() != _trade.getProduct().getType() || p.getItemOnCursor().getAmount() < _trade.getProductAmount()) {
 
+                    }
+                } else p.sendMessage(Main.PREFiX + "§cPlease click with an item stack on the sell option.");
             }
         }
     }
