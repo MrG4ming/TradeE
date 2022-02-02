@@ -159,7 +159,7 @@ public class Shop implements ConfigItem {
                 cfg.set("trades." + id + ".value", trades.get(id).getValue());
                 cfg.set("trades." + id + ".product", trades.get(id).getProduct());
                 cfg.set("trades." + id + ".mode", trades.get(id).getMode().id);
-                cfg.set("trades." + id + ".storage", trades.get(id).getStorage());
+                cfg.set("trades." + id + ".storage", trades.get(id).storage);
                 cfg.set("trades." + id + ".bankOwnerId", Bank.instance.getIdByName(trades.get(id).getOwner().name));
             }
         } catch (IOException e) {
