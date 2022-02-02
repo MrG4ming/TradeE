@@ -24,8 +24,12 @@ public class InventoryClickListener implements Listener {
     public void onInventoryClick(InventoryClickEvent e) {
         if(e.getWhoClicked() instanceof Player) {
             Player p = (Player) e.getWhoClicked();
+
             if(e.getCurrentItem() != null && e.getCurrentItem().getItemMeta() != null) {
                 if(e.getView().getTitle().startsWith(WindowTitle.PAGE.title)) {
+
+                    if(e.isShiftClick()) e.setCancelled(true);
+
                     if(e.getClickedInventory().equals(e.getView().getTopInventory())) {
                         e.setCancelled(true);
                         //trade selection
@@ -69,6 +73,9 @@ public class InventoryClickListener implements Listener {
                         ///endregion
                     }
                 } else if(e.getView().getTitle().startsWith(WindowTitle.TRADE_EDITOR_PREFIX.title)) {
+
+                    if(e.isShiftClick()) e.setCancelled(true);
+
                     if(e.getClickedInventory().equals(e.getView().getTopInventory())) {
                         e.setCancelled(true);
                         String _tradeName = e.getView().getTitle().substring(WindowTitle.TRADE_EDITOR_PREFIX.title.length());
@@ -84,6 +91,9 @@ public class InventoryClickListener implements Listener {
                         ///endregion
                     }
                 } else if(e.getView().getTitle().startsWith(WindowTitle.TRADE_OPTIONS_PREFIX.title)) {
+
+                    if(e.isShiftClick()) e.setCancelled(true);
+
                     if(e.getClickedInventory().equals(e.getView().getTopInventory())) {
                         e.setCancelled(true);
                         String _tradeName = e.getView().getTitle().substring(WindowTitle.TRADE_OPTIONS_PREFIX.title.length());
