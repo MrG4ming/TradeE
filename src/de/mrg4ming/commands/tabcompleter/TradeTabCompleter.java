@@ -14,7 +14,7 @@ import java.util.List;
 
 public class TradeTabCompleter implements TabCompleter {
 
-    String[] command = {"create", "remove"};
+    String[] commands = {"create", "remove"};
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
@@ -38,7 +38,7 @@ public class TradeTabCompleter implements TabCompleter {
 
             //list commands
             if(args.length == 1) {
-                for(String s : command) {
+                for(String s : commands) {
                     if(s.toLowerCase().startsWith(args[0].toLowerCase())) {
                         result.add(s);
                     }
@@ -46,7 +46,7 @@ public class TradeTabCompleter implements TabCompleter {
             }
 
             if(args.length == 2) {
-                if(args[0].equalsIgnoreCase("create")) {
+                if(args[0].equalsIgnoreCase("remove")) {
                     for(Trade t : Shop.instance.getTradesOfPlayer(p)) {
                         if(t.getName().toLowerCase().startsWith(args[2].toLowerCase())) {
                             result.add(t.getName());
