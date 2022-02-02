@@ -53,6 +53,6 @@ public class Config {
 
     public ItemStack getItemStack(String _path) {
         if(!contains(_path)) return null;
-        return cfg.getItemStack(_path);
+        return new ItemStack(cfg.getItemStack(_path));
     }
 }

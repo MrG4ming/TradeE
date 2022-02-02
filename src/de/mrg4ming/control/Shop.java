@@ -192,7 +192,7 @@ public class Shop implements ConfigItem {
             for(int id : usedIDs) {
                 cfg.set("trades." + id + ".name", trades.get(id).getName());
                 cfg.set("trades." + id + ".value", trades.get(id).getValue());
-                cfg.set("trades." + id + ".product", trades.get(id).getProduct());
+                cfg.set("trades." + id + ".product", new ItemStack(trades.get(id).getProduct().getType(), trades.get(id).getProductAmount()));
                 cfg.set("trades." + id + ".mode", trades.get(id).getMode().id);
                 cfg.set("trades." + id + ".storage", trades.get(id).storage);
                 cfg.set("trades." + id + ".bankOwnerId", Bank.instance.getIdByName(trades.get(id).getOwner().name));
