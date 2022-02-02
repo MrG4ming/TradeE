@@ -48,7 +48,7 @@ public class TradeTabCompleter implements TabCompleter {
             if(args.length == 2) {
                 if(args[0].equalsIgnoreCase("remove")) {
                     for(Trade t : Shop.instance.getTradesOfPlayer(p)) {
-                        if(t.getName().toLowerCase().startsWith(args[2].toLowerCase())) {
+                        if(t.getName().toLowerCase().startsWith(args[1].toLowerCase())) {
                             result.add(t.getName());
                         }
                     }
