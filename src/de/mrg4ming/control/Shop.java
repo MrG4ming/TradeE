@@ -72,6 +72,14 @@ public class Shop implements ConfigItem {
         return null;
     }
 
+    public boolean removeTrade(int _id) {
+        if(!trades.containsKey(_id)) return false;
+        trades.remove(_id);
+        syncShopDataWithInv(SyncMode.OVERWRITE_SHOP_INV_DATA);
+        inv.updatePages();
+        return true;
+    }
+
     public static <T, E> T getKeyByValue(Map<T, E> map, E value) {
         for (Map.Entry<T, E> entry : map.entrySet()) {
             if (Objects.equals(value, entry.getValue())) {

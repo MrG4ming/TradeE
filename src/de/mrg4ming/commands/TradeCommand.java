@@ -13,6 +13,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.HashMap;
 
 public class TradeCommand implements CommandExecutor {
 
@@ -67,11 +70,24 @@ public class TradeCommand implements CommandExecutor {
                     String _name = args[1];
 
                     if(!Shop.instance.checkIfTradeExists(_name)) {
-
-                    } else {
-
+                        p.sendMessage(Main.PREFiX + "§cTrade does not exist!");
+                        return false;
                     }
-                } else if(args[0].equalsIgnoreCase("remove")) {
+                    Trade _trade = Shop.instance.getTrade(_name);
+
+                    while(_trade.storage > 0) {
+                        HashMap<Integer, ItemStack> _droppedItems = p.getInventory().addItem(new ItemStack(_trade.getProduct().getType(), _trade.getProductAmount()));
+
+                        if(_droppedItems.size() > 0) {
+                            for(ItemStack i : _droppedItems.values()) {
+                                p.getWorld().dropItem(p.getLocation(), i);
+                            }
+                        }
+                        _trade.storage--;
+                    }
+
+                    Shop.instance.removeTrade(Shop.getKeyByValue(Shop.instance.trades, Shop.instance.getTrade(_name)));
+                } else if(args[0].equalsIgnoreCase("changeowner")) {
 
                 }
             }
