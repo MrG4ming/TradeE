@@ -20,7 +20,7 @@ public class PlayerInteractListener implements Listener {
             if(v.getCustomName().equalsIgnoreCase(TradeCommand.shopVillagerName)) {
                 //open Trade inventory
                 e.setCancelled(true);
-                p.sendMessage("Open shop...");
+                //p.sendMessage("Open shop...");
                 p.openInventory(Shop.instance.openInv());
             }
         }
