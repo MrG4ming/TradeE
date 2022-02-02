@@ -137,6 +137,11 @@ public class Shop implements ConfigItem {
                 overwriteShopData();
             }
         }
+
+        usedIDs.clear();
+        for(int key : trades.keySet()) {
+            usedIDs.add(key);
+        }
     }
     private void overwriteShopData() {
         trades.clear();
