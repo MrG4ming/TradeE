@@ -2,8 +2,10 @@ package de.mrg4ming.control;
 
 import de.mrg4ming.config.Config;
 import de.mrg4ming.config.ConfigItem;
+import de.mrg4ming.data.BankAccount;
 import de.mrg4ming.data.ShopInventory;
 import de.mrg4ming.data.Trade;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -96,6 +98,26 @@ public class Shop implements ConfigItem {
             }
         }
         return false;
+    }
+
+    public List<Trade> getTradesOfBankAccount(BankAccount _account) {
+        List<Trade> _trades = new ArrayList<>();
+        for(Trade _trade : trades.values()) {
+            if(_trade.getOwner().equals(_account)) {
+                _trades.add(_trade);
+            }
+        }
+        return _trades;
+    }
+
+    public List<Trade> getTradesOfPlayer(Player p) {
+        List<Trade> _trades = new ArrayList<>();
+        for(Trade _trade : trades.values()) {
+            if(_trade.getOwner().getOwners().contains(p.getUniqueId().toString())) {
+                _trades.add(_trade);
+            }
+        }
+        return _trades;
     }
 
     public boolean isFull() {
