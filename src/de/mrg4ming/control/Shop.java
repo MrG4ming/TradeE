@@ -175,9 +175,9 @@ public class Shop implements ConfigItem {
 
                 try {
                     Trade _trade = new Trade(_name, _value, _product, Trade.Mode.values()[_mode], _storage, Bank.instance.accounts.get(_bankOwnerId));
-                    trades.put(id, _trade);
+                    Shop.instance.addTrade(_trade);
                 } catch(Exception e) {
-
+                    e.printStackTrace();
                 }
             }
         }
