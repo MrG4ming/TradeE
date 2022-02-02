@@ -71,6 +71,7 @@ public class BankCommand implements CommandExecutor {
                             p.sendMessage(
                                     "§6-------------§3» Bank account info «§6-------------\n" +
                                     " \n" +
+                                    "§9Name: §d" + Bank.instance.accounts.get(_id).name + "$\n" +
                                     "§9Capital: §d" + Bank.instance.accounts.get(_id).getCapital() + "$\n" +
                                     "§9Owner: §d" + _owners + "\n" +
                                     " \n " +
