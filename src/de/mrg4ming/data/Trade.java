@@ -29,7 +29,7 @@ public class Trade {
     private int productAmount;
     private Mode mode;
     private Inventory tradeOptions;
-    private int storage;
+    public int storage;
     private BankAccount owner;
     private TradeConfigurator configurator;
 
@@ -161,14 +161,6 @@ public class Trade {
 
     public void setTradeOptions(Inventory tradeOptions) {
         this.tradeOptions = tradeOptions;
-    }
-
-    public int getStorage() {
-        return storage;
-    }
-
-    public void setStorage(int storage) {
-        this.storage = storage;
     }
 
     public BankAccount getOwner() {

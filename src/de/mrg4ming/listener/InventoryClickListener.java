@@ -16,6 +16,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class InventoryClickListener implements Listener {
@@ -227,17 +228,20 @@ public class InventoryClickListener implements Listener {
             }
             case 3 -> { //Buy
                 ItemStack _item = new ItemStack(_trade.getProduct().getType(), _trade.getProductAmount());
-                if(_trade.getStorage() > 0) {
-                    if(p.getInventory().firstEmpty() == -1) {
-                        p.getWorld().dropItem(p.getLocation(), _item);
-                    } else {
-                        p.getInventory().addItem(_item);
+                if(_trade.storage > 0) {
+                    HashMap<Integer, ItemStack> _droppedItems = p.getInventory().addItem(_item);
+
+                    if(_droppedItems.size() > 0) {
+                        for(ItemStack i : _droppedItems.values()) {
+                            p.getWorld().dropItem(p.getLocation(), i);
+                        }
                     }
                     if(Bank.instance.getBankAccountsOfPlayer(p).size() < 1) {
                         p.sendMessage(Main.PREFiX + "§cYou don't own a bank account!");
                         return;
                     }
                     Bank.instance.getBankAccountsOfPlayer(p).get(0).transfer(_trade.getOwner(), _trade.getValue());
+                    _trade.storage--;
                 }
             }
             case 5 -> { //Sell
