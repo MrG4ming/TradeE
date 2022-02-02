@@ -242,7 +242,7 @@ public class InventoryClickListener implements Listener {
                     }
                     Bank.instance.getBankAccountsOfPlayer(p).get(0).transfer(_trade.getOwner(), _trade.getValue());
                     _trade.storage--;
-                }
+                } else p.sendMessage(Main.PREFiX + "§cTrade storage is empty!");
             }
             case 5 -> { //Sell
 
