@@ -174,8 +174,8 @@ public class Shop implements ConfigItem {
                 int _bankOwnerId = (int) cfg.get("trades." + id + ".bankOwnerId");
 
                 try {
-                    Trade _trade = new Trade(_name, _value, _product, Trade.Mode.values()[_mode], _storage, Bank.instance.accounts.get(_bankOwnerId));
-                    Shop.instance.addTrade(_trade);
+                    Trade _trade = new Trade(_name, _value, _product, Trade.Mode.values()[_mode - 1], _storage, Bank.instance.accounts.get(_bankOwnerId));
+                    trades.put(id, _trade);
                 } catch(Exception e) {
                     e.printStackTrace();
                 }
