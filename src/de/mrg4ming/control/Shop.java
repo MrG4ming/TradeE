@@ -21,7 +21,7 @@ public class Shop implements ConfigItem {
 
     public static Shop instance;
 
-    private List<Integer> usedIDs;
+    private List<Integer> usedIDs = new ArrayList<>();
     public HashMap<Integer, Trade> trades = new HashMap<>();
     public static HashMap<String, Trade> tempTrades = new HashMap<>();
 
