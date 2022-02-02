@@ -247,8 +247,12 @@ public class InventoryClickListener implements Listener {
             case 5 -> { //Sell
                 if(p.getItemOnCursor() != null && p.getItemOnCursor().getItemMeta() != null) {
                     if(p.getItemOnCursor().getType() != _trade.getProduct().getType() || p.getItemOnCursor().getAmount() < _trade.getProductAmount()) {
-
+                        p.sendMessage(Main.PREFiX + "§cTrade only accepts §6'" + _trade.getProduct().getType().toString().toLowerCase() + "'! §1At least §6'" + _trade.getProductAmount() + "' §cpieces!");
+                        return;
                     }
+                    p.getItemOnCursor().setAmount(p.getItemOnCursor().getAmount() - _trade.getProductAmount());
+                    _trade.getOwner().transfer(Bank.instance.getBankAccountsOfPlayer(p).get(0), _trade.getValue());
+                    _trade.storage++;
                 } else p.sendMessage(Main.PREFiX + "§cPlease click with an item stack on the sell option.");
             }
         }
