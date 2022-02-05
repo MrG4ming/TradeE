@@ -48,7 +48,7 @@ public class BankCommand implements CommandExecutor {
                                     p.sendMessage(Main.PREFiX + "§4You don't own this bank account!");
                                 }
                             } else {
-                                p.sendMessage(Main.PREFiX + "§4This bank account doesn't exist!");
+                                p.sendMessage(Main.PREFiX + "§cThis bank account doesn't exist!");
                             }
                         } else {
                             return false;
@@ -75,9 +75,12 @@ public class BankCommand implements CommandExecutor {
                                     "§9Capital: §d" + Bank.instance.accounts.get(_id).getCapital() + "$\n" +
                                     "§9Owner: §d" + _owners + "\n" +
                                     " \n " +
+                                    "§9Current main account: §d" + Bank.instance.accounts.get(Bank.instance.getMainAccountOfPlayer(p.getUniqueId().toString())).name
+                                            + "\n" +
+                                    " \n " +
                                     "§6---------------------------------------------\n");
                         } else {
-                            p.sendMessage(Main.PREFiX + "§4This bank account does not exist!");
+                            p.sendMessage(Main.PREFiX + "§cThis bank account does not exist!");
                         }
                     } else {
                         return false;
@@ -98,11 +101,24 @@ public class BankCommand implements CommandExecutor {
                                     p.sendMessage(Main.PREFiX + "§4'" + args[2] + "' is not an integer!");
                                 }
                             } else {
-                                p.sendMessage(Main.PREFiX + "§4The bank account '" + args[3] + "' does not exist!");
+                                p.sendMessage(Main.PREFiX + "§cThe bank account '" + args[3] + "' does not exist!");
                             }
                         } else {
-                            p.sendMessage(Main.PREFiX + "§4The bank account '" + args[1] + "' does not exist!");
+                            p.sendMessage(Main.PREFiX + "§cThe bank account '" + args[1] + "' does not exist!");
                         }
+                    } else {
+                        return false;
+                    }
+                } else if(args[0].equalsIgnoreCase("setmain")) {
+                    if(args.length == 2) {
+                        int _targetId = Bank.instance.getIdByName(args[1]);
+
+                        if(_targetId > 0) {
+                            Bank.instance.setMainAccountOfPlayer(p.getUniqueId().toString(), Bank.instance.accounts.get(_targetId));
+                        } else {
+                            p.sendMessage(Main.PREFiX + "§cThe bank account '" + args[1] + "' does not exist!");
+                        }
+
                     } else {
                         return false;
                     }

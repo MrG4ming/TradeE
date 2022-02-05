@@ -13,7 +13,7 @@ import java.util.List;
 public class BankTabCompleter implements TabCompleter {
 
     //String[] command = {"create", "withdraw", "deposit", "transfer", "close", "info"};
-    String[] command = {"create", "transfer", "close", "info"};
+    String[] command = {"create", "transfer", "close", "info", "setmain"};
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
@@ -35,7 +35,7 @@ public class BankTabCompleter implements TabCompleter {
 
             List<String> result = new ArrayList<>();
 
-            //command: create, transfer, close, info
+            //command: create, transfer, close, info, setmain
             if(args.length == 1) {
                 for(String s : command) {
                     if(p.hasPermission("tradee.bank.manager")) {

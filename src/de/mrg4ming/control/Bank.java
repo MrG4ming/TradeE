@@ -18,7 +18,9 @@ public class Bank implements ConfigItem {
     private final int START_CAPITAL = 5000;
 
     public HashMap<Integer, BankAccount> accounts = new HashMap<>();
+    public HashMap<String, Integer> mainAccounts = new HashMap<>();
     private List<Integer> usedIDs = new ArrayList<>();
+    private List<String> usedUUIDs = new ArrayList<>();
 
     public Bank() throws IllegalAccessException {
         if(instance != null) throw new IllegalAccessException("The Bank is already instantiated! Please use 'Bank.instance' instead.");
@@ -42,6 +44,11 @@ public class Bank implements ConfigItem {
             if(!usedIDs.contains(id)) {
                 accounts.put(id, new BankAccount(_name, _owner, START_CAPITAL));
                 usedIDs.add(id);
+
+                if(getMainAccountOfPlayer(_owner) < 1) {
+                    setMainAccountOfPlayer(_owner, accounts.get(id));
+                }
+
                 search = false;
                 return id;
             } else {
@@ -54,13 +61,48 @@ public class Bank implements ConfigItem {
 
     public void removeAccount(int _id) {
         if(accounts.containsKey(_id) && usedIDs.contains(_id)) {
+
+            accounts.get(_id).getOwners().forEach(s -> {
+                String _owner = (String) s;
+                if(getMainAccountOfPlayer(_owner) == _id) {
+                    for(BankAccount _bankAccount : getBankAccountsOfPlayer(_owner)) {
+                        if(getIdByName(_bankAccount.name) != _id) {
+                            setMainAccountOfPlayer(_owner, _bankAccount);
+                            break;
+                        }
+                    }
+                }
+            });
+
             accounts.remove(_id);
             //System.out.println("List of used id's: " + usedIDs);
             usedIDs.remove(Integer.valueOf(_id));
+
             saveToConfig();
         } else {
             throw new NullPointerException("Bank account id does not exist or is not registered!");
         }
+    }
+
+    public int getMainAccountOfPlayer(String _uuid) {
+        if(usedUUIDs.contains(_uuid)) {
+            if(mainAccounts.containsKey(_uuid)) {
+                return mainAccounts.get(_uuid);
+            } else {
+                mainAccounts.put(_uuid, 0);
+                return 0;
+            }
+        }
+        return -1;
+    }
+
+    public boolean setMainAccountOfPlayer(String _uuid, BankAccount _account) {
+        if(accounts.containsValue(_account) && _account.getOwners().contains(_uuid)) {
+            usedUUIDs.add(_uuid);
+            mainAccounts.put(_uuid, getIdByName(_account.name));
+            return true;
+        }
+        return false;
     }
 
     public int getIdByName(String _name) {
@@ -81,6 +123,15 @@ public class Bank implements ConfigItem {
         }
         return _accounts;
     }
+    public List<BankAccount> getBankAccountsOfPlayer(String _uuid) {
+        List<BankAccount> _accounts = new ArrayList<>();
+        for(BankAccount _account : accounts.values()) {
+            if(_account.getOwners().contains(_uuid)) {
+                _accounts.add(_account);
+            }
+        }
+        return _accounts;
+    }
 
     public void saveToConfig() {
         try {
@@ -92,6 +143,13 @@ public class Bank implements ConfigItem {
                 config.set("accounts." + id + ".capital", accounts.get(id).getCapital());
                 config.set("accounts." + id + ".name", accounts.get(id).name);
             }
+
+            config.set("usedUUIDs", null);
+            config.set("usedUUIDs", usedUUIDs);
+            config.set("mainAccounts", null);
+            for(String s : usedUUIDs) {
+                config.set("mainAccounts." + s, mainAccounts.get(s));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -101,6 +159,9 @@ public class Bank implements ConfigItem {
         if(config.contains("usedIDs")) {
             usedIDs = config.getList("usedIDs");
         }
+        if(config.contains("usedUUIDs")) {
+            usedUUIDs = config.getList("usedUUIDs");
+        }
         if(config.contains("accounts") && !usedIDs.isEmpty()) {
             for(int id : usedIDs) {
                 List<String> _owners = config.getList("accounts." + id + ".owner");
@@ -108,6 +169,12 @@ public class Bank implements ConfigItem {
                 String _name = (String) config.get("accounts." + id + ".name");
 
                 accounts.put(id, new BankAccount(_name, _owners, _capital));
+            }
+        }
+        if(config.contains("mainAccounts") && !usedUUIDs.isEmpty()) {
+            for(String s : usedUUIDs) {
+                int _id = (int) config.get("mainAccounts." + s);
+                mainAccounts.put(s, _id);
             }
         }
     }
