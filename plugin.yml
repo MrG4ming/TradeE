@@ -16,12 +16,18 @@ commands:
     permission-message: §8[§bTradeE§8]§6 §4You don's have the permission to use this command!
 
 permissions:
-  tradee.bank.manager:
-    description: TradeE bank create or close permission.
-    default: op
-  tradee.bank.user:
-    description: TradeE bank user permissions.
-    default: true
-  tradee.bank.*:
+   tradee.trade.spawn:
+      description: TradeE trading villager spawn permission.
+      default: op
+   tradee.trade.user:
+      description: TradeE trading user permission.
+      default: true
+   tradee.bank.manager:
+      description: TradeE bank create or close permission.
+      default: op
+   tradee.bank.user:
+      description: TradeE bank user permissions.
+      default: true
+   tradee.bank.*:
     description: TradeE bank command permissions.
     default: true
