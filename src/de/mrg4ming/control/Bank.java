@@ -45,8 +45,10 @@ public class Bank implements ConfigItem {
                 accounts.put(id, new BankAccount(_name, _owner, START_CAPITAL));
                 usedIDs.add(id);
 
-                if(getMainAccountOfPlayer(_owner) < 1) {
+                if(getMainAccountOfPlayer(_owner) < 0) {
                     setMainAccountOfPlayer(_owner, accounts.get(id));
+                } else if(getMainAccountOfPlayer(_owner) < 1) {
+                    mainAccounts.put(_owner, id);
                 }
 
                 search = false;
