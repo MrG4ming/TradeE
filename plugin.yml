@@ -3,7 +3,7 @@ version: 0.3
 api-version: 1.17
 main: de.mrg4ming.Main
 author: MrG4ming
-description: A plugin for money management and a connected trade system.
+description: A plugin for money management and a trade system.
 
 commands:
   trade:
