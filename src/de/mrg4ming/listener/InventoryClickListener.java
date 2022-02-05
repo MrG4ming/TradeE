@@ -240,7 +240,7 @@ public class InventoryClickListener implements Listener {
                         p.sendMessage(Main.PREFiX + "§cYou don't own a bank account!");
                         return;
                     }
-                    Bank.instance.getBankAccountsOfPlayer(p).get(0).transfer(_trade.getOwner(), _trade.getValue());
+                    Bank.instance.accounts.get(Bank.instance.getMainAccountOfPlayer(p.getUniqueId().toString())).transfer(_trade.getOwner(), _trade.getValue());
                     _trade.storage--;
                 } else p.sendMessage(Main.PREFiX + "§cTrade storage is empty!");
             }
@@ -251,7 +251,7 @@ public class InventoryClickListener implements Listener {
                         return;
                     }
                     p.getItemOnCursor().setAmount(p.getItemOnCursor().getAmount() - _trade.getProductAmount());
-                    _trade.getOwner().transfer(Bank.instance.getBankAccountsOfPlayer(p).get(0), _trade.getValue());
+                    _trade.getOwner().transfer(Bank.instance.accounts.get(Bank.instance.getMainAccountOfPlayer(p.getUniqueId().toString())), _trade.getValue());
                     _trade.storage++;
                 } else p.sendMessage(Main.PREFiX + "§cPlease click with an item stack on the sell option.");
             }
