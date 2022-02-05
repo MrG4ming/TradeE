@@ -229,17 +229,18 @@ public class InventoryClickListener implements Listener {
             case 3 -> { //Buy
                 ItemStack _item = new ItemStack(_trade.getProduct().getType(), _trade.getProductAmount());
                 if(_trade.storage > 0) { //check if storage is not empty
-                    HashMap<Integer, ItemStack> _droppedItems = p.getInventory().addItem(_item);
+                    if(Bank.instance.getBankAccountsOfPlayer(p).size() < 1) {
+                        p.sendMessage(Main.PREFiX + "§cYou don't own a bank account!");
+                        return;
+                    }
 
+                    HashMap<Integer, ItemStack> _droppedItems = p.getInventory().addItem(_item);
                     if(_droppedItems.size() > 0) {
                         for(ItemStack i : _droppedItems.values()) {
                             p.getWorld().dropItem(p.getLocation(), i);
                         }
                     }
-                    if(Bank.instance.getBankAccountsOfPlayer(p).size() < 1) {
-                        p.sendMessage(Main.PREFiX + "§cYou don't own a bank account!");
-                        return;
-                    }
+
                     Bank.instance.accounts.get(Bank.instance.getMainAccountOfPlayer(p.getUniqueId().toString())).transfer(_trade.getOwner(), _trade.getValue());
                     _trade.storage--;
                 } else p.sendMessage(Main.PREFiX + "§cTrade storage is empty!");
