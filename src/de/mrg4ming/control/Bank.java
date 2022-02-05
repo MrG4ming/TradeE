@@ -3,6 +3,8 @@ package de.mrg4ming.control;
 import de.mrg4ming.config.Config;
 import de.mrg4ming.config.ConfigItem;
 import de.mrg4ming.data.BankAccount;
+import de.mrg4ming.data.Trade;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.io.IOException;
@@ -73,6 +75,23 @@ public class Bank implements ConfigItem {
                             break;
                         }
                     }
+                }
+            });
+
+            for(Trade t : Shop.instance.getTradesOfBankAccount(accounts.get(_id))) {
+                Shop.instance.removeTrade(Shop.getKeyByValue(Shop.instance.trades, t));
+            }
+            Shop.tempTrades.forEach((s, trade) -> {
+                if(trade.getOwner().equals(accounts.get(_id).getOwners().get(0))) { //later when/if multiple owners are added this needs to be changed
+                    //closing all inventories to prevent erroneous confirmation of the creation of a trade
+                    for(Player p : Bukkit.getServer().getOnlinePlayers()) {
+                        if(p.getUniqueId().toString().equals(s)) {
+                            p.closeInventory();
+                        }
+                    }
+
+                    //removing temp trades
+                    Shop.tempTrades.remove(s);
                 }
             });
 
