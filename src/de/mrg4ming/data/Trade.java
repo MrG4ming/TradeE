@@ -32,10 +32,11 @@ public class Trade {
     public int storage;
     private BankAccount owner;
     private TradeConfigurator configurator;
+    private boolean constant;
 
 
 
-    public Trade(String name, int value, ItemStack product, int productAmount, Mode mode, Inventory tradeOptions, int storage, BankAccount owner, TradeConfigurator configurator) {
+    public Trade(String name, int value, ItemStack product, int productAmount, Mode mode, Inventory tradeOptions, int storage, BankAccount owner, TradeConfigurator configurator, boolean constant) {
         this.name = name;
         this.value = value;
         this.product = product;
@@ -45,13 +46,17 @@ public class Trade {
         this.storage = storage;
         this.owner = owner;
         this.configurator = configurator;
+        this. constant = constant;
     }
 
     public Trade(String name, int value, ItemStack product, Mode mode, int storage, BankAccount owner) {
-        this(name, value, product, 1, mode, createTradeOptionsWindow(name, product, 1, value, mode, storage), storage, owner, new TradeConfigurator(name, product));
+        this(name, value, product, 1, mode, createTradeOptionsWindow(name, product, 1, value, mode), storage, owner, new TradeConfigurator(name, product), false);
+    }
+    public static Trade createConstantTrade(String name, int value, ItemStack product, Mode mode) {
+        return new Trade(name, value, product, 1, mode, createTradeOptionsWindow(name, product, 1, value, mode), 0, null, new TradeConfigurator(name, product), true);
     }
 
-    private static Inventory createTradeOptionsWindow(String name, ItemStack product, int productAmount, int value, Mode mode, int storage) {
+    private static Inventory createTradeOptionsWindow(String name, ItemStack product, int productAmount, int value, Mode mode) {
         Inventory inv = Bukkit.createInventory(null, 9, WindowTitle.TRADE_OPTIONS_PREFIX.title + name);
 
         List<String> _infoLore = new ArrayList<>();
@@ -181,6 +186,14 @@ public class Trade {
 
     public void setConfigurator(TradeConfigurator configurator) {
         this.configurator = configurator;
+    }
+
+    public boolean isConstant() {
+        return this.constant;
+    }
+
+    public void setConstant(boolean constant) {
+        this.constant = constant;
     }
     ///endregion
 }
