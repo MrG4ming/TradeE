@@ -155,7 +155,6 @@ public class Bank implements ConfigItem {
     }
 
     public void saveToConfig() {
-        config.clear();
         try {
             config.set("usedIDs", null);
             config.set("usedIDs", usedIDs);

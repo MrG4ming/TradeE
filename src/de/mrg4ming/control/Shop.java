@@ -201,11 +201,10 @@ public class Shop implements ConfigItem {
 
     @Override
     public void saveToConfig() {
-        cfg.clear();
         try {
             cfg.set("usedIDs", null);
             cfg.set("usedIDs", usedIDs);
-            cfg.set("accounts", null);
+            cfg.set("trades", null);
             for(int id : usedIDs) {
                 cfg.set("trades." + id + ".name", trades.get(id).getName());
                 cfg.set("trades." + id + ".value", trades.get(id).getValue());
