@@ -201,6 +201,7 @@ public class Shop implements ConfigItem {
 
     @Override
     public void saveToConfig() {
+        cfg.clear();
         try {
             cfg.set("usedIDs", null);
             cfg.set("usedIDs", usedIDs);

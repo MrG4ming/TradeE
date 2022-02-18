@@ -36,6 +36,10 @@ public class Config {
         return cfg.contains(_path);
     }
 
+    public void clear() {
+        file.delete();
+    }
+
     public void set(String _path, Object _value) throws IOException {
         cfg.set(_path, _value);
         cfg.save(file);
