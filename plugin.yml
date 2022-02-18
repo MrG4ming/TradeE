@@ -8,7 +8,7 @@ description: A plugin for money management and a trade system.
 commands:
   trade:
     description: Manage Trades.
-    usage: §8[§bTradeE§8]§6 /trade <create> <tradeName> <bankAccountOwner>
+    usage: §8[§bTradeE§8]§6 /trade <create|remove|constant> <tradeName> <bankAccountOwner>
   bank:
     description: Manage your bank account.
     usage: §8[§bTradeE§8]§6 /bank <create|close|transfer|info> <accountName> [amount] [targetAccountName]
