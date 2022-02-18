@@ -14,7 +14,7 @@ import java.util.List;
 
 public class TradeTabCompleter implements TabCompleter {
 
-    String[] commands = {"create", "remove"};
+    String[] cmds = {"create", "remove"};
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
@@ -24,14 +24,22 @@ public class TradeTabCompleter implements TabCompleter {
             List<String> accounts = new ArrayList<>();
             List<String> allAccounts = new ArrayList<>();
 
+            List<String> commands = new ArrayList<>();
+
             if(!accounts.isEmpty()) accounts.clear();
             if(!allAccounts.isEmpty()) allAccounts.clear();
+            if(!commands.isEmpty()) commands.clear();
 
             for(BankAccount ba : Bank.instance.accounts.values()) {
                 allAccounts.add(ba.name);
                 if(ba.getOwners().contains(p.getUniqueId().toString())) {
                     accounts.add(ba.name);
                 }
+            }
+
+            for(String s : cmds) {
+                commands.add(s);
+                if(p.hasPermission("tradee.trade.manager")) commands.add("constant");
             }
 
             List<String> result = new ArrayList<>();

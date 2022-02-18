@@ -113,7 +113,11 @@ public class Shop implements ConfigItem {
     public List<Trade> getTradesOfPlayer(Player p) {
         List<Trade> _trades = new ArrayList<>();
         for(Trade _trade : trades.values()) {
-            if(_trade.getOwner().getOwners().contains(p.getUniqueId().toString())) {
+            if(_trade.getOwner() != null) {
+                if(_trade.getOwner().getOwners().contains(p.getUniqueId().toString())) {
+                    _trades.add(_trade);
+                }
+            } else if(p.hasPermission("tradee.trade.manager")) {
                 _trades.add(_trade);
             }
         }
@@ -171,14 +175,26 @@ public class Shop implements ConfigItem {
                 ItemStack _product = cfg.getItemStack("trades." + id + ".product");
                 int _mode = (int) cfg.get("trades." + id + ".mode");
                 int _storage = (int) cfg.get("trades." + id + ".storage");
-                int _bankOwnerId = (int) cfg.get("trades." + id + ".bankOwnerId");
+                boolean _isConstant = (boolean) cfg.get("trades." + id + ".isConstant");
+                if(!_isConstant) {
+                    int _bankOwnerId = (int) cfg.get("trades." + id + ".bankOwnerId");
 
-                try {
-                    Trade _trade = new Trade(_name, _value, _product, Trade.Mode.values()[_mode - 1], _storage, Bank.instance.accounts.get(_bankOwnerId));
-                    trades.put(id, _trade);
-                } catch(Exception e) {
-                    e.printStackTrace();
+                    try {
+                        Trade _trade = new Trade(_name, _value, _product, Trade.Mode.values()[_mode - 1], _storage, Bank.instance.accounts.get(_bankOwnerId));
+                        trades.put(id, _trade);
+                    } catch(Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    try {
+                        Trade _trade = Trade.createConstantTrade(_name, _value, _product, Trade.Mode.values()[_mode]);
+                        trades.put(id, _trade);
+                    } catch(Exception e) {
+                        e.printStackTrace();
+                    }
                 }
+
+
             }
         }
     }
@@ -195,7 +211,13 @@ public class Shop implements ConfigItem {
                 cfg.set("trades." + id + ".product", new ItemStack(trades.get(id).getProduct().getType(), trades.get(id).getProductAmount()));
                 cfg.set("trades." + id + ".mode", trades.get(id).getMode().id);
                 cfg.set("trades." + id + ".storage", trades.get(id).storage);
-                cfg.set("trades." + id + ".bankOwnerId", Bank.instance.getIdByName(trades.get(id).getOwner().name));
+                if(trades.get(id).isConstant()) {
+                    cfg.set("trades." + id + ".isConstant", true);
+                    cfg.set("trades." + id + ".bankOwnerId", null);
+                } else {
+                    cfg.set("trades." + id + "isConstant", false);
+                    cfg.set("trades." + id + ".bankOwnerId", Bank.instance.getIdByName(trades.get(id).getOwner().name));
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -39,7 +39,7 @@ public class TradeCommand implements CommandExecutor {
 
                     p.sendMessage(Main.PREFiX + "§aTrader spawned.");
                 }
-            } else if(args.length >= 3){
+            } else if(args.length >= 3) {
                 if(p.hasPermission("tradee.trade.user")) {
                     if(args[0].equalsIgnoreCase("create")) {
                         String _name = args[1];
@@ -63,8 +63,7 @@ public class TradeCommand implements CommandExecutor {
                         } else {
                             p.sendMessage(Main.PREFiX + "§cTrade already exists!");
                         }
-                    }
-                } else {
+                    } else
                     p.sendMessage(Main.PREFiX + "§4You don't have the permission to use this command!");
                 }
             } else if(args.length == 2) {
@@ -78,25 +77,51 @@ public class TradeCommand implements CommandExecutor {
                         }
                         Trade _trade = Shop.instance.getTrade(_name);
 
-                        if(!_trade.getOwner().getOwners().contains(p.getUniqueId().toString())) {
-                            p.sendMessage(Main.PREFiX + "§cYou don't own this trade!");
-                            return true;
-                        }
-
-                        while(_trade.storage > 0) {
-                            HashMap<Integer, ItemStack> _droppedItems = p.getInventory().addItem(new ItemStack(_trade.getProduct().getType(), _trade.getProductAmount()));
-
-                            if(_droppedItems.size() > 0) {
-                                for(ItemStack i : _droppedItems.values()) {
-                                    p.getWorld().dropItem(p.getLocation(), i);
-                                }
+                        if(!_trade.isConstant()) {
+                            if(!_trade.getOwner().getOwners().contains(p.getUniqueId().toString())) {
+                                p.sendMessage(Main.PREFiX + "§cYou don't own this trade!");
+                                return true;
                             }
-                            _trade.storage--;
+
+                            while(_trade.storage > 0) {
+                                HashMap<Integer, ItemStack> _droppedItems = p.getInventory().addItem(new ItemStack(_trade.getProduct().getType(), _trade.getProductAmount()));
+
+                                if(_droppedItems.size() > 0) {
+                                    for(ItemStack i : _droppedItems.values()) {
+                                        p.getWorld().dropItem(p.getLocation(), i);
+                                    }
+                                }
+                                _trade.storage--;
+                            }
                         }
 
                         Shop.instance.removeTrade(Shop.getKeyByValue(Shop.instance.trades, Shop.instance.getTrade(_name)));
+                        p.sendMessage(Main.PREFiX + "§aTrade successfully §cremoved§a.");
                     } else if(args[0].equalsIgnoreCase("changeowner")) {
 
+                        //feature will be added in a future version
+
+                    }
+                } else {
+                    p.sendMessage(Main.PREFiX + "§4You don't have the permission to use this command!");
+                }
+                if(p.hasPermission("tradee.trade.manager")) {
+                    if(args[0].equalsIgnoreCase("constant")) {
+                        String _name = args[1];
+
+                        if(!Shop.instance.checkIfTradeExists(_name)) {
+                            Trade _trade = Trade.createConstantTrade(_name,
+                                    0, new OptionItem("§8Placeholder: Product", Material.DIRT),
+                                    Trade.Mode.SELL
+                            );
+
+                            Shop.tempTrades.put(p.getUniqueId().toString(), _trade);
+
+                            p.openInventory(_trade.getConfigurator().open());
+                            p.sendMessage("Open constant trade editor");
+                        } else {
+                            p.sendMessage(Main.PREFiX + "§cTrade already exists!");
+                        }
                     }
                 } else {
                     p.sendMessage(Main.PREFiX + "§4You don't have the permission to use this command!");

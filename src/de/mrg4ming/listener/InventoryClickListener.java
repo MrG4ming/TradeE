@@ -116,7 +116,9 @@ public class InventoryClickListener implements Listener {
                     _trade.setProduct(p.getItemOnCursor());
                     return;
                 }
-                _trade.getConfigurator().setCurrentSelectedValue(TradeConfigurator.Value.PRODUCT);
+                if(!_trade.isConstant()) {
+                    _trade.getConfigurator().setCurrentSelectedValue(TradeConfigurator.Value.PRODUCT);
+                }
             }
             case 8+3 -> { //remove 10
                 switch (_trade.getConfigurator().getCurrentSelected()) {
@@ -203,11 +205,20 @@ public class InventoryClickListener implements Listener {
 
                 _trade.updateTradeOptions();
 
-                if(_isNewTrade) {
-                    Shop.instance.addTrade(_trade);
-                    Shop.tempTrades.remove(p.getUniqueId().toString());
+                if(_trade.isConstant()) {
+                    if(_isNewTrade) {
+                        Shop.instance.addTrade(_trade);
+                        Shop.tempTrades.remove(p.getUniqueId().toString());
+                    } else {
+                        Shop.instance.trades.replace(Shop.getKeyByValue(Shop.instance.trades, Shop.instance.getTrade(_tradeName)), _trade);
+                    }
                 } else {
-                    Shop.instance.trades.replace(Shop.getKeyByValue(Shop.instance.trades, Shop.instance.getTrade(_tradeName)), _trade);
+                    if(_isNewTrade) {
+                        Shop.instance.addTrade(_trade);
+                        Shop.tempTrades.remove(p.getUniqueId().toString());
+                    } else {
+                        Shop.instance.trades.replace(Shop.getKeyByValue(Shop.instance.trades, Shop.instance.getTrade(_tradeName)), _trade);
+                    }
                 }
                 p.closeInventory();
             }
@@ -227,34 +238,70 @@ public class InventoryClickListener implements Listener {
                 p.openInventory(Shop.instance.openInv());
             }
             case 3 -> { //Buy
-                ItemStack _item = new ItemStack(_trade.getProduct().getType(), _trade.getProductAmount());
-                if(_trade.storage > 0) { //check if storage is not empty
-                    if(Bank.instance.getBankAccountsOfPlayer(p).size() < 1) {
-                        p.sendMessage(Main.PREFiX + "§cYou don't own a bank account!");
-                        return;
-                    }
+                if(_trade.getMode().equals(Trade.Mode.BUY) || _trade.getMode().equals(Trade.Mode.BUY_AND_SELL)) {
+                    ItemStack _item = new ItemStack(_trade.getProduct().getType(), _trade.getProductAmount());
+                    if(_trade.isConstant()) {
 
-                    HashMap<Integer, ItemStack> _droppedItems = p.getInventory().addItem(_item);
-                    if(_droppedItems.size() > 0) {
-                        for(ItemStack i : _droppedItems.values()) {
-                            p.getWorld().dropItem(p.getLocation(), i);
+                        if(Bank.instance.getBankAccountsOfPlayer(p).size() < 1) {
+                            p.sendMessage(Main.PREFiX + "§cYou don't own a bank account!");
+                            return;
                         }
+
+                        HashMap<Integer, ItemStack> _droppedItems = p.getInventory().addItem(_item);
+                        if(_droppedItems.size() > 0) {
+                            for(ItemStack i : _droppedItems.values()) {
+                                p.getWorld().dropItem(p.getLocation(), i);
+                            }
+                        }
+
+                        Bank.instance.accounts.get(Bank.instance.getMainAccountOfPlayer(p.getUniqueId().toString())).withdraw(_trade.getValue());
+                    } else {
+                        if(_trade.storage > 0) { //check if storage is not empty
+                            if(Bank.instance.getBankAccountsOfPlayer(p).size() < 1) {
+                                p.sendMessage(Main.PREFiX + "§cYou don't own a bank account!");
+                                return;
+                            }
+
+                            HashMap<Integer, ItemStack> _droppedItems = p.getInventory().addItem(_item);
+                            if(_droppedItems.size() > 0) {
+                                for(ItemStack i : _droppedItems.values()) {
+                                    p.getWorld().dropItem(p.getLocation(), i);
+                                }
+                            }
+
+                            Bank.instance.accounts.get(Bank.instance.getMainAccountOfPlayer(p.getUniqueId().toString())).transfer(_trade.getOwner(), _trade.getValue());
+                            _trade.storage--;
+                        } else p.sendMessage(Main.PREFiX + "§cTrade storage is empty!");
                     }
 
-                    Bank.instance.accounts.get(Bank.instance.getMainAccountOfPlayer(p.getUniqueId().toString())).transfer(_trade.getOwner(), _trade.getValue());
-                    _trade.storage--;
-                } else p.sendMessage(Main.PREFiX + "§cTrade storage is empty!");
+                }
+
             }
             case 5 -> { //Sell
-                if(p.getItemOnCursor() != null && p.getItemOnCursor().getItemMeta() != null) {
-                    if(p.getItemOnCursor().getType() != _trade.getProduct().getType() || p.getItemOnCursor().getAmount() < _trade.getProductAmount()) {
-                        p.sendMessage(Main.PREFiX + "§cTrade only accepts §6'" + _trade.getProduct().getType().toString().toLowerCase() + "'! §1At least §6'" + _trade.getProductAmount() + "' §cpieces!");
-                        return;
+                if(_trade.getMode().equals(Trade.Mode.SELL) || _trade.getMode().equals(Trade.Mode.BUY_AND_SELL)) {
+                    if(_trade.isConstant()) {
+                        if(p.getItemOnCursor() != null && p.getItemOnCursor().getItemMeta() != null) {
+                            if(p.getItemOnCursor().getType() != _trade.getProduct().getType() || p.getItemOnCursor().getAmount() < _trade.getProductAmount()) {
+                                p.sendMessage(Main.PREFiX + "§cTrade only accepts §6'" + _trade.getProduct().getType().toString().toLowerCase() + "'! §1At least §6'" + _trade.getProductAmount() + "' §cpieces!");
+                                return;
+                            }
+
+                            p.getItemOnCursor().setAmount(p.getItemOnCursor().getAmount() - _trade.getProductAmount());
+                            Bank.instance.accounts.get(Bank.instance.getMainAccountOfPlayer(p.getUniqueId().toString())).deposit(_trade.getValue());
+                        } else p.sendMessage(Main.PREFiX + "§cPlease click with an item stack on the sell option.");
+                    } else {
+                        if(p.getItemOnCursor() != null && p.getItemOnCursor().getItemMeta() != null) {
+                            if(p.getItemOnCursor().getType() != _trade.getProduct().getType() || p.getItemOnCursor().getAmount() < _trade.getProductAmount()) {
+                                p.sendMessage(Main.PREFiX + "§cTrade only accepts §6'" + _trade.getProduct().getType().toString().toLowerCase() + "'! §1At least §6'" + _trade.getProductAmount() + "' §cpieces!");
+                                return;
+                            }
+                            p.getItemOnCursor().setAmount(p.getItemOnCursor().getAmount() - _trade.getProductAmount());
+                            _trade.getOwner().transfer(Bank.instance.accounts.get(Bank.instance.getMainAccountOfPlayer(p.getUniqueId().toString())), _trade.getValue());
+                            _trade.storage++;
+                        } else p.sendMessage(Main.PREFiX + "§cPlease click with an item stack on the sell option.");
                     }
-                    p.getItemOnCursor().setAmount(p.getItemOnCursor().getAmount() - _trade.getProductAmount());
-                    _trade.getOwner().transfer(Bank.instance.accounts.get(Bank.instance.getMainAccountOfPlayer(p.getUniqueId().toString())), _trade.getValue());
-                    _trade.storage++;
-                } else p.sendMessage(Main.PREFiX + "§cPlease click with an item stack on the sell option.");
+
+                }
             }
         }
     }

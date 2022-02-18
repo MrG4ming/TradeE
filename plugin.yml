@@ -22,6 +22,9 @@ permissions:
    tradee.trade.user:
       description: TradeE trading user permission.
       default: true
+   tradee.trade.manager:
+      description: TradeE trading manager permission.
+      default: op
    tradee.bank.manager:
       description: TradeE bank create or close permission.
       default: op
