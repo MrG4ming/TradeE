@@ -121,7 +121,7 @@ public class TradeCommand implements CommandExecutor {
                         } else {
                             p.sendMessage(Main.PREFiX + "§cTrade already exists!");
                         }
-                    } else return false;
+                    } else if(!args[0].equalsIgnoreCase("remove")) return false;
                 } else {
                     p.sendMessage(Main.PREFiX + "§4You don't have the permission to use this command!");
                 }
