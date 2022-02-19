@@ -49,7 +49,7 @@ public class Main extends JavaPlugin {
         Bank.instance.saveToConfig();
         Shop.instance.saveToConfig();
     }
-
+    
     public static Main getPlugin() {
         return plugin;
     }

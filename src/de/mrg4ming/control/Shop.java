@@ -135,7 +135,7 @@ public class Shop implements ConfigItem {
     private void syncShopDataWithInv(SyncMode _sMode) {
         switch(_sMode) {
             case OVERWRITE_SHOP_INV_DATA -> {
-                overwriteShoInvData();
+                overwriteShopInvData();
             }
             default -> {
                 overwriteShopData();
@@ -146,6 +146,8 @@ public class Shop implements ConfigItem {
         for(int key : trades.keySet()) {
             usedIDs.add(key);
         }
+
+        //this.saveToConfig();
     }
     private void overwriteShopData() {
         trades.clear();
@@ -155,7 +157,7 @@ public class Shop implements ConfigItem {
             i++;
         }
     }
-    private void overwriteShoInvData() {
+    private void overwriteShopInvData() {
         getShopInvData().getTrades().clear();
         for(Trade _t : trades.values()) {
             getShopInvData().getTrades().add(_t);
@@ -215,7 +217,7 @@ public class Shop implements ConfigItem {
                     cfg.set("trades." + id + ".isConstant", true);
                     cfg.set("trades." + id + ".bankOwnerId", null);
                 } else {
-                    cfg.set("trades." + id + "isConstant", false);
+                    cfg.set("trades." + id + ".isConstant", false);
                     cfg.set("trades." + id + ".bankOwnerId", Bank.instance.getIdByName(trades.get(id).getOwner().name));
                 }
             }
