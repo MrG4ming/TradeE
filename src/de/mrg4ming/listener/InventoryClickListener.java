@@ -312,6 +312,7 @@ public class InventoryClickListener implements Listener {
                             p.getItemOnCursor().setAmount(p.getItemOnCursor().getAmount() - _trade.getProductAmount());
                             _trade.getOwner().transfer(Bank.instance.accounts.get(Bank.instance.getMainAccountOfPlayer(p.getUniqueId().toString())), _trade.getValue());
                             _trade.storage++;
+                            _trade.updateTradeOptions();
                         } else p.sendMessage(Main.PREFiX + "§cPlease click with an item stack on the sell option.");
                     }
 
@@ -327,6 +328,7 @@ public class InventoryClickListener implements Listener {
                             }
                             p.getItemOnCursor().setAmount(p.getItemOnCursor().getAmount() - _trade.getProductAmount());
                             _trade.storage++;
+                            _trade.updateTradeOptions();
                         } else if(p.getItemOnCursor() == null && p.getItemOnCursor().getItemMeta() == null) {
                             ItemStack _item = new ItemStack(_trade.getProduct().getType(), _trade.getProductAmount());
                             if(_trade.storage <= 0) {
@@ -342,6 +344,7 @@ public class InventoryClickListener implements Listener {
                             }
 
                             _trade.storage--;
+                            _trade.updateTradeOptions();
                         }
                     }
                 }
