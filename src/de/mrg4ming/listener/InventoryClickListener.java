@@ -132,9 +132,7 @@ public class InventoryClickListener implements Listener {
                     _trade.setProduct(p.getItemOnCursor());
                     return;
                 }
-                if(!_trade.isConstant()) {
-                    _trade.getConfigurator().setCurrentSelectedValue(TradeConfigurator.Value.PRODUCT);
-                }
+                _trade.getConfigurator().setCurrentSelectedValue(TradeConfigurator.Value.PRODUCT);
             }
             case 8+3 -> { //remove 10
                 switch (_trade.getConfigurator().getCurrentSelected()) {
