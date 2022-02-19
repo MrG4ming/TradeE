@@ -38,7 +38,7 @@ public class TradeCommand implements CommandExecutor {
                     v.setAI(false);
 
                     p.sendMessage(Main.PREFiX + "§aTrader spawned.");
-                }
+                } else return false;
             } else if(args.length >= 3) {
                 if(p.hasPermission("tradee.trade.user")) {
                     if(args[0].equalsIgnoreCase("create")) {
