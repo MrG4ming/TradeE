@@ -329,7 +329,7 @@ public class InventoryClickListener implements Listener {
                             p.getItemOnCursor().setAmount(p.getItemOnCursor().getAmount() - _trade.getProductAmount());
                             _trade.storage++;
                             _trade.updateTradeOptions();
-                        } else if(p.getItemOnCursor() == null && p.getItemOnCursor().getItemMeta() == null) {
+                        } else {
                             ItemStack _item = new ItemStack(_trade.getProduct().getType(), _trade.getProductAmount());
                             if(_trade.storage <= 0) {
                                 p.sendMessage(Main.PREFiX + "§cTrade storage is empty!");
