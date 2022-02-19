@@ -100,8 +100,6 @@ public class TradeCommand implements CommandExecutor {
 
                         //feature will be added in a future version
 
-                    } else {
-                        return false;
                     }
                 } else {
                     p.sendMessage(Main.PREFiX + "§4You don't have the permission to use this command!");
