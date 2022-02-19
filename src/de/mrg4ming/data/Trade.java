@@ -1,5 +1,6 @@
 package de.mrg4ming.data;
 
+import com.google.common.collect.Lists;
 import de.mrg4ming.control.TradeConfigurator;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -50,13 +51,13 @@ public class Trade {
     }
 
     public Trade(String name, int value, ItemStack product, Mode mode, int storage, BankAccount owner) {
-        this(name, value, product, 1, mode, createTradeOptionsWindow(name, product, 1, value, mode), storage, owner, new TradeConfigurator(name, product, mode), false);
+        this(name, value, product, 1, mode, createTradeOptionsWindow(name, product, 1, value, mode, String.valueOf(storage)), storage, owner, new TradeConfigurator(name, product, mode), false);
     }
     public static Trade createConstantTrade(String name, int value, ItemStack product, Mode mode) {
-        return new Trade(name, value, product, 1, mode, createTradeOptionsWindow(name, product, 1, value, mode), 0, null, new TradeConfigurator(name, product, mode), true);
+        return new Trade(name, value, product, 1, mode, createTradeOptionsWindow(name, product, 1, value, mode, "Infinite"), 0, null, new TradeConfigurator(name, product, mode), true);
     }
 
-    private static Inventory createTradeOptionsWindow(String name, ItemStack product, int productAmount, int value, Mode mode) {
+    private static Inventory createTradeOptionsWindow(String name, ItemStack product, int productAmount, int value, Mode mode, String storage) {
         Inventory inv = Bukkit.createInventory(null, 9, WindowTitle.TRADE_OPTIONS_PREFIX.title + name);
 
         List<String> _infoLore = new ArrayList<>();
@@ -83,6 +84,9 @@ public class Trade {
                 inv.setItem(5, new OptionItem("§dSell", Material.PAPER));
             }
         }
+
+        OptionItem _storage = new OptionItem("§6Storage:", Lists.newArrayList("§d" + storage), Material.CHEST);
+        inv.setItem(8, _storage);
 
         return inv;
     }
@@ -112,6 +116,15 @@ public class Trade {
                 this.tradeOptions.setItem(5, new OptionItem("§dSell", Material.PAPER));
             }
         }
+
+        String _storageValue = "";
+        if(this.isConstant()) {
+            _storageValue += "Infinite";
+        } else {
+            _storageValue += String.valueOf(this.storage);
+        }
+        OptionItem _storage = new OptionItem("§6Storage:", Lists.newArrayList("§d" + _storageValue), Material.CHEST);
+        this.tradeOptions.setItem(8, _storage);
     }
 
     public void setProductAmount(int _amount) {

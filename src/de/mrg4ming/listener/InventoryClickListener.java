@@ -317,6 +317,35 @@ public class InventoryClickListener implements Listener {
 
                 }
             }
+            case 8 -> { //storage refill/empty
+                if(!_trade.isConstant()) {
+                    if(_trade.getOwner().getOwners().contains(p.getUniqueId().toString())) {
+                        if(p.getItemOnCursor() != null && p.getItemOnCursor().getItemMeta() != null) {
+                            if(p.getItemOnCursor().getType() != _trade.getProduct().getType() || p.getItemOnCursor().getAmount() < _trade.getProductAmount()) {
+                                p.sendMessage(Main.PREFiX + "§cTrade storage only accepts §6'" + _trade.getProduct().getType().toString().toLowerCase() + "'! §1At least §6'" + _trade.getProductAmount() + "' §cpieces!");
+                                return;
+                            }
+                            p.getItemOnCursor().setAmount(p.getItemOnCursor().getAmount() - _trade.getProductAmount());
+                            _trade.storage++;
+                        } else if(p.getItemOnCursor() == null && p.getItemOnCursor().getItemMeta() == null) {
+                            ItemStack _item = new ItemStack(_trade.getProduct().getType(), _trade.getProductAmount());
+                            if(_trade.storage <= 0) {
+                                p.sendMessage(Main.PREFiX + "§cTrade storage is empty!");
+                                return;
+                            }
+
+                            HashMap<Integer, ItemStack> _droppedItems = p.getInventory().addItem(_item);
+                            if(_droppedItems.size() > 0) {
+                                for(ItemStack i : _droppedItems.values()) {
+                                    p.getWorld().dropItem(p.getLocation(), i);
+                                }
+                            }
+
+                            _trade.storage--;
+                        }
+                    }
+                }
+            }
         }
     }
 }
