@@ -50,10 +50,10 @@ public class Trade {
     }
 
     public Trade(String name, int value, ItemStack product, Mode mode, int storage, BankAccount owner) {
-        this(name, value, product, 1, mode, createTradeOptionsWindow(name, product, 1, value, mode), storage, owner, new TradeConfigurator(name, product), false);
+        this(name, value, product, 1, mode, createTradeOptionsWindow(name, product, 1, value, mode), storage, owner, new TradeConfigurator(name, product, mode), false);
     }
     public static Trade createConstantTrade(String name, int value, ItemStack product, Mode mode) {
-        return new Trade(name, value, product, 1, mode, createTradeOptionsWindow(name, product, 1, value, mode), 0, null, new TradeConfigurator(name, product), true);
+        return new Trade(name, value, product, 1, mode, createTradeOptionsWindow(name, product, 1, value, mode), 0, null, new TradeConfigurator(name, product, mode), true);
     }
 
     private static Inventory createTradeOptionsWindow(String name, ItemStack product, int productAmount, int value, Mode mode) {

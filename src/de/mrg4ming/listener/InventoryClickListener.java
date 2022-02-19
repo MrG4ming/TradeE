@@ -108,6 +108,22 @@ public class InventoryClickListener implements Listener {
 
     private void performTradeEditorAction(Player p, InventoryClickEvent e, Trade _trade, boolean _isNewTrade, String _tradeName) {
         switch (e.getRawSlot()) {
+            case 0 -> { //switch mode
+                switch (_trade.getMode()) {
+                    case BUY -> {
+                        _trade.setMode(Trade.Mode.SELL);
+                        _trade.getConfigurator().updateMode(Trade.Mode.SELL);
+                    }
+                    case SELL -> {
+                        _trade.setMode(Trade.Mode.BUY_AND_SELL);
+                        _trade.getConfigurator().updateMode(Trade.Mode.BUY_AND_SELL);
+                    }
+                    case BUY_AND_SELL -> {
+                        _trade.setMode(Trade.Mode.BUY);
+                        _trade.getConfigurator().updateMode(Trade.Mode.BUY);
+                    }
+                }
+            }
             case 3 -> { //select Value
                 _trade.getConfigurator().setCurrentSelectedValue(TradeConfigurator.Value.PRICE);
             }

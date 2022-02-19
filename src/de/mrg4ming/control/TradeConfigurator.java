@@ -1,6 +1,8 @@
 package de.mrg4ming.control;
 
+import com.google.common.collect.Lists;
 import de.mrg4ming.data.OptionItem;
+import de.mrg4ming.data.Trade;
 import de.mrg4ming.data.WindowTitle;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -8,6 +10,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class TradeConfigurator {
@@ -19,7 +22,7 @@ public class TradeConfigurator {
 
     private Inventory inv;
 
-    public TradeConfigurator(String name, ItemStack product) {
+    public TradeConfigurator(String name, ItemStack product, Trade.Mode _mode) {
         this.inv = Bukkit.createInventory(null, 9*2, WindowTitle.TRADE_EDITOR_PREFIX.title + name);
 
         setCurrentSelectedValue(Value.NOTHING);
@@ -37,6 +40,9 @@ public class TradeConfigurator {
         inv.setItem(8+5, resetValue);
         inv.setItem(8+6, add1Value);
         inv.setItem(8+7, add10Value);
+
+        OptionItem switchMode = new OptionItem("§dSwitch Mode", Lists.newArrayList("§aMode: §6" + _mode.toString().toLowerCase()), Material.PURPLE_DYE);
+        inv.setItem(0, switchMode);
 
         OptionItem confirmItem = new OptionItem("§aConfirm", Material.LIME_DYE);
         inv.setItem(8+9, confirmItem);
@@ -86,5 +92,10 @@ public class TradeConfigurator {
         _product.setLore("§6" + _amount + " §bx §6" + _product.getType().toString().toLowerCase());
         this.inv.setItem(5, _product);
         return _product;
+    }
+
+    public void updateMode(Trade.Mode _mode) {
+        OptionItem switchMode = new OptionItem("§dSwitch Mode", Lists.newArrayList("§aMode: §6" + _mode.toString().toLowerCase()), Material.PURPLE_DYE);
+        inv.setItem(0, switchMode);
     }
 }
