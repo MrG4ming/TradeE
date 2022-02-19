@@ -14,7 +14,7 @@ public class Trade {
     public enum Mode {
         BUY(0),
         SELL(1),
-        BUY_AND_SELL(3);
+        BUY_AND_SELL(2);
 
         public final int id;
 
