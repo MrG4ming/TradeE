@@ -10,7 +10,7 @@ public class BankAccount {
     public String name;
 
     private List<String> owners;
-    private int capital;
+    private double capital;
 
     public BankAccount(String _name, String _owner) {
         owners = new ArrayList<>();
@@ -18,7 +18,7 @@ public class BankAccount {
         this.name = _name;
         this.owners.add(_owner);
     }
-    public BankAccount(String _name, String _owner, int _capital) {
+    public BankAccount(String _name, String _owner, double _capital) {
         owners = new ArrayList<>();
 
         this.name = _name;
@@ -34,7 +34,7 @@ public class BankAccount {
             this.owners = _owner;
         }
     }
-    public BankAccount(String _name, List<String> _owner, int _capital) {
+    public BankAccount(String _name, List<String> _owner, double _capital) {
         owners = new ArrayList<>();
 
         this.name = _name;
@@ -45,14 +45,14 @@ public class BankAccount {
     }
 
 
-    public void deposit(int _amount)  {
+    public void deposit(double _amount)  {
         this.capital += _amount;
     }
-    public void withdraw(int _amount)  {
+    public void withdraw(double _amount)  {
         this.capital -= _amount;
     }
 
-    public boolean transfer(BankAccount _target, int _amount) {
+    public boolean transfer(BankAccount _target, double _amount) {
         if(Bank.instance.accounts.containsValue(_target)) {
             this.withdraw(_amount);
             _target.deposit(_amount);
@@ -61,7 +61,7 @@ public class BankAccount {
         return false;
     }
 
-    public int getCapital() {
+    public double getCapital() {
         return this.capital;
     }
     public List getOwners() {

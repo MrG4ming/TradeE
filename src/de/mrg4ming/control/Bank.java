@@ -47,9 +47,9 @@ public class Bank implements ConfigItem {
                 accounts.put(id, new BankAccount(_name, _owner, START_CAPITAL));
                 usedIDs.add(id);
 
-                if(getMainAccountOfPlayer(_owner) < 0) {
+                if(getMainAccountIdOfPlayer(_owner) < 0) {
                     setMainAccountOfPlayer(_owner, accounts.get(id));
-                } else if(getMainAccountOfPlayer(_owner) < 1) {
+                } else if(getMainAccountIdOfPlayer(_owner) < 1) {
                     mainAccounts.put(_owner, id);
                 }
 
@@ -68,7 +68,7 @@ public class Bank implements ConfigItem {
 
             accounts.get(_id).getOwners().forEach(s -> {
                 String _owner = (String) s;
-                if(getMainAccountOfPlayer(_owner) == _id) {
+                if(getMainAccountIdOfPlayer(_owner) == _id) {
                     for(BankAccount _bankAccount : getBankAccountsOfPlayer(_owner)) {
                         if(getIdByName(_bankAccount.name) != _id) {
                             setMainAccountOfPlayer(_owner, _bankAccount);
@@ -105,7 +105,7 @@ public class Bank implements ConfigItem {
         }
     }
 
-    public int getMainAccountOfPlayer(String _uuid) {
+    public int getMainAccountIdOfPlayer(String _uuid) {
         if(usedUUIDs.contains(_uuid)) {
             if(mainAccounts.containsKey(_uuid)) {
                 return mainAccounts.get(_uuid);
@@ -115,6 +115,18 @@ public class Bank implements ConfigItem {
             }
         }
         return -1;
+    }
+
+    public BankAccount getMainAccountOfPlayer(String _uuid) {
+        if(usedUUIDs.contains(_uuid)) {
+            if(mainAccounts.containsKey(_uuid)) {
+                return Bank.instance.accounts.get(mainAccounts.get(_uuid));
+            } else if(getBankAccountsOfPlayer(_uuid).size() > 0) {
+                mainAccounts.put(_uuid, getIdByName(getBankAccountsOfPlayer(_uuid).get(0).name));
+                return Bank.instance.accounts.get(mainAccounts.get(_uuid));
+            }
+        }
+        return null;
     }
 
     public boolean setMainAccountOfPlayer(String _uuid, BankAccount _account) {
@@ -161,7 +173,7 @@ public class Bank implements ConfigItem {
             config.set("accounts", null);
             for(int id : usedIDs) {
                 config.set("accounts." + id + ".owner", accounts.get(id).getOwners());
-                config.set("accounts." + id + ".capital", accounts.get(id).getCapital());
+                config.set("accounts." + id + ".capital", Math.round(accounts.get(id).getCapital() * 100f) / 100f);
                 config.set("accounts." + id + ".name", accounts.get(id).name);
             }
 
@@ -177,6 +189,8 @@ public class Bank implements ConfigItem {
     }
 
     public void loadFromConfig() {
+        config.reload();
+
         if(config.contains("usedIDs")) {
             usedIDs = config.getList("usedIDs");
         }
@@ -186,7 +200,7 @@ public class Bank implements ConfigItem {
         if(config.contains("accounts") && !usedIDs.isEmpty()) {
             for(int id : usedIDs) {
                 List<String> _owners = config.getList("accounts." + id + ".owner");
-                int _capital = (Integer) config.get("accounts." + id + ".capital");
+                double _capital = Math.round((double) config.get("accounts." + id + ".capital") * 100) / 100;
                 String _name = (String) config.get("accounts." + id + ".name");
 
                 accounts.put(id, new BankAccount(_name, _owners, _capital));

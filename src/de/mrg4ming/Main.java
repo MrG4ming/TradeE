@@ -1,6 +1,7 @@
 package de.mrg4ming;
 
 import de.mrg4ming.commands.BankCommand;
+import de.mrg4ming.commands.ReloadConfigCommand;
 import de.mrg4ming.commands.TradeCommand;
 import de.mrg4ming.commands.tabcompleter.BankTabCompleter;
 import de.mrg4ming.commands.tabcompleter.TradeTabCompleter;
@@ -37,6 +38,8 @@ public class Main extends JavaPlugin {
 
         getCommand("trade").setExecutor(new TradeCommand());
         getCommand("trade").setTabCompleter(new TradeTabCompleter());
+
+        getCommand("reloadconfig").setExecutor(new ReloadConfigCommand());
 
         PluginManager pm = Bukkit.getPluginManager();
 

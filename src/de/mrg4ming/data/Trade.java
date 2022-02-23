@@ -4,11 +4,13 @@ import com.google.common.collect.Lists;
 import de.mrg4ming.control.TradeConfigurator;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Trade {
 
@@ -28,6 +30,7 @@ public class Trade {
     private int value;
     private ItemStack product;
     private int productAmount;
+    private Map<Enchantment, Integer> productEnchantments;
     private Mode mode;
     private Inventory tradeOptions;
     public int storage;
@@ -36,12 +39,12 @@ public class Trade {
     private boolean constant;
 
 
-
-    public Trade(String name, int value, ItemStack product, int productAmount, Mode mode, Inventory tradeOptions, int storage, BankAccount owner, TradeConfigurator configurator, boolean constant) {
+    public Trade(String name, int value, ItemStack product, int productAmount, Map<Enchantment, Integer> productEnchantments, Mode mode, Inventory tradeOptions, int storage, BankAccount owner, TradeConfigurator configurator, boolean constant) {
         this.name = name;
         this.value = value;
         this.product = product;
         this.productAmount = productAmount;
+        this.productEnchantments = productEnchantments;
         this.mode = mode;
         this.tradeOptions = tradeOptions;
         this.storage = storage;
@@ -50,13 +53,13 @@ public class Trade {
         this. constant = constant;
     }
 
-    public Trade(String name, int value, ItemStack product, Mode mode, int storage, BankAccount owner) {
-        this(name, value, product, 1, mode, createTradeOptionsWindow(name, product, 1, value, mode, String.valueOf(storage)), storage, owner, new TradeConfigurator(name, product, mode), false);
-    }
-    public static Trade createConstantTrade(String name, int value, ItemStack product, Mode mode) {
-        return new Trade(name, value, product, 1, mode, createTradeOptionsWindow(name, product, 1, value, mode, "Infinite"), 0, null, new TradeConfigurator(name, product, mode), true);
+    public Trade(String name, int value, ItemStack product, int productAmount, Map<Enchantment, Integer> productEnchantments, Mode mode, int storage, BankAccount owner) {
+        this(name, value, product, productAmount, productEnchantments, mode, createTradeOptionsWindow(name, product, productAmount, value, mode, String.valueOf(storage)), storage, owner, new TradeConfigurator(name, product, mode), false);
     }
 
+    public static Trade createConstantTrade(String name, int value, ItemStack product, int productAmount, Map<Enchantment, Integer> productEnchantments, Mode mode) {
+        return new Trade(name, value, product, productAmount, productEnchantments, mode, createTradeOptionsWindow(name, product, productAmount, value, mode, "Infinite"), -1, null, new TradeConfigurator(name, product, mode), true);
+    }
     private static Inventory createTradeOptionsWindow(String name, ItemStack product, int productAmount, int value, Mode mode, String storage) {
         Inventory inv = Bukkit.createInventory(null, 9, WindowTitle.TRADE_OPTIONS_PREFIX.title + name);
 
@@ -137,8 +140,8 @@ public class Trade {
         this.configurator.updateProduct(this.product.getType(), _amount);
     }
 
-    ///region Getter/Setter
 
+    ///region Getter/Setter
     public String getName() {
         return name;
     }
@@ -167,6 +170,14 @@ public class Trade {
 
     public int getProductAmount() {
         return productAmount;
+    }
+
+    public void setProductEnchantments(Map<Enchantment, Integer> enchantments) {
+        this.productEnchantments = enchantments;
+    }
+
+    public Map<Enchantment, Integer> getProductEnchantments() {
+        return productEnchantments;
     }
 
     public Mode getMode() {

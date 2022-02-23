@@ -4,7 +4,6 @@ import de.mrg4ming.Main;
 import de.mrg4ming.control.Bank;
 import de.mrg4ming.control.Shop;
 import de.mrg4ming.data.OptionItem;
-import de.mrg4ming.data.ShopInventory;
 import de.mrg4ming.data.Trade;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -50,6 +49,8 @@ public class TradeCommand implements CommandExecutor {
                                 Trade _trade = new Trade(_name,
                                         0, new OptionItem("§8Placeholder: Product",
                                         Material.DIRT),
+                                        1,
+                                        new ItemStack(Material.DIRT).getEnchantments(),
                                         Trade.Mode.BUY_AND_SELL, 0,
                                         Bank.instance.accounts.get(Bank.instance.getIdByName(_bankAccountName))
                                 );
@@ -111,6 +112,8 @@ public class TradeCommand implements CommandExecutor {
                         if(!Shop.instance.checkIfTradeExists(_name)) {
                             Trade _trade = Trade.createConstantTrade(_name,
                                     0, new OptionItem("§8Placeholder: Product", Material.DIRT),
+                                    1,
+                                    new ItemStack(Material.DIRT).getEnchantments(),
                                     Trade.Mode.SELL
                             );
 

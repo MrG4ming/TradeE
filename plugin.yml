@@ -1,5 +1,5 @@
 name: TradeE
-version: 0.4
+version: 0.5
 api-version: 1.17
 main: de.mrg4ming.Main
 author: MrG4ming
@@ -14,8 +14,13 @@ commands:
     usage: §8[§bTradeE§8]§6 /bank <create|close|transfer|info> <accountName> [amount] [targetAccountName]
     permission: tradee.bank.*
     permission-message: §8[§bTradeE§8]§6 §4You don's have the permission to use this command!
+  reloadconfig:
+    description: Reloads all the configuration files.
+    usage: §8[§bTradeE§8]§6 /reloadconfig
 
 permissions:
+   tradee.config:
+      description: Permission to reload TradeE config.
    tradee.trade.spawn:
       description: TradeE trading villager spawn permission.
       default: op

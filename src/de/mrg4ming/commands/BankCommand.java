@@ -75,7 +75,7 @@ public class BankCommand implements CommandExecutor {
                                     "§9Capital: §d" + Bank.instance.accounts.get(_id).getCapital() + "$\n" +
                                     "§9Owner: §d" + _owners + "\n" +
                                     " \n " +
-                                    "§9Current main account: §d" + Bank.instance.accounts.get(Bank.instance.getMainAccountOfPlayer(p.getUniqueId().toString())).name
+                                    "§9Current main account: §d" + Bank.instance.accounts.get(Bank.instance.getMainAccountIdOfPlayer(p.getUniqueId().toString())).name
                                             + "\n" +
                                     " \n " +
                                     "§6---------------------------------------------\n");
