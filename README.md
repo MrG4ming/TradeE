@@ -9,5 +9,5 @@ A Minecraft Plugin that includes a bank System and complete money based trading 
 
 
 
-
-###### Status: Not Finished
+Status:
+> Not Finished
