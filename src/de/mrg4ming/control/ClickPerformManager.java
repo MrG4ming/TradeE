@@ -3,8 +3,13 @@ package de.mrg4ming.control;
 import de.mrg4ming.Main;
 import de.mrg4ming.data.ShopInventory;
 import de.mrg4ming.data.Trade;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
+
+import java.util.Map;
 
 public final class ClickPerformManager {
 
@@ -32,7 +37,8 @@ public final class ClickPerformManager {
             case 5 -> { //select/set Product
                 if(p.getItemOnCursor() != null && p.getItemOnCursor().getItemMeta() != null) {
                     _trade.setProduct(p.getItemOnCursor());
-                    _trade.setProductEnchantments(p.getItemOnCursor().getEnchantments());
+                    EnchantmentStorageMeta enchMeta = (EnchantmentStorageMeta) p.getItemOnCursor().getItemMeta();
+                    _trade.setProductEnchantments(enchMeta.getStoredEnchants());
                     return;
                 }
                 _trade.getConfigurator().setCurrentSelectedValue(TradeConfigurator.Value.PRODUCT);
@@ -199,7 +205,8 @@ public final class ClickPerformManager {
             if((trade.storage > trade.getProductAmount()) || (trade.storage == -1)) { //check if the storage of the trade has enough items in it (or is infinite) to give the player one "stack" of the given size (productAmount)
 
                 if((Bank.instance.getMainAccountOfPlayer(p.getUniqueId().toString()).getCapital() > trade.getValue())) { //check if player can buy the full amount with his current capital
-                    PlayerUtils.givePlayerItems(p, trade.getProduct(), trade.getProductAmount());
+
+                    PlayerUtils.givePlayerItems(p, trade.getProduct(), trade.getProductAmount(), trade.getProductEnchantments()); //give player product of specific amount
                     if(!trade.isConstant()) trade.storage -= trade.getProductAmount(); //remove items from storage if the trade is nor constant
                     trade.updateTradeOptions();
                     if(!trade.isConstant()) {
@@ -231,9 +238,9 @@ public final class ClickPerformManager {
         if(_minValue < 0.01) _minValue = 0.01f; //clamp value so a player can not get less than 0.01$
 
         if(p.getItemOnCursor() != null && p.getItemOnCursor().getItemMeta() != null) {
-            if(p.getItemOnCursor().getType().equals(trade.getProduct().getType()) && p.getItemOnCursor().getEnchantments().equals(trade.getProductEnchantments())) { //check if item on cursor is equal to the trade product
+            if(p.getItemOnCursor().getType().equals(trade.getProduct().getType()) && PlayerUtils.itemContainsEnchantments(p.getItemOnCursor(), trade.getProductEnchantments())) { //check if item on cursor is equal to the trade product
 
-                System.out.println("is Trade constant: " + trade.isConstant());
+                //System.out.println("is Trade constant: " + trade.isConstant());
                 if(!trade.isConstant()) { //check if trade is constant (affects the payment and storage)
                     Bank.instance.getMainAccountOfPlayer(p.getUniqueId().toString()).transfer(trade.getOwner(), _minValue * p.getItemOnCursor().getAmount()); //transfer money to trade owner
                     trade.storage += p.getItemOnCursor().getAmount();
@@ -242,9 +249,8 @@ public final class ClickPerformManager {
                     Bank.instance.getMainAccountOfPlayer(p.getUniqueId().toString()).deposit(_minValue * p.getItemOnCursor().getAmount()); //deposit money from player
                 }
 
-
                 p.getItemOnCursor().setAmount(0);
-            }
+            } else p.sendMessage(Main.PREFiX + "§cItem doesn't match the item in the storage.");
         }
     }
 
@@ -255,13 +261,13 @@ public final class ClickPerformManager {
                 return;
             }
             if(p.getItemOnCursor() != null && p.getItemOnCursor().getItemMeta() != null) { //check if player has an item on the cursor
-                if (p.getItemOnCursor().getType().equals(trade.getProduct().getType()) && p.getItemOnCursor().getEnchantments().equals(trade.getProductEnchantments())) { //check if item on cursor is equal to the trade product
+                if(p.getItemOnCursor().getType().equals(trade.getProduct().getType()) && PlayerUtils.itemContainsEnchantments(p.getItemOnCursor(), trade.getProductEnchantments())) { //check if item on cursor is equal to the trade product
                     trade.storage += p.getItemOnCursor().getAmount();
                     p.getItemOnCursor().setAmount(0);
                     trade.updateTradeOptions();
                 }
             } else {
-                PlayerUtils.givePlayerItems(p, trade.getProduct(), trade.storage);
+                PlayerUtils.givePlayerItems(p, trade.getProduct(), trade.storage, trade.getProductEnchantments());
                 trade.storage -= trade.storage;
                 p.sendMessage(Main.PREFiX + "§aTrade storage successfully emptied.");
                 trade.updateTradeOptions();

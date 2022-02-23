@@ -178,7 +178,7 @@ public class Shop implements ConfigItem {
                 String _name = (String) cfg.get("trades." + id + ".name");
                 int _value = (int) cfg.get("trades." + id + ".value");
                 ItemStack _product = cfg.getItemStack("trades." + id + ".product");
-                Map<Enchantment, Integer> enchants = cfg.getEnchants("trades." + id + "enchantments");
+                Map<Enchantment, Integer> enchants = cfg.getEnchants("trades." + id + ".enchantments");
                 int _mode = (int) cfg.get("trades." + id + ".mode");
                 int _storage = (Integer) cfg.get("trades." + id + ".storage");
                 int _productAmount = (int) cfg.get("trades." + id + ".productAmount");

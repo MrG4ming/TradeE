@@ -55,8 +55,8 @@ public class Config {
 
     public void setEnchants(String path, Map<Enchantment, Integer> enchants) {
         List<String> enchantments = new ArrayList<>();
-        for(Map.Entry<Enchantment, Integer> e : enchants.entrySet()) {
-            enchantments.add(e.getKey() + ":" + e.getValue());
+        for(Enchantment e : enchants.keySet()) {
+            enchantments.add(e.getKey().toString() + "." + enchants.get(e).intValue());
         }
         cfg.set(path, enchantments);
     }
@@ -78,15 +78,20 @@ public class Config {
 
     public Map<Enchantment, Integer> getEnchants(String path) {
         List<String> enchantments = this.getList(path);
+        //System.out.println(enchantments);
         if(enchantments != null) {
             Map<Enchantment, Integer> enchants = new HashMap<>();
             for(String s : enchantments) {
-                Enchantment e = Enchantment.getByKey(NamespacedKey.minecraft(s.split(":")[0].toLowerCase()));
-                int level = Integer.parseInt(s.split(":")[1]);
+                //System.out.println("String: " + s);
+                Enchantment e = Enchantment.getByKey(NamespacedKey.fromString(s.split("\\.")[0]));
+                int level = Integer.parseInt(s.split("\\.")[1]);
+                //System.out.println("Enchantment: " + e.toString() + " Level: " + level);
                 enchants.put(e, level);
             }
 
             return enchants;
+        }  else {
+            System.out.println("Enchantments empty");
         }
 
         return new HashMap<>();
