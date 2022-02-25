@@ -85,7 +85,7 @@ public class Config {
                 //System.out.println("String: " + s);
                 Enchantment e = Enchantment.getByKey(NamespacedKey.fromString(s.split("\\.")[0]));
                 int level = Integer.parseInt(s.split("\\.")[1]);
-                System.out.println("Enchantment: " + e.getKey().toString() + " Level: " + level);
+                //System.out.println("Enchantment: " + e.getKey().toString() + " Level: " + level);
                 enchants.put(e, level);
             }
 
