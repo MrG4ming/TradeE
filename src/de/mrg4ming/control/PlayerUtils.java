@@ -1,5 +1,6 @@
 package de.mrg4ming.control;
 
+import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -60,6 +61,7 @@ public final class PlayerUtils {
                 ItemStack _item = new ItemStack(item.getType(), item.getMaxStackSize());
                 _items.add(_item);
             }
+            System.out.println("Enchantments cannot be applied to ItemStack.");
         }
 
         if(b > 0) {
@@ -70,6 +72,8 @@ public final class PlayerUtils {
                     _enchMeta.addStoredEnchant(entry.getKey(), entry.getValue(), true);
                 }
                 _item.setItemMeta(_enchMeta);
+            } else {
+                System.out.println("Enchantments cannot be applied to ItemStack.");
             }
             _items.add(_item);
         }
@@ -103,6 +107,7 @@ public final class PlayerUtils {
     }
 
     public static boolean itemCanBeEnchanted(ItemStack item, Map<Enchantment, Integer> enchantments) {
+        if(item.getType().equals(Material.ENCHANTED_BOOK)) return true;
         for(Enchantment _ench : enchantments.keySet()) {
             if(!_ench.canEnchantItem(item)) {
                 return false;
