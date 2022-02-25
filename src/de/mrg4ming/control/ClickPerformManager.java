@@ -9,6 +9,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public final class ClickPerformManager {
@@ -37,8 +38,10 @@ public final class ClickPerformManager {
             case 5 -> { //select/set Product
                 if(p.getItemOnCursor() != null && p.getItemOnCursor().getItemMeta() != null) {
                     _trade.setProduct(p.getItemOnCursor());
-                    EnchantmentStorageMeta enchMeta = (EnchantmentStorageMeta) p.getItemOnCursor().getItemMeta();
-                    _trade.setProductEnchantments(enchMeta.getStoredEnchants());
+                    if(p.getItemOnCursor().getItemMeta() instanceof EnchantmentStorageMeta) {
+                        EnchantmentStorageMeta enchMeta = (EnchantmentStorageMeta) p.getItemOnCursor().getItemMeta();
+                    }
+                    _trade.setProductEnchantments(new HashMap<>());
                     return;
                 }
                 _trade.getConfigurator().setCurrentSelectedValue(TradeConfigurator.Value.PRODUCT);

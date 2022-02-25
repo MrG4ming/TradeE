@@ -64,7 +64,7 @@ public final class PlayerUtils {
 
         if(b > 0) {
             ItemStack _item = new ItemStack(item.getType(), b);
-            if(itemCanBeEnchanted(item, enchantments)) {
+            if(itemCanBeEnchanted(item, enchantments) && _item.getItemMeta() instanceof EnchantmentStorageMeta) {
                 EnchantmentStorageMeta _enchMeta = (EnchantmentStorageMeta) _item.getItemMeta();
                 for(Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
                     _enchMeta.addStoredEnchant(entry.getKey(), entry.getValue(), true);
@@ -88,7 +88,7 @@ public final class PlayerUtils {
     public static boolean itemContainsEnchantments(ItemStack item, Map<Enchantment, Integer> enchantments) {
         boolean _value = true;
 
-        if(itemCanBeEnchanted(item, enchantments)) {
+        if(itemCanBeEnchanted(item, enchantments) && item.getItemMeta() instanceof EnchantmentStorageMeta) {
             EnchantmentStorageMeta _enchMeta = (EnchantmentStorageMeta) item.getItemMeta();
 
             for(Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
