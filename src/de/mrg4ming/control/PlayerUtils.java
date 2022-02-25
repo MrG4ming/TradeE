@@ -1,6 +1,5 @@
 package de.mrg4ming.control;
 
-import com.sun.jna.platform.win32.Winevt;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -46,22 +45,32 @@ public final class PlayerUtils {
         int a = amount / item.getMaxStackSize();
         int b = amount % item.getMaxStackSize();
 
-        for(int i = 0; i < a; i++) {
-            ItemStack _item = new ItemStack(item.getType(), item.getMaxStackSize());
-            EnchantmentStorageMeta _enchMeta = (EnchantmentStorageMeta) _item.getItemMeta();
-            for(Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
-                _enchMeta.addStoredEnchant(entry.getKey(), entry.getValue(), true);
+        if(itemCanBeEnchanted(item, enchantments)) {
+            for(int i = 0; i < a; i++) {
+                ItemStack _item = new ItemStack(item.getType(), item.getMaxStackSize());
+                EnchantmentStorageMeta _enchMeta = (EnchantmentStorageMeta) _item.getItemMeta();
+                for(Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
+                    _enchMeta.addStoredEnchant(entry.getKey(), entry.getValue(), true);
+                }
+                _item.setItemMeta(_enchMeta);
+                _items.add(_item);
             }
-            _item.setItemMeta(_enchMeta);
-            _items.add(_item);
+        } else {
+            for(int i = 0; i < a; i++) {
+                ItemStack _item = new ItemStack(item.getType(), item.getMaxStackSize());
+                _items.add(_item);
+            }
         }
+
         if(b > 0) {
             ItemStack _item = new ItemStack(item.getType(), b);
-            EnchantmentStorageMeta _enchMeta = (EnchantmentStorageMeta) _item.getItemMeta();
-            for(Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
-                _enchMeta.addStoredEnchant(entry.getKey(), entry.getValue(), true);
+            if(itemCanBeEnchanted(item, enchantments)) {
+                EnchantmentStorageMeta _enchMeta = (EnchantmentStorageMeta) _item.getItemMeta();
+                for(Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
+                    _enchMeta.addStoredEnchant(entry.getKey(), entry.getValue(), true);
+                }
+                _item.setItemMeta(_enchMeta);
             }
-            _item.setItemMeta(_enchMeta);
             _items.add(_item);
         }
 
@@ -79,15 +88,28 @@ public final class PlayerUtils {
     public static boolean itemContainsEnchantments(ItemStack item, Map<Enchantment, Integer> enchantments) {
         boolean _value = true;
 
-        EnchantmentStorageMeta _enchMeta = (EnchantmentStorageMeta) item.getItemMeta();
+        if(itemCanBeEnchanted(item, enchantments)) {
+            EnchantmentStorageMeta _enchMeta = (EnchantmentStorageMeta) item.getItemMeta();
 
-        for(Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
-            if(!_enchMeta.getStoredEnchants().entrySet().contains(entry)) {
-                _value = false;
+            for(Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
+                if(!_enchMeta.getStoredEnchants().entrySet().contains(entry)) {
+                    _value = false;
+                }
+            }
+        } else _value = false;
+
+
+        return _value;
+    }
+
+    public static boolean itemCanBeEnchanted(ItemStack item, Map<Enchantment, Integer> enchantments) {
+        for(Enchantment _ench : enchantments.keySet()) {
+            if(!_ench.canEnchantItem(item)) {
+                return false;
             }
         }
 
-        return _value;
+        return true;
     }
 
 }
