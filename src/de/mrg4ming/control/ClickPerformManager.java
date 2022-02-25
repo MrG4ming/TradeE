@@ -241,7 +241,7 @@ public final class ClickPerformManager {
         if(_minValue < 0.01) _minValue = 0.01f; //clamp value so a player can not get less than 0.01$
 
         if(p.getItemOnCursor() != null && p.getItemOnCursor().getItemMeta() != null) {
-            if(p.getItemOnCursor().getType().equals(trade.getProduct().getType()) && PlayerUtils.itemContainsEnchantments(p.getItemOnCursor(), trade.getProductEnchantments())) { //check if item on cursor is equal to the trade product
+            if(p.getItemOnCursor().getType().equals(trade.getProduct().getType()) && (PlayerUtils.itemContainsEnchantments(p.getItemOnCursor(), trade.getProductEnchantments()) || trade.getProductEnchantments().isEmpty())) { //check if item on cursor is equal to the trade product
 
                 //System.out.println("is Trade constant: " + trade.isConstant());
                 if(!trade.isConstant()) { //check if trade is constant (affects the payment and storage)
