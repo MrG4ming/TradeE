@@ -104,8 +104,10 @@ public class Shop implements ConfigItem {
     public List<Trade> getTradesOfBankAccount(BankAccount _account) {
         List<Trade> _trades = new ArrayList<>();
         for(Trade _trade : trades.values()) {
-            if(_trade.getOwner().equals(_account)) {
-                _trades.add(_trade);
+            if(!_trade.isConstant()) {
+                if(_trade.getOwner().equals(_account)) {
+                    _trades.add(_trade);
+                }
             }
         }
         return _trades;
