@@ -55,9 +55,9 @@ public class Bank implements ConfigItem {
 
                 search = false;
                 return id;
-            } else {
+            } /*else {
                 System.out.println(id);
-            }
+            }*/
             id++;
         }
         return 0;
