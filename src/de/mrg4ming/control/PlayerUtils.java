@@ -20,13 +20,13 @@ public final class PlayerUtils {
         int b = amount % item.getMaxStackSize();
 
         for(int i = 0; i < a; i++) {
-            ItemStack _item = new ItemStack(item.getType(), item.getMaxStackSize());
-            _item.addEnchantments(item.getEnchantments());
+            ItemStack _item = new ItemStack(item);
+            _item.setAmount(_item.getMaxStackSize());
             _items.add(_item);
         }
         if(b > 0) {
-            ItemStack _item = new ItemStack(item.getType(), b);
-            _item.addEnchantments(item.getEnchantments());
+            ItemStack _item = new ItemStack(item);
+            _item.setAmount(b);
             _items.add(_item);
         }
 
@@ -49,11 +49,15 @@ public final class PlayerUtils {
         if(itemCanBeEnchanted(item, enchantments)) {
             for(int i = 0; i < a; i++) {
                 ItemStack _item = new ItemStack(item.getType(), item.getMaxStackSize());
-                EnchantmentStorageMeta _enchMeta = (EnchantmentStorageMeta) _item.getItemMeta();
-                for(Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
-                    _enchMeta.addStoredEnchant(entry.getKey(), entry.getValue(), true);
+                if(_item.getItemMeta() instanceof EnchantmentStorageMeta) {
+                    EnchantmentStorageMeta _enchMeta = (EnchantmentStorageMeta) _item.getItemMeta();
+                    for(Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
+                        _enchMeta.addStoredEnchant(entry.getKey(), entry.getValue(), true);
+                    }
+                    _item.setItemMeta(_enchMeta);
+                } else {
+                    _item.addEnchantments(enchantments);
                 }
-                _item.setItemMeta(_enchMeta);
                 _items.add(_item);
             }
         } else {
@@ -66,12 +70,16 @@ public final class PlayerUtils {
 
         if(b > 0) {
             ItemStack _item = new ItemStack(item.getType(), b);
-            if(itemCanBeEnchanted(item, enchantments) && _item.getItemMeta() instanceof EnchantmentStorageMeta) {
-                EnchantmentStorageMeta _enchMeta = (EnchantmentStorageMeta) _item.getItemMeta();
-                for(Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
-                    _enchMeta.addStoredEnchant(entry.getKey(), entry.getValue(), true);
+            if(itemCanBeEnchanted(item, enchantments)) {
+                if(_item.getItemMeta() instanceof EnchantmentStorageMeta) {
+                    EnchantmentStorageMeta _enchMeta = (EnchantmentStorageMeta) _item.getItemMeta();
+                    for(Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
+                        _enchMeta.addStoredEnchant(entry.getKey(), entry.getValue(), true);
+                    }
+                    _item.setItemMeta(_enchMeta);
+                } else {
+                    _item.addEnchantments(enchantments);
                 }
-                _item.setItemMeta(_enchMeta);
             } else {
                 System.out.println("Enchantments cannot be applied to ItemStack.");
             }
@@ -92,12 +100,22 @@ public final class PlayerUtils {
     public static boolean itemContainsEnchantments(ItemStack item, Map<Enchantment, Integer> enchantments) {
         boolean _value = true;
 
-        if(itemCanBeEnchanted(item, enchantments) && item.getItemMeta() instanceof EnchantmentStorageMeta) {
-            EnchantmentStorageMeta _enchMeta = (EnchantmentStorageMeta) item.getItemMeta();
+        if(itemCanBeEnchanted(item, enchantments)) {
+            if(item.getItemMeta() instanceof EnchantmentStorageMeta) {
+                EnchantmentStorageMeta _enchMeta = (EnchantmentStorageMeta) item.getItemMeta();
 
-            for(Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
-                if(!_enchMeta.getStoredEnchants().entrySet().contains(entry)) {
-                    _value = false;
+                for(Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
+                    if(!_enchMeta.getStoredEnchants().entrySet().contains(entry)) {
+                        _value = false;
+                    }
+                }
+            } else {
+                for(Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
+                    if(item.getItemMeta().hasEnchant(entry.getKey())) {
+                        if(item.getItemMeta().getEnchantLevel(entry.getKey()) != entry.getValue()) {
+                            _value = false;
+                        }
+                    } else _value = false;
                 }
             }
         } else _value = false;
@@ -115,6 +133,18 @@ public final class PlayerUtils {
         }
 
         return true;
+    }
+
+    public static boolean itemsAreSimilarExceptAmount(ItemStack item1, ItemStack item2) {
+        boolean _value = true;
+
+        if(!item1.getType().equals(item2.getType())) _value = false;
+
+        if(item1.getEnchantments().isEmpty() ^ item2.getEnchantments().isEmpty()) _value = false;
+
+        if(!item1.getEnchantments().equals(item2.getEnchantments())) _value = false;
+
+        return _value;
     }
 
 }

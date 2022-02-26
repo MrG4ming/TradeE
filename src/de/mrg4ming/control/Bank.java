@@ -3,7 +3,7 @@ package de.mrg4ming.control;
 import de.mrg4ming.config.Config;
 import de.mrg4ming.config.ConfigItem;
 import de.mrg4ming.data.BankAccount;
-import de.mrg4ming.data.Trade;
+import de.mrg4ming.data.trade.Trade;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 

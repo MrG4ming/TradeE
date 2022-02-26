@@ -2,7 +2,7 @@ package de.mrg4ming.control;
 
 import com.google.common.collect.Lists;
 import de.mrg4ming.data.OptionItem;
-import de.mrg4ming.data.Trade;
+import de.mrg4ming.data.trade.Trade;
 import de.mrg4ming.data.WindowTitle;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -21,12 +21,12 @@ public class TradeConfigurator {
 
     private Inventory inv;
 
-    public TradeConfigurator(String name, ItemStack product, Trade.Mode _mode) {
+    public TradeConfigurator(String name, ItemStack productItemStack, Trade.Mode _mode) {
         this.inv = Bukkit.createInventory(null, 9*2, WindowTitle.TRADE_EDITOR_PREFIX.title + name);
 
         setCurrentSelectedValue(Value.NOTHING);
         updateValue(0);
-        this.inv.setItem(5, product);
+        this.inv.setItem(5, productItemStack);
 
         OptionItem remove10Value = new OptionItem("-10", Material.FEATHER);
         OptionItem remove1Value = new OptionItem("-1", Material.FEATHER);

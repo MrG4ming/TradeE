@@ -1,7 +1,10 @@
-package de.mrg4ming.data;
+package de.mrg4ming.data.trade;
 
 import com.google.common.collect.Lists;
 import de.mrg4ming.control.TradeConfigurator;
+import de.mrg4ming.data.BankAccount;
+import de.mrg4ming.data.OptionItem;
+import de.mrg4ming.data.WindowTitle;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -28,9 +31,7 @@ public class Trade {
 
     private String name;
     private int value;
-    private ItemStack product;
-    private int productAmount;
-    private Map<Enchantment, Integer> productEnchantments;
+    private TradeItem product;
     private Mode mode;
     private Inventory tradeOptions;
     public int storage;
@@ -39,12 +40,10 @@ public class Trade {
     private boolean constant;
 
 
-    public Trade(String name, int value, ItemStack product, int productAmount, Map<Enchantment, Integer> productEnchantments, Mode mode, Inventory tradeOptions, int storage, BankAccount owner, TradeConfigurator configurator, boolean constant) {
+    public Trade(String name, int value, TradeItem product, Mode mode, Inventory tradeOptions, int storage, BankAccount owner, TradeConfigurator configurator, boolean constant) {
         this.name = name;
         this.value = value;
         this.product = product;
-        this.productAmount = productAmount;
-        this.productEnchantments = productEnchantments;
         this.mode = mode;
         this.tradeOptions = tradeOptions;
         this.storage = storage;
@@ -53,19 +52,28 @@ public class Trade {
         this. constant = constant;
     }
 
-    public Trade(String name, int value, ItemStack product, int productAmount, Map<Enchantment, Integer> productEnchantments, Mode mode, int storage, BankAccount owner) {
-        this(name, value, product, productAmount, productEnchantments, mode, createTradeOptionsWindow(name, product, productAmount, value, mode, String.valueOf(storage)), storage, owner, new TradeConfigurator(name, product, mode), false);
+    public Trade(String name, int value, TradeItem product, Mode mode, int storage, BankAccount owner) {
+        this(
+                name,
+                value,
+                product,
+                mode,
+                createTradeOptionsWindow(name, product, value, mode, String.valueOf(storage)),
+                storage,
+                owner,
+                new TradeConfigurator(name, product.getItemStack(), mode), false
+        );
     }
 
-    public static Trade createConstantTrade(String name, int value, ItemStack product, int productAmount, Map<Enchantment, Integer> productEnchantments, Mode mode) {
-        return new Trade(name, value, product, productAmount, productEnchantments, mode, createTradeOptionsWindow(name, product, productAmount, value, mode, "Infinite"), -1, null, new TradeConfigurator(name, product, mode), true);
+    public static Trade createConstantTrade(String name, int value, TradeItem product, Mode mode) {
+        return new Trade(name, value, product, mode, createTradeOptionsWindow(name, product, value, mode, "Infinite"), -1, null, new TradeConfigurator(name, product.getItemStack(), mode), true);
     }
-    private static Inventory createTradeOptionsWindow(String name, ItemStack product, int productAmount, int value, Mode mode, String storage) {
+    private static Inventory createTradeOptionsWindow(String name, TradeItem product, int value, Mode mode, String storage) {
         Inventory inv = Bukkit.createInventory(null, 9, WindowTitle.TRADE_OPTIONS_PREFIX.title + name);
 
         List<String> _infoLore = new ArrayList<>();
         _infoLore.add("§9Name: §d" + name);
-        _infoLore.add("§9Product: §d" + productAmount + "x" + product.getType().toString());
+        _infoLore.add("§9Product: §d" + product.getAmount() + "x" + product.getMaterial().name());
         _infoLore.add("§9Value: §d" + value);
 
         //insert option item buttons
@@ -97,7 +105,7 @@ public class Trade {
     public void updateTradeOptions() {
         List<String> _infoLore = new ArrayList<>();
         _infoLore.add("§9Name: §d" + name);
-        _infoLore.add("§9Product: §d" + productAmount + "x" + product.getType().toString());
+        _infoLore.add("§9Product: §d" + this.product.getAmount() + "x" + product.getMaterial().name().toLowerCase());
         _infoLore.add("§9Value: §d" + value);
 
         //insert option item buttons
@@ -130,17 +138,6 @@ public class Trade {
         this.tradeOptions.setItem(8, _storage);
     }
 
-    public void setProductAmount(int _amount) {
-        if(_amount > this.product.getMaxStackSize()) {
-            this.productAmount = this.product.getMaxStackSize();
-        } else {
-            this.productAmount = _amount;
-        }
-        //System.out.println("Material: " + this.product.getType().toString());
-        this.configurator.updateProduct(this.product.getType(), _amount);
-    }
-
-
     ///region Getter/Setter
     public String getName() {
         return name;
@@ -159,25 +156,13 @@ public class Trade {
         this.configurator.updateValue(value);
     }
 
-    public ItemStack getProduct() {
+    public TradeItem getProduct() {
         return product;
     }
 
-    public void setProduct(ItemStack product) {
-        this.product.setType(product.getType());
-        this.configurator.updateProduct(product.getType(), this.productAmount);
-    }
-
-    public int getProductAmount() {
-        return productAmount;
-    }
-
-    public void setProductEnchantments(Map<Enchantment, Integer> enchantments) {
-        this.productEnchantments = enchantments;
-    }
-
-    public Map<Enchantment, Integer> getProductEnchantments() {
-        return productEnchantments;
+    public void setProduct(TradeItem product) {
+        this.product = product;
+        this.configurator.updateProduct(product.getMaterial(), product.getAmount());
     }
 
     public Mode getMode() {

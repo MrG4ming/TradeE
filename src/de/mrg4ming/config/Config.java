@@ -53,14 +53,6 @@ public class Config {
         cfg.save(file);
     }
 
-    public void setEnchants(String path, Map<Enchantment, Integer> enchants) {
-        List<String> enchantments = new ArrayList<>();
-        for(Enchantment e : enchants.keySet()) {
-            enchantments.add(e.getKey().toString() + "." + enchants.get(e).intValue());
-        }
-        cfg.set(path, enchantments);
-    }
-
     public Object get(String _path) {
         if(!contains(_path)) return null;
         return cfg.get(_path);
@@ -74,27 +66,6 @@ public class Config {
     public ItemStack getItemStack(String _path) {
         if(!contains(_path)) return null;
         return new ItemStack(cfg.getItemStack(_path));
-    }
-
-    public Map<Enchantment, Integer> getEnchants(String path) {
-        List<String> enchantments = this.getList(path);
-        //System.out.println(enchantments);
-        if(enchantments != null) {
-            Map<Enchantment, Integer> enchants = new HashMap<>();
-            for(String s : enchantments) {
-                //System.out.println("String: " + s);
-                Enchantment e = Enchantment.getByKey(NamespacedKey.fromString(s.split("\\.")[0]));
-                int level = Integer.parseInt(s.split("\\.")[1]);
-                //System.out.println("Enchantment: " + e.getKey().toString() + " Level: " + level);
-                enchants.put(e, level);
-            }
-
-            return enchants;
-        }  else {
-            System.out.println("Enchantments empty");
-        }
-
-        return new HashMap<>();
     }
 
     public String getName() {

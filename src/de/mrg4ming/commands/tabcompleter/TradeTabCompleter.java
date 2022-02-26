@@ -3,7 +3,7 @@ package de.mrg4ming.commands.tabcompleter;
 import de.mrg4ming.control.Bank;
 import de.mrg4ming.control.Shop;
 import de.mrg4ming.data.BankAccount;
-import de.mrg4ming.data.Trade;
+import de.mrg4ming.data.trade.Trade;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;

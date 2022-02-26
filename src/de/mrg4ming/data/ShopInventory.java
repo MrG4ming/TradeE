@@ -1,5 +1,6 @@
 package de.mrg4ming.data;
 
+import de.mrg4ming.data.trade.Trade;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
@@ -62,7 +63,7 @@ public class ShopInventory {
 
                     List<String> _lore = new ArrayList<>();
                     _lore.add("§9Value: §d" + _t.getValue());
-                    _lore.add("§9Product: §d" + _t.getProductAmount() + "x" + _t.getProduct().getType().toString().toLowerCase());
+                    _lore.add("§9Product: §d" + _t.getProduct().getAmount() + "x" + _t.getProduct().getMaterial().name().toLowerCase());
                     _tradeMeta.setLore(_lore);
 
                     _tradeItem.setItemMeta(_tradeMeta);

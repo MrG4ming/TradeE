@@ -2,9 +2,11 @@ package de.mrg4ming.commands;
 
 import de.mrg4ming.Main;
 import de.mrg4ming.control.Bank;
+import de.mrg4ming.control.PlayerUtils;
 import de.mrg4ming.control.Shop;
 import de.mrg4ming.data.OptionItem;
-import de.mrg4ming.data.Trade;
+import de.mrg4ming.data.trade.Trade;
+import de.mrg4ming.data.trade.TradeItem;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -46,12 +48,14 @@ public class TradeCommand implements CommandExecutor {
 
                         if(!Shop.instance.checkIfTradeExists(_name)) {
                             if(Bank.instance.getIdByName(_bankAccountName) > 0) {
+                                TradeItem _placeholderItem = new TradeItem(Material.DIRT, 1, new HashMap<>());
+                                _placeholderItem.setItemStack(new OptionItem("§8Placeholder: Product", Material.DIRT));
+
                                 Trade _trade = new Trade(_name,
-                                        0, new OptionItem("§8Placeholder: Product",
-                                        Material.DIRT),
-                                        1,
-                                        new ItemStack(Material.DIRT).getEnchantments(),
-                                        Trade.Mode.BUY_AND_SELL, 0,
+                                        0,
+                                        _placeholderItem,
+                                        Trade.Mode.SELL,
+                                        0,
                                         Bank.instance.accounts.get(Bank.instance.getIdByName(_bankAccountName))
                                 );
 
@@ -83,16 +87,7 @@ public class TradeCommand implements CommandExecutor {
                                 return true;
                             }
 
-                            while(_trade.storage > 0) {
-                                HashMap<Integer, ItemStack> _droppedItems = p.getInventory().addItem(new ItemStack(_trade.getProduct().getType(), _trade.getProductAmount()));
-
-                                if(_droppedItems.size() > 0) {
-                                    for(ItemStack i : _droppedItems.values()) {
-                                        p.getWorld().dropItem(p.getLocation(), i);
-                                    }
-                                }
-                                _trade.storage--;
-                            }
+                            PlayerUtils.givePlayerItems(p, _trade.getProduct().getItemStack(), _trade.storage);
                         }
 
                         Shop.instance.removeTrade(Shop.getKeyByValue(Shop.instance.trades, Shop.instance.getTrade(_name)));
@@ -109,11 +104,14 @@ public class TradeCommand implements CommandExecutor {
                     if(args[0].equalsIgnoreCase("constant")) {
                         String _name = args[1];
 
+
                         if(!Shop.instance.checkIfTradeExists(_name)) {
+                            TradeItem _placeholderItem = new TradeItem(Material.DIRT, 1, new HashMap<>());
+                            _placeholderItem.setItemStack(new OptionItem("§8Placeholder: Product", Material.DIRT));
+
                             Trade _trade = Trade.createConstantTrade(_name,
-                                    0, new OptionItem("§8Placeholder: Product", Material.DIRT),
-                                    1,
-                                    new ItemStack(Material.DIRT).getEnchantments(),
+                                    0,
+                                    _placeholderItem,
                                     Trade.Mode.SELL
                             );
 

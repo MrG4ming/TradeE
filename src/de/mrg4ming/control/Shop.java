@@ -4,7 +4,8 @@ import de.mrg4ming.config.Config;
 import de.mrg4ming.config.ConfigItem;
 import de.mrg4ming.data.BankAccount;
 import de.mrg4ming.data.ShopInventory;
-import de.mrg4ming.data.Trade;
+import de.mrg4ming.data.trade.Trade;
+import de.mrg4ming.data.trade.TradeItem;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -40,7 +41,6 @@ public class Shop implements ConfigItem {
         inv = new ShopInventory(new ArrayList<>(trades.values()));
     }
 
-    //Create Trade and remove Trade functions
     public boolean addTrade(Trade _trade, SyncMode _mode) {
         if(Shop.instance.getShopInvData().getTrades().size() + 1 > (ShopInventory.MAX_TRADES_PER_PAGE * ShopInventory.MAX_PAGES)) return false;
 
@@ -78,6 +78,7 @@ public class Shop implements ConfigItem {
     public boolean removeTrade(int _id) {
         if(!trades.containsKey(_id)) return false;
         trades.remove(_id);
+        usedIDs.remove(_id);
         syncShopDataWithInv(SyncMode.OVERWRITE_SHOP_INV_DATA);
         inv.updatePages();
         return true;
@@ -179,24 +180,23 @@ public class Shop implements ConfigItem {
             for(int id : usedIDs) {
                 String _name = (String) cfg.get("trades." + id + ".name");
                 int _value = (int) cfg.get("trades." + id + ".value");
-                ItemStack _product = cfg.getItemStack("trades." + id + ".product");
-                Map<Enchantment, Integer> enchants = cfg.getEnchants("trades." + id + ".enchantments");
+                TradeItem _product = new TradeItem();
+                _product.loadFrom(cfg, "trades." + id + ".product");
                 int _mode = (int) cfg.get("trades." + id + ".mode");
                 int _storage = (Integer) cfg.get("trades." + id + ".storage");
-                int _productAmount = (int) cfg.get("trades." + id + ".productAmount");
                 boolean _isConstant = (boolean) cfg.get("trades." + id + ".isConstant");
                 if(!_isConstant) {
                     int _bankOwnerId = (int) cfg.get("trades." + id + ".bankOwnerId");
 
                     try {
-                        Trade _trade = new Trade(_name, _value, _product, _productAmount, enchants, Trade.Mode.values()[_mode], _storage, Bank.instance.accounts.get(_bankOwnerId));
+                        Trade _trade = new Trade(_name, _value, _product, Trade.Mode.values()[_mode], _storage, Bank.instance.accounts.get(_bankOwnerId));
                         trades.put(id, _trade);
                     } catch(Exception e) {
                         e.printStackTrace();
                     }
                 } else {
                     try {
-                        Trade _trade = Trade.createConstantTrade(_name, _value, _product, _productAmount, enchants, Trade.Mode.values()[_mode]);
+                        Trade _trade = Trade.createConstantTrade(_name, _value, _product, Trade.Mode.values()[_mode]);
                         trades.put(id, _trade);
                     } catch(Exception e) {
                         e.printStackTrace();
@@ -215,11 +215,9 @@ public class Shop implements ConfigItem {
             for(int id : usedIDs) {
                 cfg.set("trades." + id + ".name", trades.get(id).getName());
                 cfg.set("trades." + id + ".value", trades.get(id).getValue());
-                cfg.set("trades." + id + ".product", new ItemStack(trades.get(id).getProduct().getType(), 1));
-                cfg.setEnchants("trades." + id + ".enchantments", trades.get(id).getProductEnchantments());
+                trades.get(id).getProduct().saveTo(cfg, "trades." + id + ".product");
                 cfg.set("trades." + id + ".mode", trades.get(id).getMode().id);
                 cfg.set("trades." + id + ".storage", trades.get(id).storage);
-                cfg.set("trades." + id + ".productAmount", trades.get(id).getProductAmount());
                 if(trades.get(id).isConstant()) {
                     cfg.set("trades." + id + ".isConstant", true);
                     cfg.set("trades." + id + ".bankOwnerId", null);
