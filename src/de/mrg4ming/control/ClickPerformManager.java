@@ -54,6 +54,7 @@ public final class ClickPerformManager {
                     }
                     case PRODUCT -> {
                         _trade.getProduct().setAmount(_trade.getProduct().getAmount() - 10);
+                        _trade.getConfigurator().updateProduct(_trade.getProduct().getMaterial(), _trade.getProduct().getAmount());
                     }
                 }
             }
@@ -72,6 +73,7 @@ public final class ClickPerformManager {
                     }
                     case PRODUCT -> {
                         _trade.getProduct().setAmount(_trade.getProduct().getAmount() - 1);
+                        _trade.getConfigurator().updateProduct(_trade.getProduct().getMaterial(), _trade.getProduct().getAmount());
                     }
                 }
             }
@@ -86,6 +88,7 @@ public final class ClickPerformManager {
                     }
                     case PRODUCT -> {
                         _trade.getProduct().setAmount(1);
+                        _trade.getConfigurator().updateProduct(_trade.getProduct().getMaterial(), _trade.getProduct().getAmount());
                     }
                 }
 
@@ -101,6 +104,7 @@ public final class ClickPerformManager {
                     }
                     case PRODUCT -> {
                         _trade.getProduct().setAmount(_trade.getProduct().getAmount() + 1);
+                        _trade.getConfigurator().updateProduct(_trade.getProduct().getMaterial(), _trade.getProduct().getAmount());
                     }
                 }
             }
@@ -115,6 +119,7 @@ public final class ClickPerformManager {
                     }
                     case PRODUCT -> {
                         _trade.getProduct().setAmount(_trade.getProduct().getAmount() + 10);
+                        _trade.getConfigurator().updateProduct(_trade.getProduct().getMaterial(), _trade.getProduct().getAmount());
                     }
                 }
             }

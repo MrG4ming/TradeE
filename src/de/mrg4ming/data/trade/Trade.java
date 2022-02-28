@@ -49,7 +49,7 @@ public class Trade {
         this.storage = storage;
         this.owner = owner;
         this.configurator = configurator;
-        this. constant = constant;
+        this.constant = constant;
     }
 
     public Trade(String name, int value, TradeItem product, Mode mode, int storage, BankAccount owner) {
