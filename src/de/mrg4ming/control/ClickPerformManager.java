@@ -33,7 +33,8 @@ public final class ClickPerformManager {
             }
             case 5 -> { //select/set Product
                 if(p.getItemOnCursor() != null && p.getItemOnCursor().getItemMeta() != null) {
-                    TradeItem _item = new TradeItem(p.getItemOnCursor().getType(), 1, p.getItemOnCursor().getEnchantments());
+                    TradeItem _item = TradeItem.itemStackToTradeItem(p.getItemOnCursor(), 1);
+                    //TradeItem _item = new TradeItem(p.getItemOnCursor().getType(), 1, p.getItemOnCursor().getEnchantments());
 
                     _trade.setProduct(_item);
                     return;

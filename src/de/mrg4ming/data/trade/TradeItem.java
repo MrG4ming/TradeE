@@ -16,6 +16,8 @@ import java.util.Map;
 
 public class TradeItem implements ConfigData {
 
+    private static final String CFG_SPLITTER = "-";
+
     private ItemStack itemStack;
 
     private Material material;
@@ -42,7 +44,7 @@ public class TradeItem implements ConfigData {
 
             List<String> _enchants = new ArrayList<>();
             for(Enchantment e : this.enchantments.keySet()) {
-                _enchants.add(e.getKey().toString() + "." + this.enchantments.get(e).intValue());
+                _enchants.add(e.getKey().toString() + CFG_SPLITTER + this.enchantments.get(e).intValue());
             }
 
             cfg.set(path + ".enchantments", _enchants);
@@ -60,11 +62,11 @@ public class TradeItem implements ConfigData {
         List<String> _enchantsRaw = cfg.getList(path + ".enchantments");
         Map<Enchantment, Integer> _enchants = new HashMap<>();
         //System.out.println(enchantments);
-        if(_enchantsRaw != null) {
+        if(_enchantsRaw != null || _enchantsRaw.size() > 0) {
             for(String s : _enchantsRaw) {
                 //System.out.println("String: " + s);
-                Enchantment e = Enchantment.getByKey(NamespacedKey.fromString(s.split("\\.")[0]));
-                int level = Integer.parseInt(s.split("\\.")[1]);
+                Enchantment e = Enchantment.getByKey(NamespacedKey.fromString(s.split(CFG_SPLITTER)[0]));
+                int level = Integer.parseInt(s.split(CFG_SPLITTER)[1]);
                 //System.out.println("Enchantment: " + e.getKey().toString() + " Level: " + level);
                 _enchants.put(e, level);
             }
@@ -137,7 +139,8 @@ public class TradeItem implements ConfigData {
         if(this.itemStack.getItemMeta() instanceof EnchantmentStorageMeta) {
             EnchantmentStorageMeta _enchMeta = (EnchantmentStorageMeta) this.itemStack.getItemMeta();
             for(Enchantment e : enchantments.keySet()) {
-                if (e.canEnchantItem(this.itemStack)) {
+                if (e.canEnchantItem(this.itemStack) || this.getMaterial().equals(Material.ENCHANTED_BOOK)) {
+                    //System.out.println("Enchantment: "  + e.getKey().getNamespace());
                     _enchants.put(e, enchantments.get(e));
                     _enchMeta.addStoredEnchant(e, enchantments.get(e), true);
                 }
@@ -146,7 +149,9 @@ public class TradeItem implements ConfigData {
         } else {
             for(Enchantment e : enchantments.keySet()) {
                 if (e.canEnchantItem(this.itemStack)) {
-                    _enchants.put(e, enchantments.get(e));
+                    if(enchantments.containsKey(e)) {
+                        _enchants.put(e, enchantments.get(e));
+                    }
                 }
             }
 
@@ -184,7 +189,38 @@ public class TradeItem implements ConfigData {
      * @return
      */
     public static TradeItem itemStackToTradeItem(ItemStack item) {
-        return new TradeItem(item.getType(), item.getAmount(), item.getEnchantments());
+        TradeItem _result = new TradeItem();
+        _result.setMaterial(item.getType());
+        _result.setAmount(item.getAmount());
+        if(item.getItemMeta() instanceof EnchantmentStorageMeta) {
+            EnchantmentStorageMeta _enchMeta = (EnchantmentStorageMeta) item.getItemMeta();
+            _result.setEnchantments(_enchMeta.getStoredEnchants());
+        } else {
+            _result.setEnchantments(item.getEnchantments());
+        }
+
+        return _result;
+    }
+    /**
+     * Converts a normal ItemStack to an TradeItem.
+     *
+     * Note: It sets the TradeItem product amount to the amount of the ItemStack
+     * @param item the item to convert
+     * @param amount sets the amount of the item
+     * @return
+     */
+    public static TradeItem itemStackToTradeItem(ItemStack item, int amount) {
+        TradeItem _result = new TradeItem();
+        _result.setMaterial(item.getType());
+        _result.setAmount(amount);
+        if(item.getItemMeta() instanceof EnchantmentStorageMeta) {
+            EnchantmentStorageMeta _enchMeta = (EnchantmentStorageMeta) item.getItemMeta();
+            _result.setEnchantments(_enchMeta.getStoredEnchants());
+        } else {
+            _result.setEnchantments(item.getEnchantments());
+        }
+
+        return _result;
     }
 
 }
