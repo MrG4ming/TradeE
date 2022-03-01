@@ -13,6 +13,12 @@ import java.util.Map;
 
 public final class PlayerUtils {
 
+    /**
+     * Gives the player a specified amount of the given item. (to add extra enchantments while giving player the items see {@link #givePlayerItems(Player, ItemStack, int, Map)}
+     * @param p the player
+     * @param item the item
+     * @param amount the amount
+     */
     public static void givePlayerItems(Player p, ItemStack item, int amount) {
         List<ItemStack> _items = new ArrayList<>();
 
@@ -40,6 +46,12 @@ public final class PlayerUtils {
             }
         }
     }
+    /**
+     * Gives the player a specified amount of the given an item while adding enchantments to the item.
+     * @param p the player
+     * @param item the item
+     * @param amount the amount
+     */
     public static void givePlayerItems(Player p, ItemStack item, int amount, Map<Enchantment, Integer> enchantments) {
         List<ItemStack> _items = new ArrayList<>();
 
@@ -97,6 +109,12 @@ public final class PlayerUtils {
         }
     }
 
+    /**
+     * Checks if the item contains all the given enchantments
+     * @param item the item
+     * @param enchantments the enchantments
+     * @return false if the item does not contain ONE of the given enchantments
+     */
     public static boolean itemContainsEnchantments(ItemStack item, Map<Enchantment, Integer> enchantments) {
         boolean _value = true;
 
@@ -124,6 +142,12 @@ public final class PlayerUtils {
         return _value;
     }
 
+    /**
+     * Checks if the item contains all the given enchantments
+     * @param item the item
+     * @param enchantments the enchantments
+     * @return false if the item can not be enchanted with ONE of the given enchantments
+     */
     public static boolean itemCanBeEnchanted(ItemStack item, Map<Enchantment, Integer> enchantments) {
         if(item.getType().equals(Material.ENCHANTED_BOOK)) return true;
         for(Enchantment _ench : enchantments.keySet()) {
@@ -135,6 +159,12 @@ public final class PlayerUtils {
         return true;
     }
 
+    /**
+     * Checks if item1 is similar to item2
+     * @param item1 the first item
+     * @param item2 the second item
+     * @return false if the items don't match
+     */
     public static boolean itemsAreSimilarExceptAmount(ItemStack item1, ItemStack item2) {
         boolean _value = true;
 
