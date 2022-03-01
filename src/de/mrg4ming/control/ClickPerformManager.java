@@ -6,10 +6,17 @@ import de.mrg4ming.data.trade.Trade;
 import de.mrg4ming.data.trade.TradeItem;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 
 public final class ClickPerformManager {
 
+    /**
+     * Performs the click actions in the trade editor window.
+     * @param p the Player
+     * @param e the InventoryClickEvent
+     * @param _trade the trade
+     * @param _isNewTrade is it a new trade
+     * @param _tradeName the name of the trade
+     */
     public static void performTradeEditorAction(Player p, InventoryClickEvent e, Trade _trade, boolean _isNewTrade, String _tradeName) {
         switch (e.getRawSlot()) {
             case 0 -> { //switch mode
@@ -154,6 +161,12 @@ public final class ClickPerformManager {
         }
     }
 
+    /**
+     * Performs the click actions in the trade options window.
+     * @param p the Player
+     * @param e the InventoryClickEvent
+     * @param _tradeName the name of the trade
+     */
     public static void performTradeOptionsAction(Player p, InventoryClickEvent e, String _tradeName) {
         if(!Shop.instance.checkIfTradeExists(_tradeName)) return;
         Trade _trade = Shop.instance.getTrade(_tradeName);
@@ -187,6 +200,11 @@ public final class ClickPerformManager {
         }
     }
 
+    /**
+     * Performs the buy action in the trade options window (called through the {@link #performTradeOptionsAction(Player, InventoryClickEvent, String)} method).
+     * @param p the player
+     * @param trade the trade
+     */
     public static void performBuyAction(Player p, Trade trade) {
         if(Bank.instance.getMainAccountOfPlayer(p.getUniqueId().toString()) == null) { //check if player has a bank account and if so is it his main account
             p.sendMessage(Main.PREFiX + "§cYou don't own a bank account! §8Please ask an operator to create one for you.");
@@ -231,6 +249,11 @@ public final class ClickPerformManager {
         }
     }
 
+    /**
+     * Performs the sell action in the trade options window (called through the {@link #performTradeOptionsAction(Player, InventoryClickEvent, String)} method).
+     * @param p the player
+     * @param trade the trade
+     */
     public static void performSellAction(Player p, Trade trade) {
         if(Bank.instance.getMainAccountOfPlayer(p.getUniqueId().toString()) == null) { //check if player has a bank account and if so is it his main account
             p.sendMessage(Main.PREFiX + "§cYou don't own a bank account! §8Please ask an operator to create one for you.");
@@ -257,6 +280,11 @@ public final class ClickPerformManager {
         }
     }
 
+    /**
+     * Performs the storage refill/empty action in the trade options window (called through the {@link #performTradeOptionsAction(Player, InventoryClickEvent, String)} method).
+     * @param p the player
+     * @param trade the trade
+     */
     public static void performStorageRefillAndEmptyAction(Player p, Trade trade) {
         if(trade.getOwner().getOwners().contains(p.getUniqueId().toString())) { //check if player is the owner of this trade
             if(trade.isConstant()) {
