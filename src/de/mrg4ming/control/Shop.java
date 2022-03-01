@@ -6,10 +6,8 @@ import de.mrg4ming.data.BankAccount;
 import de.mrg4ming.data.ShopInventory;
 import de.mrg4ming.data.trade.Trade;
 import de.mrg4ming.data.trade.TradeItem;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 
 import java.io.IOException;
 import java.util.*;
@@ -21,6 +19,7 @@ public class Shop implements ConfigItem {
         OVERWRITE_SHOP_INV_DATA;
     }
 
+    public static final SyncMode DEFAULT_SYNC_MODE = SyncMode.OVERWRITE_SHOP_DATA;
     public static Shop instance;
 
     private List<Integer> usedIDs = new ArrayList<>();
@@ -30,6 +29,10 @@ public class Shop implements ConfigItem {
     private Config cfg;
     private ShopInventory inv;
 
+    /**
+     * Use this method only once in the main/onEnabled method!
+     * @throws IllegalAccessException
+     */
     public Shop() throws IllegalAccessException {
         if(instance != null) throw new IllegalAccessException("The Shop is already instantiated! Please use 'Bank.instance' instead.");
 
@@ -41,6 +44,12 @@ public class Shop implements ConfigItem {
         inv = new ShopInventory(new ArrayList<>(trades.values()));
     }
 
+    /**
+     * Add a trade to the shop system. And sync the shop system with the shop inventory.
+     * @param _trade the trade
+     * @param _mode the sync mode
+     * @return false if the max amount of trades is reached
+     */
     public boolean addTrade(Trade _trade, SyncMode _mode) {
         if(Shop.instance.getShopInvData().getTrades().size() + 1 > (ShopInventory.MAX_TRADES_PER_PAGE * ShopInventory.MAX_PAGES)) return false;
 
@@ -49,21 +58,36 @@ public class Shop implements ConfigItem {
 
         return true;
     }
+
+    /**
+     * Add a trade to the shop system. (uses the default sync mode: {@link #DEFAULT_SYNC_MODE})
+     * @param _trade the trade
+     * @return
+     */
     public boolean addTrade(Trade _trade) {
         if(Shop.instance.getShopInvData().getTrades().size() + 1 > (ShopInventory.MAX_TRADES_PER_PAGE * ShopInventory.MAX_PAGES)) return false;
 
         Shop.instance.getShopInvData().getTrades().add(_trade);
-        syncShopDataWithInv(SyncMode.OVERWRITE_SHOP_DATA);
+        syncShopDataWithInv(DEFAULT_SYNC_MODE);
 
 
         inv.updatePages();
         return true;
     }
 
+    /**
+     * @param _id the trade id
+     * @return the trade with the given id (null if the trade does not exist)
+     */
     public Trade getTrade(int _id) {
         if(!trades.containsKey(_id)) return trades.get(_id);
         return null;
     }
+
+    /**
+     * @param _name the trade name
+     * @return the trade with the given name (null if the trade does not exist)
+     */
     public Trade getTrade(String _name) {
         if(checkIfTradeExists(_name)) {
             for(Trade t : trades.values()) {
@@ -75,6 +99,11 @@ public class Shop implements ConfigItem {
         return null;
     }
 
+    /**
+     * Removes a trade from the shop system.
+     * @param _id
+     * @return false if the trade with the given id does not exist
+     */
     public boolean removeTrade(int _id) {
         if(!trades.containsKey(_id)) return false;
         trades.remove(_id);
@@ -84,15 +113,11 @@ public class Shop implements ConfigItem {
         return true;
     }
 
-    public static <T, E> T getKeyByValue(Map<T, E> map, E value) {
-        for (Map.Entry<T, E> entry : map.entrySet()) {
-            if (Objects.equals(value, entry.getValue())) {
-                return entry.getKey();
-            }
-        }
-        return null;
-    }
-
+    /**
+     * Checks if the trade with the given name exists.
+     * @param _name the name of the trade
+     * @return false if it does not exist
+     */
     public boolean checkIfTradeExists(String _name) {
         for(Trade t : trades.values()) {
             if(t.getName().equalsIgnoreCase(_name)) {
@@ -102,6 +127,10 @@ public class Shop implements ConfigItem {
         return false;
     }
 
+    /**
+     * @param _account the bank account
+     * @return the trades the given bank account owns
+     */
     public List<Trade> getTradesOfBankAccount(BankAccount _account) {
         List<Trade> _trades = new ArrayList<>();
         for(Trade _trade : trades.values()) {
@@ -114,6 +143,10 @@ public class Shop implements ConfigItem {
         return _trades;
     }
 
+    /**
+     * @param p the player
+     * @return all trades of the given player
+     */
     public List<Trade> getTradesOfPlayer(Player p) {
         List<Trade> _trades = new ArrayList<>();
         for(Trade _trade : trades.values()) {
@@ -128,6 +161,10 @@ public class Shop implements ConfigItem {
         return _trades;
     }
 
+    /**
+     * Checks if the shop is full.
+     * @return true if the shop is full
+     */
     public boolean isFull() {
         if(trades.size() >= (ShopInventory.MAX_TRADES_PER_PAGE * ShopInventory.MAX_PAGES)) {
             return true;
@@ -169,6 +206,9 @@ public class Shop implements ConfigItem {
     }
     ///endregion
 
+    /**
+     * Loads the shop system and trades from the config (=> "./TradeE/shop.yml").
+     */
     @Override
     public void loadFromConfig() {
         cfg.reload();
@@ -206,6 +246,9 @@ public class Shop implements ConfigItem {
         }
     }
 
+    /**
+     * Saves the shop system and trades to the config (=> "./TradeE/shop.yml").
+     */
     @Override
     public void saveToConfig() {
         try {
@@ -231,14 +274,24 @@ public class Shop implements ConfigItem {
         }
     }
 
+    /**
+     * @return the main shop page
+     */
     public Inventory openInv() {
         return inv.pages.get(0);
     }
 
+    /**
+     * @param _page the shop page
+     * @return the given shop page
+     */
     public Inventory openInv(int _page) {
         return inv.pages.get(_page);
     }
 
+    /**
+     * @return the shop page inventory container
+     */
     public ShopInventory getShopInvData() {
         return inv;
     }
