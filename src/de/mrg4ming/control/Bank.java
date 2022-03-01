@@ -24,6 +24,10 @@ public class Bank implements ConfigItem {
     private List<Integer> usedIDs = new ArrayList<>();
     private List<String> usedUUIDs = new ArrayList<>();
 
+    /**
+     * Use this method only once in the main/onEnabled method!
+     * @throws IllegalAccessException
+     */
     public Bank() throws IllegalAccessException {
         if(instance != null) throw new IllegalAccessException("The Bank is already instantiated! Please use 'Bank.instance' instead.");
 
@@ -33,6 +37,13 @@ public class Bank implements ConfigItem {
         loadFromConfig();
     }
 
+
+    /**
+     * Creates a bank account.
+     * @param _name the name of the bank account (if already used it returns 0 as id)
+     * @param _owner the uuid of the player who should own this bank account
+     * @return the id of the bank account
+     */
     public int createBankAccount(String _name, String _owner) {
         for(BankAccount ac : accounts.values()) {
             if(ac.name.equals(_name)) {
@@ -63,6 +74,10 @@ public class Bank implements ConfigItem {
         return 0;
     }
 
+    /**
+     * Removes a bank account safely (=> also removed from trades).
+     * @param _id the id of the bank account to be removed
+     */
     public void removeAccount(int _id) {
         if(accounts.containsKey(_id) && usedIDs.contains(_id)) {
 
@@ -105,6 +120,11 @@ public class Bank implements ConfigItem {
         }
     }
 
+
+    /**
+     * @param _uuid the uuid of the player, whose main account id is searched
+     * @return the main account id of the player
+     */
     public int getMainAccountIdOfPlayer(String _uuid) {
         if(usedUUIDs.contains(_uuid)) {
             if(mainAccounts.containsKey(_uuid)) {
@@ -117,6 +137,10 @@ public class Bank implements ConfigItem {
         return -1;
     }
 
+    /**
+     * @param _uuid the uuid of the player, whose main account is searched
+     * @return the main account of the player
+     */
     public BankAccount getMainAccountOfPlayer(String _uuid) {
         if(usedUUIDs.contains(_uuid)) {
             if(mainAccounts.containsKey(_uuid)) {
@@ -129,6 +153,12 @@ public class Bank implements ConfigItem {
         return null;
     }
 
+    /**
+     * Sets the main bank account of a player.
+     * @param _uuid the uuid of the player, whose main account you want to set
+     * @param _account the new main account of the player
+     * @return false if the given account does not exist or is not owned by the player
+     */
     public boolean setMainAccountOfPlayer(String _uuid, BankAccount _account) {
         if(accounts.containsValue(_account) && _account.getOwners().contains(_uuid)) {
             usedUUIDs.add(_uuid);
@@ -138,6 +168,10 @@ public class Bank implements ConfigItem {
         return false;
     }
 
+    /**
+     * @param _name the name of a bank account
+     * @return the id of the bank account, whose name is _name (0 if account does not exist)
+     */
     public int getIdByName(String _name) {
         for(int id : usedIDs) {
             if(accounts.get(id).name.equals(_name)) {
@@ -147,6 +181,10 @@ public class Bank implements ConfigItem {
         return 0;
     }
 
+    /**
+     * @param p the player
+     * @return all bank accounts owned by the player
+     */
     public List<BankAccount> getBankAccountsOfPlayer(Player p) {
         List<BankAccount> _accounts = new ArrayList<>();
         for(BankAccount _account : accounts.values()) {
@@ -156,6 +194,11 @@ public class Bank implements ConfigItem {
         }
         return _accounts;
     }
+
+    /**
+     * @param _uuid uuid of the player
+     * @return all bank accounts owned by the player
+     */
     public List<BankAccount> getBankAccountsOfPlayer(String _uuid) {
         List<BankAccount> _accounts = new ArrayList<>();
         for(BankAccount _account : accounts.values()) {
@@ -166,6 +209,9 @@ public class Bank implements ConfigItem {
         return _accounts;
     }
 
+    /**
+     * Saves the bank system and accounts to the config (=> "./TradeE/bank.yml").
+     */
     public void saveToConfig() {
         try {
             config.set("usedIDs", null);
@@ -188,6 +234,9 @@ public class Bank implements ConfigItem {
         }
     }
 
+    /**
+     * Loads the bank system and accounts from the config (=> "./TradeE/bank.yml").
+     */
     public void loadFromConfig() {
         config.reload();
 
