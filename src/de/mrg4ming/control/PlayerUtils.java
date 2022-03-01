@@ -6,10 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public final class PlayerUtils {
 
@@ -177,4 +174,20 @@ public final class PlayerUtils {
         return _value;
     }
 
+    /**
+     * Returns the Key of a Map with by the value
+     * @param map the map
+     * @param value the value
+     * @param <T>
+     * @param <E>
+     * @return null if the map does not contain the given value
+     */
+    public static <T, E> T getKeyByValue(Map<T, E> map, E value) {
+        for (Map.Entry<T, E> entry : map.entrySet()) {
+            if (Objects.equals(value, entry.getValue())) {
+                return entry.getKey();
+            }
+        }
+        return null;
+    }
 }

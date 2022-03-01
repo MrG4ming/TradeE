@@ -90,7 +90,7 @@ public class TradeCommand implements CommandExecutor {
                             PlayerUtils.givePlayerItems(p, _trade.getProduct().getItemStack(), _trade.storage);
                         }
 
-                        Shop.instance.removeTrade(Shop.getKeyByValue(Shop.instance.trades, Shop.instance.getTrade(_name)));
+                        Shop.instance.removeTrade(PlayerUtils.getKeyByValue(Shop.instance.trades, Shop.instance.getTrade(_name)));
                         p.sendMessage(Main.PREFiX + "§aTrade successfully §cremoved§a.");
                     } else if(args[0].equalsIgnoreCase("changeowner")) {
 

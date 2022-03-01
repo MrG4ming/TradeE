@@ -94,7 +94,7 @@ public class Bank implements ConfigItem {
             });
 
             for(Trade t : Shop.instance.getTradesOfBankAccount(accounts.get(_id))) {
-                Shop.instance.removeTrade(Shop.getKeyByValue(Shop.instance.trades, t));
+                Shop.instance.removeTrade(PlayerUtils.getKeyByValue(Shop.instance.trades, t));
             }
             Shop.tempTrades.forEach((s, trade) -> {
                 if(trade.getOwner().equals(accounts.get(_id).getOwners().get(0))) { //later when/if multiple owners are added this needs to be changed
