@@ -21,6 +21,12 @@ public class TradeConfigurator {
 
     private Inventory inv;
 
+    /**
+     * Instantiates a new trade configurator window.
+     * @param name the name of the trade
+     * @param productItemStack the product item
+     * @param _mode the trade mode
+     */
     public TradeConfigurator(String name, ItemStack productItemStack, Trade.Mode _mode) {
         this.inv = Bukkit.createInventory(null, 9*2, WindowTitle.TRADE_EDITOR_PREFIX.title + name);
 
@@ -47,10 +53,17 @@ public class TradeConfigurator {
         inv.setItem(8+9, confirmItem);
     }
 
+    /**
+     * @return the trade configurator window
+     */
     public Inventory open() {
         return inv;
     }
 
+    /**
+     * Sets the current selected value that the player wants to change.
+     * @param _value the value ({@link de.mrg4ming.control.TradeConfigurator.Value})
+     */
     public void setCurrentSelectedValue(Value _value) {
         List<String> lore = new ArrayList<>();
         switch (_value) {
@@ -69,6 +82,9 @@ public class TradeConfigurator {
         inv.setItem(4, selectedValue);
     }
 
+    /**
+     * @return the current selected value ({@link de.mrg4ming.control.TradeConfigurator.Value})
+     */
     public Value getCurrentSelected() {
         if(inv.getItem(4).getItemMeta().getLore().contains("§6Product")) {
             return Value.PRODUCT;
@@ -78,6 +94,10 @@ public class TradeConfigurator {
         return Value.NOTHING;
     }
 
+    /**
+     * Updates the value info item.
+     * @param _value the value/price of the product item
+     */
     public void updateValue(int _value) {
         OptionItem _selectValue = new OptionItem("§aSelect §dValue", Material.PAPER);
         List<String> _selectedValueLore = new ArrayList<>();
@@ -86,6 +106,12 @@ public class TradeConfigurator {
         inv.setItem(3, _selectValue);
     }
 
+    /**
+     * Updates the product info item.
+     * @param _material the product material
+     * @param _amount the product amount
+     * @return the new product info item
+     */
     public OptionItem updateProduct(Material _material, int _amount) {
         OptionItem _product = new OptionItem("§dProduct: ", _material, 1);
         _product.setLore("§6" + _amount + " §bx §6" + _product.getType().toString().toLowerCase());
@@ -93,6 +119,10 @@ public class TradeConfigurator {
         return _product;
     }
 
+    /**
+     * Updates/changes the trade mode.
+     * @param _mode the new trade mode ({@link de.mrg4ming.data.trade.Trade.Mode})
+     */
     public void updateMode(Trade.Mode _mode) {
         OptionItem switchMode = new OptionItem("§dSwitch Mode", Lists.newArrayList("§aMode: §6" + _mode.toString().toLowerCase()), Material.PURPLE_DYE);
         inv.setItem(0, switchMode);
