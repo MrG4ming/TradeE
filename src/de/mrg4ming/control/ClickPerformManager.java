@@ -184,6 +184,9 @@ public final class ClickPerformManager {
                     ClickPerformManager.performBuyAction(p, _trade);
                 }
             }
+            case 4 -> { //cancel "stealing" anvil
+                e.setCancelled(true);
+            }
             case 5 -> { //Sell
                 if(_trade.getMode().equals(Trade.Mode.SELL) || _trade.getMode().equals(Trade.Mode.BUY_AND_SELL)) {
                     ClickPerformManager.performSellAction(p, _trade);
