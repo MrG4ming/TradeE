@@ -7,13 +7,10 @@ import de.mrg4ming.data.OptionItem;
 import de.mrg4ming.data.WindowTitle;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class Trade {
 
