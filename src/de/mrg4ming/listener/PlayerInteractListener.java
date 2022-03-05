@@ -17,7 +17,7 @@ public class PlayerInteractListener implements Listener {
 
         if(e.getRightClicked() instanceof Villager) {
             Villager v = (Villager) e.getRightClicked();
-            if(v.getCustomName().equalsIgnoreCase(TradeCommand.shopVillagerName)) {
+            if(v.getCustomName() != null && v.getCustomName().equalsIgnoreCase(TradeCommand.shopVillagerName)) {
                 //open Trade inventory
                 e.setCancelled(true);
                 //p.sendMessage("Open shop...");
