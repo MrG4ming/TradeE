@@ -1,7 +1,7 @@
 package de.mrg4ming.control;
 
 import de.mrg4ming.config.Config;
-import de.mrg4ming.config.ConfigItem;
+import de.mrg4ming.config.ConfigData;
 import de.mrg4ming.data.BankAccount;
 import de.mrg4ming.data.ShopInventory;
 import de.mrg4ming.data.trade.Trade;
@@ -12,7 +12,7 @@ import org.bukkit.inventory.Inventory;
 import java.io.IOException;
 import java.util.*;
 
-public class Shop implements ConfigItem {
+public class Shop implements ConfigData {
 
     public enum SyncMode {
         OVERWRITE_SHOP_DATA,

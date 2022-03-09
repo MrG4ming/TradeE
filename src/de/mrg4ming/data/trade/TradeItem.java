@@ -1,7 +1,7 @@
 package de.mrg4ming.data.trade;
 
 import de.mrg4ming.config.Config;
-import de.mrg4ming.config.ConfigData;
+import de.mrg4ming.config.ConfigItem;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TradeItem implements ConfigData {
+public class TradeItem implements ConfigItem {
 
     private static final String CFG_SPLITTER = "-";
 
