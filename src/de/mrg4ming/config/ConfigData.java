@@ -1,5 +1,8 @@
 package de.mrg4ming.config;
 
+/**
+ * For static classes.
+ */
 public interface ConfigData {
 
     /**

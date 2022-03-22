@@ -1,5 +1,8 @@
 package de.mrg4ming.config;
 
+/**
+ * For items in static class.
+ */
 public interface ConfigItem {
 
     /**
