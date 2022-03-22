@@ -1,7 +1,7 @@
 package de.mrg4ming.config;
 
 /**
- * For items in static class.
+ * For data that you would like to store in a config of another class.
  */
 public interface ConfigItem {
 
