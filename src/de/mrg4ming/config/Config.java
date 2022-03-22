@@ -5,9 +5,12 @@ import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
 
 public class Config {
+
+    public static final String CONFIG_PATH = "./plugins/PositionSaver/";
 
     private File file;
     private YamlConfiguration cfg;
@@ -28,7 +31,7 @@ public class Config {
      * @param _name the name of the config to load in
      */
     public void load(String _name) {
-        File dir = new File("./plugins/TradeE/");
+        File dir = new File(CONFIG_PATH);
 
         if(!dir.exists()) {
             dir.mkdirs();
